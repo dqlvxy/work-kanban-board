@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 5 步 扫详情页</title>
+<title>手机自动投递 · 第 6 步 试投一家</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
---muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--soft:#eef3fe;}
+--muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
 @media (prefers-color-scheme: dark){:root{--bg:#0b1020;--card:#151b2c;--line:#26304a;
---txt:#e8edf7;--desc:#a8b3c7;--muted:#7d8899;--blue:#5f92ff;--green:#31c48d;--soft:#1b2440;}}
+--txt:#e8edf7;--desc:#a8b3c7;--muted:#7d8899;--blue:#5f92ff;--green:#31c48d;--warn:#fbbf24;--soft:#1b2440;--warnbg:#2a2113;}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
 font-size:15px;line-height:1.7;padding:16px 14px 40px}
@@ -21,6 +21,8 @@ h1{font-size:19px;margin:0 0 4px}
 font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
 .step p{margin:0;font-size:14px;color:var(--desc)}
 .step p b{color:var(--txt)}
+.warn{background:var(--warnbg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+font-size:13.5px;color:var(--warn);margin-bottom:14px}
 .btn{display:block;width:100%;padding:15px 0;border:0;border-radius:14px;font-family:inherit;
 font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--blue),#5a3fd6);
 box-shadow:0 6px 18px rgba(47,109,246,.28);margin:4px 0 10px;cursor:pointer}
@@ -37,14 +39,17 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 5 步</h1>
-<div class="sub">扫岗位详情页，找「立即沟通」。</div>
+<h1>手机自动投递 · 第 6 步</h1>
+<div class="sub">真点一次「立即沟通」，只点不发。</div>
+
+<div class="warn">这一步会真的向 1 位 HR 建立沟通，是第一次真投。跑之前想清楚，跑完不满意可以手动在 BOSS 里撤回不了，只能不理。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本进剪贴板</b></p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>5.js</b>，粘贴，保存</p></div>
-<div class="step"><div class="n">3</div><p><b>先去 BOSS</b>：搜一个岗位词，点进任意一个岗位，停在能看到<b>「立即沟通」</b>的那一屏</p></div>
-<div class="step"><div class="n">4</div><p>按 Home 退出到桌面，再回 AutoJs6 运行 5.js；跑完切回豆包粘贴发我</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>6.js</b>，粘贴，保存</b></div></div>
+<div class="step"><div class="n">3</div><p>去 BOSS，点进一个岗位，停在<b>「立即沟通」</b>那屏，然后按 Home 退出</p></div>
+<div class="step"><div class="n">4</div><p>回 AutoJs6 运行 6.js。它会自己点那一下，点完把新界面复制到剪贴板</p></div>
+<div class="step"><div class="n">5</div><p>切回豆包，长按粘贴发我</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -53,45 +58,62 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 5 步：扫岗位详情页
- * 用法：先在 BOSS 里点进一个岗位、停在能看到「立即沟通」的界面，
- *      然后按 Home 退出到桌面，再来运行本脚本。脚本会把 BOSS 拉回那一页并扫描。
+ * 手机自动投递 · 第 6 步：真点一次「立即沟通」
+ * 只点这一下，不自动发消息。点完把新界面结构复制到剪贴板。
+ * 用法：先在 BOSS 停在某个岗位详情页，按 Home 退出，再运行本脚本。
  */
+
+function 扫描() {
+    var 全部 = classNameMatches(/.+/).find();
+    var 行 = [];
+    for (var i = 0; i &lt; 全部.size(); i++) {
+        var w = 全部.get(i);
+        var 文 = (w.text() || "").trim();
+        var 述 = (w.desc() || "").trim();
+        if (!文 &amp;&amp; !述) continue;
+        var b = w.bounds();
+        行.push(w.className().replace("android.widget.", "").replace("android.view.", "") +
+            " | " + 文 + " | " + 述 + " | " +
+            b.left + "," + b.top + " " + b.width() + "x" + b.height());
+    }
+    return "节点总数: " + 全部.size() + "  含文字: " + 行.length + "\n----\n" + 行.join("\n");
+}
+
 auto.waitFor();
 sleep(800);
 
 var ok = launchApp("BOSS直聘");
 toastLog("拉起 BOSS: " + ok);
-sleep(6000);
+sleep(5000);
 
 var 包 = currentPackage();
-toastLog("当前前台: " + 包);
 
-var 全部 = classNameMatches(/.+/).find();
-var 行 = [];
-for (var i = 0; i &lt; 全部.size(); i++) {
-    var w = 全部.get(i);
-    var 文 = (w.text() || "").trim();
-    var 述 = (w.desc() || "").trim();
-    if (!文 &amp;&amp; !述) continue;
-    var b = w.bounds();
-    行.push(w.className().replace("android.widget.", "").replace("android.view.", "") +
-        " | " + 文 + " | " + 述 + " | " +
-        b.left + "," + b.top + " " + b.width() + "x" + b.height());
+if (包 != "com.hpbr.bosszhipin") {
+    setClip("不在 BOSS 前台，当前包名: " + 包);
+    toastLog("不在 BOSS 前台");
+} else {
+    var 按钮 = text("立即沟通").findOne(6000);
+    if (!按钮) {
+        setClip("没找到「立即沟通」按钮，当前界面:\n" + 扫描());
+        toastLog("没找到按钮，已复制界面结构");
+    } else {
+        var cx = 按钮.bounds().centerX();
+        var cy = 按钮.bounds().centerY();
+        toastLog("找到「立即沟通」@ " + cx + "," + cy + "，3 秒后点击");
+        sleep(3000);
+        按钮.click();
+        sleep(7000);
+        setClip("已点击「立即沟通」\n点击后包名: " + currentPackage() + "\n" + 扫描());
+        toastLog("点完了，界面结构已复制到剪贴板");
+    }
 }
-
-var 内容 = "包名: " + 包 + "\n节点总数: " + 全部.size() +
-    "\n含文字: " + 行.length + "\n----\n" + 行.join("\n");
-
-setClip(内容);
-toastLog("已复制到剪贴板 " + 行.length + " 条");
 </pre>
 </div>
 
-<div class="foot">顺序很重要：先把 BOSS 停在详情页，再跑脚本</div>
+<div class="foot">跑完 BOSS 可能停在聊天页，属正常</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 5 步：扫岗位详情页\n * 用法：先在 BOSS 里点进一个岗位、停在能看到「立即沟通」的界面，\n *      然后按 Home 退出到桌面，再来运行本脚本。脚本会把 BOSS 拉回那一页并扫描。\n */\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\ntoastLog(\"拉起 BOSS: \" + ok);\nsleep(6000);\n\nvar 包 = currentPackage();\ntoastLog(\"当前前台: \" + 包);\n\nvar 全部 = classNameMatches(/.+/).find();\nvar 行 = [];\nfor (var i = 0; i < 全部.size(); i++) {\n    var w = 全部.get(i);\n    var 文 = (w.text() || \"\").trim();\n    var 述 = (w.desc() || \"\").trim();\n    if (!文 && !述) continue;\n    var b = w.bounds();\n    行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n        \" | \" + 文 + \" | \" + 述 + \" | \" +\n        b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n}\n\nvar 内容 = \"包名: \" + 包 + \"\\n节点总数: \" + 全部.size() +\n    \"\\n含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n\nsetClip(内容);\ntoastLog(\"已复制到剪贴板 \" + 行.length + \" 条\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 6 步：真点一次「立即沟通」\n * 只点这一下，不自动发消息。点完把新界面结构复制到剪贴板。\n * 用法：先在 BOSS 停在某个岗位详情页，按 Home 退出，再运行本脚本。\n */\n\nfunction 扫描() {\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n    return \"节点总数: \" + 全部.size() + \"  含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n}\n\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\ntoastLog(\"拉起 BOSS: \" + ok);\nsleep(5000);\n\nvar 包 = currentPackage();\n\nif (包 != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台，当前包名: \" + 包);\n    toastLog(\"不在 BOSS 前台\");\n} else {\n    var 按钮 = text(\"立即沟通\").findOne(6000);\n    if (!按钮) {\n        setClip(\"没找到「立即沟通」按钮，当前界面:\\n\" + 扫描());\n        toastLog(\"没找到按钮，已复制界面结构\");\n    } else {\n        var cx = 按钮.bounds().centerX();\n        var cy = 按钮.bounds().centerY();\n        toastLog(\"找到「立即沟通」@ \" + cx + \",\" + cy + \"，3 秒后点击\");\n        sleep(3000);\n        按钮.click();\n        sleep(7000);\n        setClip(\"已点击「立即沟通」\\n点击后包名: \" + currentPackage() + \"\\n\" + 扫描());\n        toastLog(\"点完了，界面结构已复制到剪贴板\");\n    }\n}\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
