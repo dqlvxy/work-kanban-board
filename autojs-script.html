@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 复制脚本</title>
+<title>手机自动投递 · 复制脚本 v2</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--soft:#eef3fe;}
@@ -32,18 +32,18 @@ white-space:pre-wrap;word-break:break-all;max-height:46vh;overflow-y:auto;color:
 .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:10px}
 .hd span{font-size:13px;font-weight:700}
 .mini{font-size:12.5px;color:var(--blue);background:none;border:1px solid var(--blue);
-border-radius:999px;padding:5px 12px;font-family:inherit;flex:none}
+border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointer}
 .foot{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 1 步</h1>
-<div class="sub">复制脚本到 Hamibot 跑一次，只读不点，安全。</div>
+<h1>手机自动投递 · 诊断版</h1>
+<div class="sub">只读不点，判断无障碍通没通。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本自动进剪贴板</b></p></div>
-<div class="step"><div class="n">2</div><p>打开 <b>Hamibot</b> → 首页「+」新建脚本 → 名字随便写 → <b>长按输入区粘贴</b> → 保存</p></div>
-<div class="step"><div class="n">3</div><p>先手动停在 <b>BOSS 岗位详情页</b>（能看到「立即沟通」那屏），回 Hamibot 点运行</p></div>
+<div class="step"><div class="n">2</div><p>打开 <b>AutoJs6</b> → 右下「文件」新建 <b>2.js</b> → 长按粘贴 → 保存</p></div>
+<div class="step"><div class="n">3</div><p>在 AutoJs6 里直接点运行，<b>不用切 App</b></p></div>
 <div class="step"><div class="n">4</div><p>日志出来 → 右上角复制 → <b>发给我</b></p></div>
 </div>
 
@@ -53,51 +53,45 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none}
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 1 步：探测当前界面
- * 作用：只读不点。把当前屏幕上所有可点的文字打出来，复制发给我，
- *      我照着你的机型写精确点击版。
- *
- * 用法：
- *   1. 手机装 AutoX.js（开源免费，见说明.md）
- *   2. 授予无障碍权限
- *   3. 先手动翻到&quot;BOSS直聘 / 猎聘&quot;的某个岗位详情页
- *   4. 运行本脚本，3 秒后开始扫描
- *   5. 屏幕顶部会显示日志，点右上角复制，发我
+ * 手机自动投递 · 诊断版 v2
+ * 只读不点，用来判断无障碍服务到底通没通。
  */
 auto.waitFor();
-toastLog(&quot;3 秒后开始扫描，请现在就停在岗位详情页&quot;);
-sleep(3000);
+sleep(1500);
 
-var 屏幕宽 = device.width;
-var 屏幕高 = device.height;
-toastLog(&quot;屏幕 &quot; + 屏幕宽 + &quot;x&quot; + 屏幕高 + &quot;，开始扫&quot;);
+toastLog("无障碍服务: " + (auto.service ? "已开启" : "未开启"));
+sleep(2500);
 
-var 结果 = [];
-var 控件 = classNameMatches(/TextView|Button|EditText|ImageView/).find();
-for (var i = 0; i &lt; 控件.size(); i++) {
-    var w = 控件.get(i);
-    var 文 = (w.text() || &quot;&quot;).trim();
-    var 述 = (w.desc() || &quot;&quot;).trim();
+toastLog("前台包名: " + currentPackage());
+sleep(2500);
+
+var 全部 = classNameMatches(/.+/).find();
+toastLog("界面节点总数: " + 全部.size());
+sleep(2000);
+
+var n = 0;
+for (var i = 0; i &lt; 全部.size(); i++) {
+    var w = 全部.get(i);
+    var 文 = (w.text() || "").trim();
+    var 述 = (w.desc() || "").trim();
     if (!文 &amp;&amp; !述) continue;
-    if (文.length &gt; 30) 文 = 文.substring(0, 30) + &quot;…&quot;;
     var b = w.bounds();
-    var 行 = w.className().replace(&quot;android.widget.&quot;, &quot;&quot;) +
-          &quot; | 文字:&quot; + 文 + &quot; | 描述:&quot; + 述 +
-          &quot; | 位置:&quot; + b.left + &quot;,&quot; + b.top + &quot; 大小:&quot; + b.width() + &quot;x&quot; + b.height();
-    结果.push(行);
-    console.log(行);
+    console.log(w.className().replace("android.widget.", "").replace("android.view.", "") +
+        " | " + 文 + " | " + 述 + " | " +
+        b.left + "," + b.top + " " + b.width() + "x" + b.height());
+    n++;
 }
-toastLog(&quot;扫完，共 &quot; + 结果.length + &quot; 个控件，点右上角复制日志发我&quot;);
+toastLog("扫描结束，含文字节点 " + n + " 个，把日志复制发我");
 </pre>
 </div>
 
 <div class="foot">复制失败多半是浏览器拦了剪贴板，点「全选」再长按复制一样能用</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 1 步：探测当前界面\n * 作用：只读不点。把当前屏幕上所有可点的文字打出来，复制发给我，\n *      我照着你的机型写精确点击版。\n *\n * 用法：\n *   1. 手机装 AutoX.js（开源免费，见说明.md）\n *   2. 授予无障碍权限\n *   3. 先手动翻到\"BOSS直聘 / 猎聘\"的某个岗位详情页\n *   4. 运行本脚本，3 秒后开始扫描\n *   5. 屏幕顶部会显示日志，点右上角复制，发我\n */\nauto.waitFor();\ntoastLog(\"3 秒后开始扫描，请现在就停在岗位详情页\");\nsleep(3000);\n\nvar 屏幕宽 = device.width;\nvar 屏幕高 = device.height;\ntoastLog(\"屏幕 \" + 屏幕宽 + \"x\" + 屏幕高 + \"，开始扫\");\n\nvar 结果 = [];\nvar 控件 = classNameMatches(/TextView|Button|EditText|ImageView/).find();\nfor (var i = 0; i < 控件.size(); i++) {\n    var w = 控件.get(i);\n    var 文 = (w.text() || \"\").trim();\n    var 述 = (w.desc() || \"\").trim();\n    if (!文 && !述) continue;\n    if (文.length > 30) 文 = 文.substring(0, 30) + \"…\";\n    var b = w.bounds();\n    var 行 = w.className().replace(\"android.widget.\", \"\") +\n          \" | 文字:\" + 文 + \" | 描述:\" + 述 +\n          \" | 位置:\" + b.left + \",\" + b.top + \" 大小:\" + b.width() + \"x\" + b.height();\n    结果.push(行);\n    console.log(行);\n}\ntoastLog(\"扫完，共 \" + 结果.length + \" 个控件，点右上角复制日志发我\");\n";
+var CODE = "/**\n * 手机自动投递 · 诊断版 v2\n * 只读不点，用来判断无障碍服务到底通没通。\n */\nauto.waitFor();\nsleep(1500);\n\ntoastLog(\"无障碍服务: \" + (auto.service ? \"已开启\" : \"未开启\"));\nsleep(2500);\n\ntoastLog(\"前台包名: \" + currentPackage());\nsleep(2500);\n\nvar 全部 = classNameMatches(/.+/).find();\ntoastLog(\"界面节点总数: \" + 全部.size());\nsleep(2000);\n\nvar n = 0;\nfor (var i = 0; i < 全部.size(); i++) {\n    var w = 全部.get(i);\n    var 文 = (w.text() || \"\").trim();\n    var 述 = (w.desc() || \"\").trim();\n    if (!文 && !述) continue;\n    var b = w.bounds();\n    console.log(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n        \" | \" + 文 + \" | \" + 述 + \" | \" +\n        b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    n++;\n}\ntoastLog(\"扫描结束，含文字节点 \" + n + \" 个，把日志复制发我\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
-  tip.textContent = ok ? '已复制，去 Hamibot 粘贴' : '没复制上，点下面「全选」手动复制';
+  tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
   var b=document.getElementById('cp');
   if(ok){ b.classList.add('ok'); b.textContent='已复制'; }
 }
