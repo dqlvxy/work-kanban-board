@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 23 步 节点点击发送键</title>
+<title>手机自动投递 · 第 24 步 节点点击发送</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,15 +39,15 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 23 步</h1>
-<div class="sub">不用坐标，改点节点。</div>
+<h1>手机自动投递 · 第 24 步</h1>
+<div class="sub">修好宽高取值，继续用节点点击。</div>
 
-<div class="warn">你上一版报告里露了个大线索：聊天页那个加号位置（1062,1384）在无障碍节点树里是个可点节点。坐标点不动，但节点 click() 是有效的——「立即沟通」就是靠它点成的。这版全程改用节点点击。</div>
+<div class="warn">上一版报 TypeError：bounds 的宽高在 AutoJs6 里是数字属性，不是函数。这版改成 right-left、bottom-top 直接算，绕开这个坑。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>23.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>进到孙先生聊天页，清空输入框</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>24.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>进孙先生聊天页，输入框留空</p></div>
 <div class="step"><div class="n">4</div><p>运行，把剪贴板发我</p></div>
 </div>
 
@@ -57,10 +57,9 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 23 步：用节点点击打发送键
- * 依据：v22 报告里聊天页右侧 1062,1384 是个 clickable 节点（加号）。
- * 坐标手势被拦，但节点 click() 有效（「立即沟通」就是这么点成的）。
- * 这版全程不用坐标，只用节点增删判断界面变化。
+ * 手机自动投递 · 第 24 步：用节点点击打发送键（修好 bounds 取宽高）
+ * v23 报 TypeError: height 是 number 而非函数 —— bounds 的宽高在 AutoJs6 里是属性，
+ * 这版一律用 right-left / bottom-top 算，不调方法。
  */
 
 var PKG = "com.hpbr.bosszhipin";
@@ -69,6 +68,11 @@ var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与
 auto.waitFor();
 sleep(800);
 var 报告 = "";
+
+function 宽(b) { return b.right - b.left; }
+function 高(b) { return b.bottom - b.top; }
+function 心X(b) { return (b.left + b.right) / 2; }
+function 心Y(b) { return (b.top + b.bottom) / 2; }
 
 launchApp("BOSS直聘");
 sleep(4200);
@@ -80,82 +84,116 @@ if (!输入) {
     toastLog("没找到输入框");
     exit();
 }
-报告 += "输入框: " + 输入.bounds() + "\n";
+var ib = 输入.bounds();
+报告 += "输入框: " + ib.left + "," + ib.top + " " + 宽(ib) + "x" + 高(ib) + "\n";
 
-// 聊天页右侧那个可点小方块（空框时是加号，有字时是纸飞机）
 function 找右侧节点() {
-    var best = null;
+    var best = null, bestX = -1;
     packageName(PKG).clickable(true).find().forEach(function (n) {
         var b = n.bounds();
-        var cx = b.left + b.width() / 2, cy = b.top + b.height() / 2;
-        if (cx &gt; device.width * 0.87 &amp;&amp; b.width() &lt; 260 &amp;&amp; b.height() &lt; 260 &amp;&amp;
-            cy &gt; device.height() * 0.40 &amp;&amp; cy &lt; device.height() * 0.78) {
-            if (!best || cx &gt; (best.bounds().left + best.bounds().width() / 2)) best = n;
+        var w = 宽(b), h = 高(b);
+        if (w &lt;= 0 || h &lt;= 0) return;
+        var cx = 心X(b), cy = 心Y(b);
+        if (cx &gt; device.width * 0.87 &amp;&amp; w &lt; 260 &amp;&amp; h &lt; 260 &amp;&amp;
+            cy &gt; device.height * 0.40 &amp;&amp; cy &lt; device.height * 0.80) {
+            if (cx &gt; bestX) { bestX = cx; best = b; }
         }
     });
     return best;
 }
 
-function 面板开了() {
-    return textContains("语音通话").findOnce(900) != null;
-}
+function 面板开了() { return textContains("语音通话").findOnce(900) != null; }
+function 发出去了() { return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2000); }
 
-function 发出去了() {
-    return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2000);
-}
-
-var 键 = 找右侧节点();
-if (!键) {
+var kb = 找右侧节点();
+if (!kb) {
     setClip(报告 + "聊天页右侧没扫到可点节点");
     toastLog("右侧没节点");
     exit();
 }
-var kb = 键.bounds();
-报告 += "右侧节点 @" + (kb.left + kb.width() / 2) + "," + (kb.top + kb.height() / 2) + " " + kb.width() + "x" + kb.height() + "\n";
-报告 += "点前有面板: " + 面板开了() + "\n";
+报告 += "右侧节点 @" + 心X(kb) + "," + 心Y(kb) + " " + 宽(kb) + "x" + 高(kb) + "\n";
+报告 += "点前面板: " + 面板开了() + "\n";
 
-// 实验一：空框状态点它，看面板出不出来
+// 先收掉已开的面板
 if (面板开了()) {
-    键.click();
+    click(心X(kb), 心Y(kb));
     sleep(1200);
-    报告 += "先收掉已开面板: " + (!面板开了()) + "\n";
+    报告 += "收面板尝试后: " + 面板开了() + "\n";
 }
 
-键.click();
-sleep(1300);
-var 开了 = 面板开了();
-报告 += "实验：点右侧节点 → 面板出现 " + 开了 + "\n";
-
-if (开了) {
-    // 点中加号了，同位置再点一下收回（此时图标变 ×）
-    var 关 = 找右侧节点();
-    if (关) { 关.click(); sleep(1300); }
-    报告 += "收回后还有面板: " + 面板开了() + "\n";
+// 实验一：点这个节点，看面板出不出来（证明节点点击对该位置有效）
+var 点成功 = false;
+text("介绍自己回复率更高哦~").findOnce(800);
+var 目标 = textContains("介绍自己").findOnce(600);
+if (目标) {
+    var q = 目标;
+    for (var i = 0; i &lt; 6 &amp;&amp; q &amp;&amp; !q.clickable(); i++) q = q.parent();
+}
+// 用节点树里的无文字可点节点点击
+var 节点 = null;
+packageName(PKG).clickable(true).find().forEach(function (n) {
+    var b = n.bounds();
+    var w = 宽(b), h = 高(b);
+    if (w &lt;= 0 || h &lt;= 0) return;
+    if (心X(b) &gt; device.width * 0.87 &amp;&amp; w &lt; 260 &amp;&amp; h &lt; 260 &amp;&amp;
+        心Y(b) &gt; device.height * 0.40 &amp;&amp; 心Y(b) &lt; device.height * 0.80) {
+        if (!节点 || 心X(b) &gt; 心X(节点.bounds())) 节点 = n;
+    }
+});
+if (节点) {
+    节点.click();
+    sleep(1300);
+    点成功 = 面板开了();
+    报告 += "实验：节点 click → 面板出现 " + 点成功 + "\n";
+    if (点成功) {
+        // 再点收面板
+        var 再 = null;
+        packageName(PKG).clickable(true).find().forEach(function (n) {
+            var b = n.bounds();
+            var w = 宽(b), h = 高(b);
+            if (w &lt;= 0 || h &lt;= 0) return;
+            if (心X(b) &gt; device.width * 0.87 &amp;&amp; w &lt; 260 &amp;&amp; h &lt; 260 &amp;&amp;
+                心Y(b) &gt; device.height * 0.40 &amp;&amp; 心Y(b) &lt; device.height * 0.80) {
+                if (!再 || 心X(b) &gt; 心X(再.bounds())) 再 = n;
+            }
+        });
+        if (再) { 再.click(); sleep(1300); }
+    }
 } else {
-    报告 += "没出现面板，可能是纸飞机状态或节点不可点\n";
+    报告 += "没拿到可点节点\n";
 }
+报告 += "收回后还有面板: " + 面板开了() + "\n";
 
 // 填话术
 输入.click();
 sleep(900);
 try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
 sleep(2200);
-报告 += "话术已填入，准备点发送位\n";
+报告 += "话术已填入\n";
 
-// 实验二：填完再找同位置节点点下去
+// 实验二：填完再点同一位置
 var 已发 = false;
 for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
-    var 新 = 找右侧节点();
-    if (!新) { 报告 += "第" + r + "次没扫到右侧节点\n"; break; }
-    var nb = 新.bounds();
-    报告 += "第" + r + "次节点 @" + (nb.left + nb.width() / 2) + "," + (nb.top + nb.height() / 2);
-    新.click();
+    var 位 = 找右侧节点();
+    if (!位) { 报告 += "第" + r + "次没扫到右侧节点\n"; break; }
+    // 优先节点点击，失败再退化到坐标（坐标大概率被拦，作对照）
+    var n2 = null;
+    packageName(PKG).clickable(true).find().forEach(function (n) {
+        var b = n.bounds();
+        var w = 宽(b), h = 高(b);
+        if (w &lt;= 0 || h &lt;= 0) return;
+        if (心X(b) &gt; device.width * 0.87 &amp;&amp; w &lt; 260 &amp;&amp; h &lt; 260 &amp;&amp;
+            心Y(b) &gt; device.height * 0.40 &amp;&amp; 心Y(b) &lt; device.height * 0.80) {
+            if (!n2 || 心X(b) &gt; 心X(n2.bounds())) n2 = n;
+        }
+    });
+    if (n2) { n2.click(); } else { click(心X(位), 心Y(位)); }
     sleep(2100);
     已发 = 发出去了();
-    报告 += " → 发出: " + 已发 + "\n";
+    报告 += "第" + r + "次点发送位 @" + 心X(位) + "," + 心Y(位) + " → 发出: " + 已发 + "\n";
     if (!已发 &amp;&amp; 面板开了()) {
-        var 收 = 找右侧节点();
-        if (收) { 收.click(); sleep(1200); }
+        var 收2 = 找右侧节点();
+        if (收2) { click(心X(收2), 心Y(收2)); sleep(1200); }
         报告 += "  面板又开了，已收起\n";
     }
 }
@@ -166,10 +204,10 @@ toastLog(已发 ? "发出去了" : "没发出去");
 </pre>
 </div>
 
-<div class="foot">这版是两个实验，报告能直接看出节点点不点得动</div>
+<div class="foot">报告里会写清节点点击有没有效</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 23 步：用节点点击打发送键\n * 依据：v22 报告里聊天页右侧 1062,1384 是个 clickable 节点（加号）。\n * 坐标手势被拦，但节点 click() 有效（「立即沟通」就是这么点成的）。\n * 这版全程不用坐标，只用节点增删判断界面变化。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nlaunchApp(\"BOSS直聘\");\nsleep(4200);\n报告 += \"包名: \" + currentPackage() + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(报告 + \"没找到输入框，先手动进到孙先生聊天页再跑\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n报告 += \"输入框: \" + 输入.bounds() + \"\\n\";\n\n// 聊天页右侧那个可点小方块（空框时是加号，有字时是纸飞机）\nfunction 找右侧节点() {\n    var best = null;\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var cx = b.left + b.width() / 2, cy = b.top + b.height() / 2;\n        if (cx > device.width * 0.87 && b.width() < 260 && b.height() < 260 &&\n            cy > device.height() * 0.40 && cy < device.height() * 0.78) {\n            if (!best || cx > (best.bounds().left + best.bounds().width() / 2)) best = n;\n        }\n    });\n    return best;\n}\n\nfunction 面板开了() {\n    return textContains(\"语音通话\").findOnce(900) != null;\n}\n\nfunction 发出去了() {\n    return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000);\n}\n\nvar 键 = 找右侧节点();\nif (!键) {\n    setClip(报告 + \"聊天页右侧没扫到可点节点\");\n    toastLog(\"右侧没节点\");\n    exit();\n}\nvar kb = 键.bounds();\n报告 += \"右侧节点 @\" + (kb.left + kb.width() / 2) + \",\" + (kb.top + kb.height() / 2) + \" \" + kb.width() + \"x\" + kb.height() + \"\\n\";\n报告 += \"点前有面板: \" + 面板开了() + \"\\n\";\n\n// 实验一：空框状态点它，看面板出不出来\nif (面板开了()) {\n    键.click();\n    sleep(1200);\n    报告 += \"先收掉已开面板: \" + (!面板开了()) + \"\\n\";\n}\n\n键.click();\nsleep(1300);\nvar 开了 = 面板开了();\n报告 += \"实验：点右侧节点 → 面板出现 \" + 开了 + \"\\n\";\n\nif (开了) {\n    // 点中加号了，同位置再点一下收回（此时图标变 ×）\n    var 关 = 找右侧节点();\n    if (关) { 关.click(); sleep(1300); }\n    报告 += \"收回后还有面板: \" + 面板开了() + \"\\n\";\n} else {\n    报告 += \"没出现面板，可能是纸飞机状态或节点不可点\\n\";\n}\n\n// 填话术\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2200);\n报告 += \"话术已填入，准备点发送位\\n\";\n\n// 实验二：填完再找同位置节点点下去\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    var 新 = 找右侧节点();\n    if (!新) { 报告 += \"第\" + r + \"次没扫到右侧节点\\n\"; break; }\n    var nb = 新.bounds();\n    报告 += \"第\" + r + \"次节点 @\" + (nb.left + nb.width() / 2) + \",\" + (nb.top + nb.height() / 2);\n    新.click();\n    sleep(2100);\n    已发 = 发出去了();\n    报告 += \" → 发出: \" + 已发 + \"\\n\";\n    if (!已发 && 面板开了()) {\n        var 收 = 找右侧节点();\n        if (收) { 收.click(); sleep(1200); }\n        报告 += \"  面板又开了，已收起\\n\";\n    }\n}\n\nsleep(1000);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 24 步：用节点点击打发送键（修好 bounds 取宽高）\n * v23 报 TypeError: height 是 number 而非函数 —— bounds 的宽高在 AutoJs6 里是属性，\n * 这版一律用 right-left / bottom-top 算，不调方法。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\nlaunchApp(\"BOSS直聘\");\nsleep(4200);\n报告 += \"包名: \" + currentPackage() + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(报告 + \"没找到输入框，先手动进到孙先生聊天页再跑\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\nvar ib = 输入.bounds();\n报告 += \"输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\nfunction 找右侧节点() {\n    var best = null, bestX = -1;\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w <= 0 || h <= 0) return;\n        var cx = 心X(b), cy = 心Y(b);\n        if (cx > device.width * 0.87 && w < 260 && h < 260 &&\n            cy > device.height * 0.40 && cy < device.height * 0.80) {\n            if (cx > bestX) { bestX = cx; best = b; }\n        }\n    });\n    return best;\n}\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\nvar kb = 找右侧节点();\nif (!kb) {\n    setClip(报告 + \"聊天页右侧没扫到可点节点\");\n    toastLog(\"右侧没节点\");\n    exit();\n}\n报告 += \"右侧节点 @\" + 心X(kb) + \",\" + 心Y(kb) + \" \" + 宽(kb) + \"x\" + 高(kb) + \"\\n\";\n报告 += \"点前面板: \" + 面板开了() + \"\\n\";\n\n// 先收掉已开的面板\nif (面板开了()) {\n    click(心X(kb), 心Y(kb));\n    sleep(1200);\n    报告 += \"收面板尝试后: \" + 面板开了() + \"\\n\";\n}\n\n// 实验一：点这个节点，看面板出不出来（证明节点点击对该位置有效）\nvar 点成功 = false;\ntext(\"介绍自己回复率更高哦~\").findOnce(800);\nvar 目标 = textContains(\"介绍自己\").findOnce(600);\nif (目标) {\n    var q = 目标;\n    for (var i = 0; i < 6 && q && !q.clickable(); i++) q = q.parent();\n}\n// 用节点树里的无文字可点节点点击\nvar 节点 = null;\npackageName(PKG).clickable(true).find().forEach(function (n) {\n    var b = n.bounds();\n    var w = 宽(b), h = 高(b);\n    if (w <= 0 || h <= 0) return;\n    if (心X(b) > device.width * 0.87 && w < 260 && h < 260 &&\n        心Y(b) > device.height * 0.40 && 心Y(b) < device.height * 0.80) {\n        if (!节点 || 心X(b) > 心X(节点.bounds())) 节点 = n;\n    }\n});\nif (节点) {\n    节点.click();\n    sleep(1300);\n    点成功 = 面板开了();\n    报告 += \"实验：节点 click → 面板出现 \" + 点成功 + \"\\n\";\n    if (点成功) {\n        // 再点收面板\n        var 再 = null;\n        packageName(PKG).clickable(true).find().forEach(function (n) {\n            var b = n.bounds();\n            var w = 宽(b), h = 高(b);\n            if (w <= 0 || h <= 0) return;\n            if (心X(b) > device.width * 0.87 && w < 260 && h < 260 &&\n                心Y(b) > device.height * 0.40 && 心Y(b) < device.height * 0.80) {\n                if (!再 || 心X(b) > 心X(再.bounds())) 再 = n;\n            }\n        });\n        if (再) { 再.click(); sleep(1300); }\n    }\n} else {\n    报告 += \"没拿到可点节点\\n\";\n}\n报告 += \"收回后还有面板: \" + 面板开了() + \"\\n\";\n\n// 填话术\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2200);\n报告 += \"话术已填入\\n\";\n\n// 实验二：填完再点同一位置\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    var 位 = 找右侧节点();\n    if (!位) { 报告 += \"第\" + r + \"次没扫到右侧节点\\n\"; break; }\n    // 优先节点点击，失败再退化到坐标（坐标大概率被拦，作对照）\n    var n2 = null;\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w <= 0 || h <= 0) return;\n        if (心X(b) > device.width * 0.87 && w < 260 && h < 260 &&\n            心Y(b) > device.height * 0.40 && 心Y(b) < device.height * 0.80) {\n            if (!n2 || 心X(b) > 心X(n2.bounds())) n2 = n;\n        }\n    });\n    if (n2) { n2.click(); } else { click(心X(位), 心Y(位)); }\n    sleep(2100);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次点发送位 @\" + 心X(位) + \",\" + 心Y(位) + \" → 发出: \" + 已发 + \"\\n\";\n    if (!已发 && 面板开了()) {\n        var 收2 = 找右侧节点();\n        if (收2) { click(心X(收2), 心Y(收2)); sleep(1200); }\n        报告 += \"  面板又开了，已收起\\n\";\n    }\n}\n\nsleep(1000);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
