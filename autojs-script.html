@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 19 步 Shizuku 点击</title>
+<title>手机自动投递 · 第 20 步 找打招呼语入口</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,136 +39,99 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 19 步</h1>
-<div class="sub">Shizuku 授权后，用系统 input tap 真点。</div>
+<h1>手机自动投递 · 第 20 步</h1>
+<div class="sub">改 BOSS 默认招呼语，点沟通就自动带话术。</div>
 
-<div class="warn">先装 Shizuku 并启动，回到 AutoJs6 里给它授权，再来跑这个。脚本第一步就自检 shell 权限，没权限会直接喊你去授权。</div>
+<div class="warn">这版不走发送键。BOSS 点「立即沟通」会自动发一条预设招呼语（第一次投递时已实测「送达」），把那条预设改成杜哥的话术，等于每次点沟通就自动投递。</div>
 
 <div class="card">
-<div class="step"><div class="n">1</div><p>点下面按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>19.js</b>，粘贴，保存</p></div>
-<div class="step"><div class="n">3</div><p>停在孙先生聊天页，按 Home 退出</p></div>
-<div class="step"><div class="n">4</div><p>跑 19.js，看它第一步的自检码</p></div>
+<div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>20.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>直接运行，它会自己退回首页</p></div>
+<div class="step"><div class="n">4</div><p>把剪贴板内容发我</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
 <div class="tip" id="tip"></div>
 
 <div class="card">
-<div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
+<div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 19 步：走 Shizuku 的 input tap，真正点一下屏幕
+ * 手机自动投递 · 第 20 步：找「打招呼语」设置入口
+ * 思路：BOSS 点「立即沟通」会自动发一条预设招呼语（首投已验证送达），
+ * 把那条预设改成杜哥的话术，就等于自动投递，完全不需要点发送键。
  */
-
-var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？";
 
 auto.waitFor();
 sleep(800);
-
 var 报告 = "";
-
-// 0) shell 权限自检
-var 自检 = null;
-try {
-    自检 = shell("echo ok", true);
-    报告 += "shell 自检: code=" + 自检.code + " out=" + (自检.result || "") + "\n";
-} catch (e) {
-    报告 += "shell 异常: " + e + "\n";
-}
-if (!自检 || 自检.code != 0) {
-    setClip(报告 + "shell 没权限，先去 Shizuku 里给 AutoJs6 授权，再回来跑这个");
-    toastLog("shell 没权限");
-    exit();
-}
 
 launchApp("BOSS直聘");
 sleep(4500);
 报告 += "包名: " + currentPackage() + "\n";
 
-var 输入 = className("android.widget.EditText").findOne(6000);
-if (!输入) {
-    setClip(报告 + "没找到输入框，先进到聊天页");
-    toastLog("没找到输入框");
-    exit();
+function 抓页(标签) {
+    var 文 = [], 钮 = [];
+    className("android.widget.TextView").find().forEach(function (n) {
+        var t = n.text();
+        if (t &amp;&amp; t.length) 文.push(t);
+    });
+    var 全 = classNameMatches(/.*/).find();
+    全.forEach(function (n) {
+        if (!n.clickable()) return;
+        var d = (n.desc() || "") + "|" + (n.text() || "");
+        var b = n.bounds();
+        if (b.width() &gt; 0 &amp;&amp; b.height() &gt; 0) 钮.push(d + "@" + (b.left + b.width() / 2) + "," + (b.top + b.height() / 2));
+    });
+    报告 += "\n===== " + 标签 + " =====\n";
+    报告 += "文字 " + 文.length + " 个: " + 文.join(" / ") + "\n";
+    报告 += "可点 " + 钮.length + " 个: " + 钮.slice(0, 40).join("  ") + "\n";
 }
 
-function 点(X, Y) {
-    shell("input tap " + X + " " + Y, true);
+// 1) 退到首页：底部有「职位」且在最下
+var 到家 = false;
+for (var i = 0; i &lt; 7; i++) {
+    var 职 = text("职位").findOnce(500);
+    if (职 &amp;&amp; 职.bounds().top &gt; device.height * 0.85) { 到家 = true; break; }
+    back();
+    sleep(1400);
 }
+报告 += (到家 ? "已回到首页\n" : "没能确认首页，硬着头皮往下走\n");
+抓页("首页");
 
-function 面板出现了() {
-    return textContains("语音通话").findOnce(1100) != null ||
-           textContains("语音").findOnce(1100) != null;
+// 2) 点底部「我的」
+var 我的 = text("我的").findOnce(800);
+if (我的 &amp;&amp; 我的.bounds().top &gt; device.height * 0.8) {
+    var p = 我的;
+    for (var k = 0; k &lt; 4 &amp;&amp; p &amp;&amp; !p.clickable(); k++) p = p.parent();
+    if (p) { p.click(); sleep(2200); 报告 += "点了「我的」\n"; }
+    else { 我的.click(); sleep(2200); 报告 += "点了「我的」（直接）\n"; }
+} else {
+    报告 += "底部没找到「我的」\n";
 }
+抓页("我的页");
 
-function 发出去了() {
-    return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2200);
+// 3) 我的页里找「设置」
+var 设 = textContains("设置").findOnce(600);
+if (设) {
+    var q = 设;
+    for (var j = 0; j &lt; 4 &amp;&amp; q &amp;&amp; !q.clickable(); j++) q = q.parent();
+    if (q) { q.click(); sleep(2200); 报告 += "点了「设置」\n"; }
 }
+抓页("设置页");
 
-输入.click();
-sleep(1200);
-
-var 框 = 输入.bounds();
-var X = device.width - 100;
-报告 += "输入框: " + 框.left + "," + 框.top + " " + 框.width() + "x" + 框.height() + "\n";
-报告 += "竖线 x=" + X + "\n";
-
-var 找到Y = -1, 试过 = 0;
-for (var y = 框.top - 80; y &lt;= 框.top + 框.height() + 80; y += 25) {
-    点(X, y);
-    sleep(1100);
-    试过++;
-    if (面板出现了()) {
-        找到Y = y;
-        报告 += "命中加号 @ " + X + "," + y + "  试了 " + 试过 + " 次\n";
-        break;
-    }
-    if (textContains("表情").exists()) { 输入.click(); sleep(800); }
-}
-
-if (找到Y &lt; 0) {
-    setClip(报告 + "input tap 也点不出加号，试了 " + 试过 + " 个点");
-    toastLog("input tap 也点不中");
-    exit();
-}
-
-点(X, 找到Y);
-sleep(1300);
-if (面板出现了()) { back(); sleep(1100); 报告 += "面板用返回收起\n"; }
-else 报告 += "面板已收起\n";
-
-输入.click();
-sleep(800);
-try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
-sleep(2200);
-报告 += "话术已填入\n";
-
-var 已发 = false;
-for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
-    点(X, 找到Y);
-    sleep(2200);
-    已发 = 发出去了();
-    报告 += "第" + r + "次 input tap 发送: " + 已发 + "\n";
-    if (!已发 &amp;&amp; 面板出现了()) {
-        点(X, 找到Y);
-        sleep(1200);
-        报告 += "  面板又开了，已收起\n";
-    }
-}
-
-sleep(1000);
 setClip(报告);
-toastLog(已发 ? "发出去了" : "还是没发出去");
+toastLog("页面结构已复制到剪贴板");
 </pre>
 </div>
 
-<div class="foot">自检码是 0 才继续往下跑</div>
+<div class="foot">这版只摸路，把设置入口坐标摸出来</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 19 步：走 Shizuku 的 input tap，真正点一下屏幕\n */\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar 报告 = \"\";\n\n// 0) shell 权限自检\nvar 自检 = null;\ntry {\n    自检 = shell(\"echo ok\", true);\n    报告 += \"shell 自检: code=\" + 自检.code + \" out=\" + (自检.result || \"\") + \"\\n\";\n} catch (e) {\n    报告 += \"shell 异常: \" + e + \"\\n\";\n}\nif (!自检 || 自检.code != 0) {\n    setClip(报告 + \"shell 没权限，先去 Shizuku 里给 AutoJs6 授权，再回来跑这个\");\n    toastLog(\"shell 没权限\");\n    exit();\n}\n\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\n报告 += \"包名: \" + currentPackage() + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(报告 + \"没找到输入框，先进到聊天页\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n\nfunction 点(X, Y) {\n    shell(\"input tap \" + X + \" \" + Y, true);\n}\n\nfunction 面板出现了() {\n    return textContains(\"语音通话\").findOnce(1100) != null ||\n           textContains(\"语音\").findOnce(1100) != null;\n}\n\nfunction 发出去了() {\n    return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2200);\n}\n\n输入.click();\nsleep(1200);\n\nvar 框 = 输入.bounds();\nvar X = device.width - 100;\n报告 += \"输入框: \" + 框.left + \",\" + 框.top + \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n报告 += \"竖线 x=\" + X + \"\\n\";\n\nvar 找到Y = -1, 试过 = 0;\nfor (var y = 框.top - 80; y <= 框.top + 框.height() + 80; y += 25) {\n    点(X, y);\n    sleep(1100);\n    试过++;\n    if (面板出现了()) {\n        找到Y = y;\n        报告 += \"命中加号 @ \" + X + \",\" + y + \"  试了 \" + 试过 + \" 次\\n\";\n        break;\n    }\n    if (textContains(\"表情\").exists()) { 输入.click(); sleep(800); }\n}\n\nif (找到Y < 0) {\n    setClip(报告 + \"input tap 也点不出加号，试了 \" + 试过 + \" 个点\");\n    toastLog(\"input tap 也点不中\");\n    exit();\n}\n\n点(X, 找到Y);\nsleep(1300);\nif (面板出现了()) { back(); sleep(1100); 报告 += \"面板用返回收起\\n\"; }\nelse 报告 += \"面板已收起\\n\";\n\n输入.click();\nsleep(800);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2200);\n报告 += \"话术已填入\\n\";\n\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    点(X, 找到Y);\n    sleep(2200);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次 input tap 发送: \" + 已发 + \"\\n\";\n    if (!已发 && 面板出现了()) {\n        点(X, 找到Y);\n        sleep(1200);\n        报告 += \"  面板又开了，已收起\\n\";\n    }\n}\n\nsleep(1000);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"还是没发出去\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 20 步：找「打招呼语」设置入口\n * 思路：BOSS 点「立即沟通」会自动发一条预设招呼语（首投已验证送达），\n * 把那条预设改成杜哥的话术，就等于自动投递，完全不需要点发送键。\n */\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\n报告 += \"包名: \" + currentPackage() + \"\\n\";\n\nfunction 抓页(标签) {\n    var 文 = [], 钮 = [];\n    className(\"android.widget.TextView\").find().forEach(function (n) {\n        var t = n.text();\n        if (t && t.length) 文.push(t);\n    });\n    var 全 = classNameMatches(/.*/).find();\n    全.forEach(function (n) {\n        if (!n.clickable()) return;\n        var d = (n.desc() || \"\") + \"|\" + (n.text() || \"\");\n        var b = n.bounds();\n        if (b.width() > 0 && b.height() > 0) 钮.push(d + \"@\" + (b.left + b.width() / 2) + \",\" + (b.top + b.height() / 2));\n    });\n    报告 += \"\\n===== \" + 标签 + \" =====\\n\";\n    报告 += \"文字 \" + 文.length + \" 个: \" + 文.join(\" / \") + \"\\n\";\n    报告 += \"可点 \" + 钮.length + \" 个: \" + 钮.slice(0, 40).join(\"  \") + \"\\n\";\n}\n\n// 1) 退到首页：底部有「职位」且在最下\nvar 到家 = false;\nfor (var i = 0; i < 7; i++) {\n    var 职 = text(\"职位\").findOnce(500);\n    if (职 && 职.bounds().top > device.height * 0.85) { 到家 = true; break; }\n    back();\n    sleep(1400);\n}\n报告 += (到家 ? \"已回到首页\\n\" : \"没能确认首页，硬着头皮往下走\\n\");\n抓页(\"首页\");\n\n// 2) 点底部「我的」\nvar 我的 = text(\"我的\").findOnce(800);\nif (我的 && 我的.bounds().top > device.height * 0.8) {\n    var p = 我的;\n    for (var k = 0; k < 4 && p && !p.clickable(); k++) p = p.parent();\n    if (p) { p.click(); sleep(2200); 报告 += \"点了「我的」\\n\"; }\n    else { 我的.click(); sleep(2200); 报告 += \"点了「我的」（直接）\\n\"; }\n} else {\n    报告 += \"底部没找到「我的」\\n\";\n}\n抓页(\"我的页\");\n\n// 3) 我的页里找「设置」\nvar 设 = textContains(\"设置\").findOnce(600);\nif (设) {\n    var q = 设;\n    for (var j = 0; j < 4 && q && !q.clickable(); j++) q = q.parent();\n    if (q) { q.click(); sleep(2200); 报告 += \"点了「设置」\\n\"; }\n}\n抓页(\"设置页\");\n\nsetClip(报告);\ntoastLog(\"页面结构已复制到剪贴板\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
-  tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
+  tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
   var b=document.getElementById('cp');
   if(ok){ b.classList.add('ok'); b.textContent='已复制'; }
 }
