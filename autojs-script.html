@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 扫 BOSS 界面</title>
+<title>手机自动投递 · 第 4 步 剪贴板版</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--soft:#eef3fe;}
@@ -37,14 +37,14 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 3 步</h1>
-<div class="sub">只读不点，扫 BOSS 真实界面。</div>
+<h1>手机自动投递 · 第 4 步</h1>
+<div class="sub">扫描结果直接进剪贴板，不用找文件。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本自动进剪贴板</b></p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 右下「文件」新建 <b>3.js</b> → 长按粘贴 → 保存</p></div>
-<div class="step"><div class="n">3</div><p>直接点运行。<b>脚本会自己打开 BOSS</b>，你不用管，让它跑完</p></div>
-<div class="step"><div class="n">4</div><p>跑完回 AutoJs6 文件页 → Download → 打开 <b>boss_scan.txt</b> → 全选复制发我</div></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 右下「文件」新建 <b>4.js</b> → 长按粘贴 → 保存</div></div>
+<div class="step"><div class="n">3</div><p>点运行，脚本会自己打开 BOSS，等它弹「已复制到剪贴板」</div></div>
+<div class="step"><div class="n">4</div><p>切回豆包，<b>长按输入框点粘贴</b>，把内容发我</div></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -53,8 +53,8 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 3 步：扫 BOSS 真实界面
- * 只读不点。脚本自动打开 BOSS 直聘并扫描，结果存到 Download/boss_scan.txt
+ * 手机自动投递 · 第 4 步：扫 BOSS 并把结果塞进剪贴板
+ * 只读不点。跑完直接切到豆包粘贴就行。
  */
 auto.waitFor();
 sleep(1000);
@@ -70,9 +70,6 @@ toastLog("打开结果: " + (目标 || "两个都没打开"));
 if (目标) {
     sleep(8000);
     var 包 = currentPackage();
-    toastLog("当前前台: " + 包);
-    sleep(1500);
-
     var 全部 = classNameMatches(/.+/).find();
     var 行 = [];
     for (var i = 0; i &lt; 全部.size(); i++) {
@@ -88,17 +85,22 @@ if (目标) {
 
     var 内容 = "包名: " + 包 + "\n节点总数: " + 全部.size() +
         "\n含文字: " + 行.length + "\n----\n" + 行.join("\n");
-    var 路径 = "/sdcard/Download/boss_scan.txt";
-    files.write(路径, 内容);
-    toastLog("已写入 boss_scan.txt，共 " + 行.length + " 条");
+
+    setClip(内容);
+    toastLog("已复制到剪贴板 " + 行.length + " 条");
+
+    try {
+        files.write("/sdcard/Download/boss_scan.txt", 内容);
+    } catch (e) {
+    }
 }
 </pre>
 </div>
 
-<div class="foot">跑完手机可能停在 BOSS 界面，按返回退出再回 AutoJs6 取文件</div>
+<div class="foot">注意：第 3 步复制脚本会先占一次剪贴板，第 4 步脚本会重新写入，别搞混顺序</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 3 步：扫 BOSS 真实界面\n * 只读不点。脚本自动打开 BOSS 直聘并扫描，结果存到 Download/boss_scan.txt\n */\nauto.waitFor();\nsleep(1000);\n\nvar 目标 = \"\";\nif (launchApp(\"BOSS直聘\")) {\n    目标 = \"BOSS直聘\";\n} else if (launchApp(\"猎聘\")) {\n    目标 = \"猎聘\";\n}\ntoastLog(\"打开结果: \" + (目标 || \"两个都没打开\"));\n\nif (目标) {\n    sleep(8000);\n    var 包 = currentPackage();\n    toastLog(\"当前前台: \" + 包);\n    sleep(1500);\n\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n\n    var 内容 = \"包名: \" + 包 + \"\\n节点总数: \" + 全部.size() +\n        \"\\n含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n    var 路径 = \"/sdcard/Download/boss_scan.txt\";\n    files.write(路径, 内容);\n    toastLog(\"已写入 boss_scan.txt，共 \" + 行.length + \" 条\");\n}\n";
+var CODE = "/**\n * 手机自动投递 · 第 4 步：扫 BOSS 并把结果塞进剪贴板\n * 只读不点。跑完直接切到豆包粘贴就行。\n */\nauto.waitFor();\nsleep(1000);\n\nvar 目标 = \"\";\nif (launchApp(\"BOSS直聘\")) {\n    目标 = \"BOSS直聘\";\n} else if (launchApp(\"猎聘\")) {\n    目标 = \"猎聘\";\n}\ntoastLog(\"打开结果: \" + (目标 || \"两个都没打开\"));\n\nif (目标) {\n    sleep(8000);\n    var 包 = currentPackage();\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n\n    var 内容 = \"包名: \" + 包 + \"\\n节点总数: \" + 全部.size() +\n        \"\\n含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n\n    setClip(内容);\n    toastLog(\"已复制到剪贴板 \" + 行.length + \" 条\");\n\n    try {\n        files.write(\"/sdcard/Download/boss_scan.txt\", 内容);\n    } catch (e) {\n    }\n}\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
