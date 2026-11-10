@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 25 步 进我的页</title>
+<title>手机自动投递 · 第 26 步 定位加号与纸飞机</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,16 +39,16 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 25 步</h1>
-<div class="sub">离开聊天页，点进「我的」。</div>
+<h1>手机自动投递 · 第 26 步</h1>
+<div class="sub">两种状态各列一份节点清单。</div>
 
-<div class="warn">发送键确认走不通：坐标手势被系统拦、那个位置的无障碍节点只是空壳，点它没任何反应。改 BOSS 默认招呼语是唯一零手指的路——点「立即沟通」会自动发出预设文本，把预设改成杜哥的话术就成。</div>
+<div class="warn">v22 那次 @1062,2286 确实点开了面板，说明节点点击对加号是有效的，是我 v24 扫错了位置。这版把「空框」和「填好字」两种状态的右侧节点全列出来，一眼看清加号跑哪去了。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>25.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>运行，不用管停在哪</p></div>
-<div class="step"><div class="n">4</div><p>把剪贴板发我</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>26.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>进孙先生聊天页，输入框清空</p></div>
+<div class="step"><div class="n">4</div><p>运行，把剪贴板发我</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -57,12 +57,14 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 25 步：点底部「我的」，摸设置里的打招呼语
- * 依据：v22 报告里四个页签文字齐全（职位/发现/消息/我的），但外层可点节点没文字；
- * v22 误点到的是聊天页键盘节点。这版先确保离开聊天页，再按文字节点向上找可点父节点。
+ * 手机自动投递 · 第 26 步：把加号在「空框」和「填好字」两种状态下的节点位置都列出来
+ * 依据：v22 在 @1062,2286 84x84 上节点 click 成功弹出了「图片/语音/语音通话」面板，
+ * 说明节点点击对加号有效；v24 扫到的是 1413 那个位置，点错了。
  */
 
 var PKG = "com.hpbr.bosszhipin";
+var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？";
+
 auto.waitFor();
 sleep(800);
 var 报告 = "";
@@ -71,94 +73,100 @@ function 宽(b) { return b.right - b.left; }
 function 高(b) { return b.bottom - b.top; }
 function 心X(b) { return (b.left + b.right) / 2; }
 function 心Y(b) { return (b.top + b.bottom) / 2; }
-function 在BOSS() { return currentPackage() === PKG; }
 
-function 回BOSS() {
-    for (var i = 0; i &lt; 3 &amp;&amp; !在BOSS(); i++) { app.launchPackage(PKG); sleep(2600); }
-    return 在BOSS();
-}
+launchApp("BOSS直聘");
+sleep(4200);
+报告 += "包名: " + currentPackage() + "  屏幕 " + device.width + "x" + device.height + "\n";
 
-function 抓页(标签) {
-    if (!在BOSS()) { 报告 += "\n===== " + 标签 + " =====\n（不在 BOSS）\n"; return; }
-    var 文 = [], 钮 = [];
-    packageName(PKG).className("android.widget.TextView").find().forEach(function (n) {
-        var t = n.text();
-        if (t &amp;&amp; t.length) 文.push(t);
-    });
-    packageName(PKG).find().forEach(function (n) {
-        if (!n.clickable()) return;
+var 输入 = className("android.widget.EditText").findOne(6000);
+if (!输入) { setClip(报告 + "没找到输入框，先进孙先生聊天页"); toastLog("没输入框"); exit(); }
+var ib = 输入.bounds();
+报告 += "输入框: " + ib.left + "," + ib.top + " " + 宽(ib) + "x" + 高(ib) + "\n";
+
+function 面板开了() { return textContains("语音通话").findOnce(900) != null; }
+function 发出去了() { return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2000); }
+
+// 先把右侧所有小方块列出来
+function 右侧候选() {
+    var arr = [];
+    packageName(PKG).clickable(true).find().forEach(function (n) {
         var b = n.bounds();
-        if (宽(b) &gt; 0 &amp;&amp; 高(b) &gt; 0) 钮.push((n.desc() || "") + "|" + (n.text() || "") + "@" + 心X(b) + "," + 心Y(b));
+        var w = 宽(b), h = 高(b);
+        if (w &lt;= 0 || h &lt;= 0) return;
+        if (心X(b) &gt; device.width * 0.85 &amp;&amp; w &lt; 280 &amp;&amp; h &lt; 280) arr.push(n);
     });
-    报告 += "\n===== " + 标签 + " =====\n";
-    报告 += "文字 " + 文.length + ": " + 文.join(" / ") + "\n";
-    报告 += "可点 " + 钮.length + ": " + 钮.slice(0, 40).join("  ") + "\n";
+    return arr;
 }
 
-回BOSS();
-报告 += "启动后前台: " + currentPackage() + "\n";
-sleep(1600);
-
-// 若还停在聊天页（有输入框），先退出来
-for (var i = 0; i &lt; 3 &amp;&amp; className("android.widget.EditText").exists(); i++) {
-    报告 += "还在聊天页，按返回\n";
-    back();
-    sleep(1600);
-    回BOSS();
+function 列清单(标签) {
+    var arr = 右侧候选(), out = [];
+    arr.forEach(function (n) {
+        var b = n.bounds();
+        out.push((n.text() || n.desc() || "无字") + "@" + 心X(b) + "," + 心Y(b) + " " + 宽(b) + "x" + 高(b));
+    });
+    报告 += "\n" + 标签 + "：右侧候选 " + arr.length + " 个\n" + out.join("  ") + "\n";
+    return arr;
 }
-报告 += "输入框还在: " + className("android.widget.EditText").exists() + "\n";
 
-// 找底部四页签里「我的」的文字节点
-var 我的 = null;
-for (var t = 0; t &lt; 4; t++) {
-    var d = text("我的").findOnce(500);
-    if (d &amp;&amp; d.bounds().top &gt; device.height * 0.85) { 我的 = d; break; }
-    if (!d) { back(); sleep(1500); 回BOSS(); }
-}
-if (!我的) {
-    抓页("当前位置");
-    setClip(报告 + "\n没在底部找到「我的」");
-    toastLog("没找到我的");
-    exit();
-}
-var mb = 我的.bounds();
-报告 += "「我的」文字 @" + 心X(mb) + "," + 心Y(mb) + "\n";
+// 空框状态清单
+var 空框 = 列清单("空框状态");
+报告 += "空框时面板: " + 面板开了() + "\n";
 
-// 向上找可点父节点
-var q = 我的, 层 = 0;
-while (q &amp;&amp; !q.clickable() &amp;&amp; 层 &lt; 8) { q = q.parent(); 层++; }
-报告 += "向上找了 " + 层 + " 层，祖先可点: " + (q ? q.clickable() : false) + "\n";
-if (!q) q = 我的;
-q.click();
-sleep(2600);
-报告 += "点完前台: " + currentPackage() + "\n";
-抓页("点我的之后");
-
-// 在页面里找设置/打招呼
-var 候选 = ["设置", "打招呼", "隐私"];
-for (var c = 0; c &lt; 候选.length; c++) {
-    var n = textContains(候选[c]).findOnce(500);
-    if (n) {
-        var p = n, k = 0;
-        while (p &amp;&amp; !p.clickable() &amp;&amp; k &lt; 8) { p = p.parent(); k++; }
-        if (!p) p = n;
-        p.click();
-        sleep(2400);
-        报告 += "点了「" + 候选[c] + "」\n";
-        抓页("点" + 候选[c] + "之后");
-        break;
+// 挑最靠右那个点一下，看能不能弹面板
+var 最右 = null;
+空框.forEach(function (n) { if (!最右 || 心X(n.bounds()) &gt; 心X(最右.bounds())) 最右 = n; });
+if (最右) {
+    var rb = 最右.bounds();
+    报告 += "试最右 @ " + 心X(rb) + "," + 心Y(rb) + " → ";
+    最右.click();
+    sleep(1300);
+    var 开 = 面板开了();
+    报告 += "面板 " + 开 + "\n";
+    if (开) {
+        // 收掉面板
+        var now = 右侧候选(), mr = null;
+        now.forEach(function (n) { if (!mr || 心X(n.bounds()) &gt; 心X(mr.bounds())) mr = n; });
+        if (mr) { mr.click(); sleep(1300); }
+        报告 += "收面板后: " + 面板开了() + "\n";
     }
 }
 
+// 填话术
+输入.click();
+sleep(900);
+try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
+sleep(2400);
+var 新框 = 输入.bounds();
+报告 += "填字后输入框: " + 新框.left + "," + 新框.top + " " + 宽(新框) + "x" + 高(新框) + "\n";
+
+// 填字后清单
+var 填后 = 列清单("填字后状态");
+
+var 已发 = false;
+for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
+    var arr = 右侧候选();
+    var mr = null;
+    arr.forEach(function (n) { if (!mr || 心X(n.bounds()) &gt; 心X(mr.bounds())) mr = n; });
+    if (!mr) { 报告 += "第" + r + "次无候选\n"; break; }
+    var b2 = mr.bounds();
+    报告 += "第" + r + "次点最右 @" + 心X(b2) + "," + 心Y(b2) + " → ";
+    mr.click();
+    sleep(2100);
+    已发 = 发出去了();
+    报告 += "发出 " + 已发 + "\n";
+    if (!已发 &amp;&amp; 面板开了()) { 报告 += "  （面板开出来了）\n"; }
+}
+
+sleep(800);
 setClip(报告);
-toastLog("结构已复制到剪贴板");
+toastLog(已发 ? "发出去了" : "没发出去");
 </pre>
 </div>
 
-<div class="foot">底部页签是原生控件，点得动</div>
+<div class="foot">清单里带坐标，我照着定位</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 25 步：点底部「我的」，摸设置里的打招呼语\n * 依据：v22 报告里四个页签文字齐全（职位/发现/消息/我的），但外层可点节点没文字；\n * v22 误点到的是聊天页键盘节点。这版先确保离开聊天页，再按文字节点向上找可点父节点。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\nfunction 在BOSS() { return currentPackage() === PKG; }\n\nfunction 回BOSS() {\n    for (var i = 0; i < 3 && !在BOSS(); i++) { app.launchPackage(PKG); sleep(2600); }\n    return 在BOSS();\n}\n\nfunction 抓页(标签) {\n    if (!在BOSS()) { 报告 += \"\\n===== \" + 标签 + \" =====\\n（不在 BOSS）\\n\"; return; }\n    var 文 = [], 钮 = [];\n    packageName(PKG).className(\"android.widget.TextView\").find().forEach(function (n) {\n        var t = n.text();\n        if (t && t.length) 文.push(t);\n    });\n    packageName(PKG).find().forEach(function (n) {\n        if (!n.clickable()) return;\n        var b = n.bounds();\n        if (宽(b) > 0 && 高(b) > 0) 钮.push((n.desc() || \"\") + \"|\" + (n.text() || \"\") + \"@\" + 心X(b) + \",\" + 心Y(b));\n    });\n    报告 += \"\\n===== \" + 标签 + \" =====\\n\";\n    报告 += \"文字 \" + 文.length + \": \" + 文.join(\" / \") + \"\\n\";\n    报告 += \"可点 \" + 钮.length + \": \" + 钮.slice(0, 40).join(\"  \") + \"\\n\";\n}\n\n回BOSS();\n报告 += \"启动后前台: \" + currentPackage() + \"\\n\";\nsleep(1600);\n\n// 若还停在聊天页（有输入框），先退出来\nfor (var i = 0; i < 3 && className(\"android.widget.EditText\").exists(); i++) {\n    报告 += \"还在聊天页，按返回\\n\";\n    back();\n    sleep(1600);\n    回BOSS();\n}\n报告 += \"输入框还在: \" + className(\"android.widget.EditText\").exists() + \"\\n\";\n\n// 找底部四页签里「我的」的文字节点\nvar 我的 = null;\nfor (var t = 0; t < 4; t++) {\n    var d = text(\"我的\").findOnce(500);\n    if (d && d.bounds().top > device.height * 0.85) { 我的 = d; break; }\n    if (!d) { back(); sleep(1500); 回BOSS(); }\n}\nif (!我的) {\n    抓页(\"当前位置\");\n    setClip(报告 + \"\\n没在底部找到「我的」\");\n    toastLog(\"没找到我的\");\n    exit();\n}\nvar mb = 我的.bounds();\n报告 += \"「我的」文字 @\" + 心X(mb) + \",\" + 心Y(mb) + \"\\n\";\n\n// 向上找可点父节点\nvar q = 我的, 层 = 0;\nwhile (q && !q.clickable() && 层 < 8) { q = q.parent(); 层++; }\n报告 += \"向上找了 \" + 层 + \" 层，祖先可点: \" + (q ? q.clickable() : false) + \"\\n\";\nif (!q) q = 我的;\nq.click();\nsleep(2600);\n报告 += \"点完前台: \" + currentPackage() + \"\\n\";\n抓页(\"点我的之后\");\n\n// 在页面里找设置/打招呼\nvar 候选 = [\"设置\", \"打招呼\", \"隐私\"];\nfor (var c = 0; c < 候选.length; c++) {\n    var n = textContains(候选[c]).findOnce(500);\n    if (n) {\n        var p = n, k = 0;\n        while (p && !p.clickable() && k < 8) { p = p.parent(); k++; }\n        if (!p) p = n;\n        p.click();\n        sleep(2400);\n        报告 += \"点了「\" + 候选[c] + \"」\\n\";\n        抓页(\"点\" + 候选[c] + \"之后\");\n        break;\n    }\n}\n\nsetClip(报告);\ntoastLog(\"结构已复制到剪贴板\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 26 步：把加号在「空框」和「填好字」两种状态下的节点位置都列出来\n * 依据：v22 在 @1062,2286 84x84 上节点 click 成功弹出了「图片/语音/语音通话」面板，\n * 说明节点点击对加号有效；v24 扫到的是 1413 那个位置，点错了。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\nlaunchApp(\"BOSS直聘\");\nsleep(4200);\n报告 += \"包名: \" + currentPackage() + \"  屏幕 \" + device.width + \"x\" + device.height + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) { setClip(报告 + \"没找到输入框，先进孙先生聊天页\"); toastLog(\"没输入框\"); exit(); }\nvar ib = 输入.bounds();\n报告 += \"输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\n// 先把右侧所有小方块列出来\nfunction 右侧候选() {\n    var arr = [];\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w <= 0 || h <= 0) return;\n        if (心X(b) > device.width * 0.85 && w < 280 && h < 280) arr.push(n);\n    });\n    return arr;\n}\n\nfunction 列清单(标签) {\n    var arr = 右侧候选(), out = [];\n    arr.forEach(function (n) {\n        var b = n.bounds();\n        out.push((n.text() || n.desc() || \"无字\") + \"@\" + 心X(b) + \",\" + 心Y(b) + \" \" + 宽(b) + \"x\" + 高(b));\n    });\n    报告 += \"\\n\" + 标签 + \"：右侧候选 \" + arr.length + \" 个\\n\" + out.join(\"  \") + \"\\n\";\n    return arr;\n}\n\n// 空框状态清单\nvar 空框 = 列清单(\"空框状态\");\n报告 += \"空框时面板: \" + 面板开了() + \"\\n\";\n\n// 挑最靠右那个点一下，看能不能弹面板\nvar 最右 = null;\n空框.forEach(function (n) { if (!最右 || 心X(n.bounds()) > 心X(最右.bounds())) 最右 = n; });\nif (最右) {\n    var rb = 最右.bounds();\n    报告 += \"试最右 @ \" + 心X(rb) + \",\" + 心Y(rb) + \" → \";\n    最右.click();\n    sleep(1300);\n    var 开 = 面板开了();\n    报告 += \"面板 \" + 开 + \"\\n\";\n    if (开) {\n        // 收掉面板\n        var now = 右侧候选(), mr = null;\n        now.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n        if (mr) { mr.click(); sleep(1300); }\n        报告 += \"收面板后: \" + 面板开了() + \"\\n\";\n    }\n}\n\n// 填话术\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2400);\nvar 新框 = 输入.bounds();\n报告 += \"填字后输入框: \" + 新框.left + \",\" + 新框.top + \" \" + 宽(新框) + \"x\" + 高(新框) + \"\\n\";\n\n// 填字后清单\nvar 填后 = 列清单(\"填字后状态\");\n\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    var arr = 右侧候选();\n    var mr = null;\n    arr.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n    if (!mr) { 报告 += \"第\" + r + \"次无候选\\n\"; break; }\n    var b2 = mr.bounds();\n    报告 += \"第\" + r + \"次点最右 @\" + 心X(b2) + \",\" + 心Y(b2) + \" → \";\n    mr.click();\n    sleep(2100);\n    已发 = 发出去了();\n    报告 += \"发出 \" + 已发 + \"\\n\";\n    if (!已发 && 面板开了()) { 报告 += \"  （面板开出来了）\\n\"; }\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
