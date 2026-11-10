@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 14 步 认加号</title>
+<title>手机自动投递 · 第 15 步 回车发送</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,16 +39,16 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 14 步</h1>
-<div class="sub">先认加号，再点同位纸飞机。</div>
+<h1>手机自动投递 · 第 15 步</h1>
+<div class="sub">换回车键通道试发送。</div>
 
-<div class="warn">按你的思路来：清空后先扫出圆圈加号的坐标，填完话术就点这个坐标。位置一样，图标已变纸飞机。</div>
+<div class="warn">鼠标手势被系统拦了，这版完全不点屏幕，改试四种键盘通道：press enter、keyCode、IME 动作、shell keyevent。哪条灵就记哪条。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>14.js</b>，粘贴，保存</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>15.js</b>，粘贴，保存</p></div>
 <div class="step"><div class="n">3</div><p>停在孙先生聊天页，按 Home 退出</p></div>
-<div class="step"><div class="n">4</div><p>运行 14.js，等结果</p></div>
+<div class="step"><div class="n">4</div><p>运行 15.js，等结果</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -57,8 +57,8 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 14 步：先认加号，再点同位纸飞机
- * 空框时右侧是圆圈加号，有字同位置变纸飞机。先清空，扫出加号坐标，填字，再点同一坐标。
+ * 手机自动投递 · 第 15 步：改用回车键发送
+ * 坐标手势被系统拦了，试试键盘回车通道。
  */
 
 var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？";
@@ -87,86 +87,67 @@ function 发出去了() {
     return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2500);
 }
 
-// 扫右侧那个圆形按钮（加号/纸飞机），取最靠右的小节点
-function 找右侧按钮(框) {
-    var 全部 = classNameMatches(/.+/).find();
-    var 最佳 = null;
-    for (var i = 0; i &lt; 全部.size(); i++) {
-        var w = 全部.get(i);
-        var b = w.bounds();
-        if (b.width() &lt; 30 || b.width() &gt; 280) continue;
-        if (b.height() &lt; 30 || b.height() &gt; 280) continue;
-        if (b.centerX() &lt; device.width * 0.80) continue;
-        if (Math.abs(b.centerY() - 框.centerY()) &gt; 170) continue;
-        if (!最佳 || b.centerX() &gt; 最佳.centerX()) 最佳 = b;
-    }
-    return 最佳;
-}
-
-// 1) 清空
 输入.click();
-sleep(1000);
-try { 输入.setText(""); } catch (e) {}
-sleep(600);
-try { 输入.setText(""); } catch (e) {}
-sleep(1600);
-报告 += "已清空\n";
-
-var 框 = 输入.bounds();
-报告 += "输入框: " + 框.left + "," + 框.top + " " + 框.width() + "x" + 框.height() + "\n";
-
-// 2) 认加号
-var 钮 = 找右侧按钮(框);
-var 目标X, 目标Y;
-if (钮) {
-    目标X = 钮.centerX();
-    目标Y = 钮.centerY();
-    报告 += "扫到圆钮(加号): " + 目标X + "," + 目标Y + "  " + 钮.width() + "x" + 钮.height() + "\n";
-} else {
-    目标X = device.width - 100;
-    目标Y = 框.centerY();
-    报告 += "没扫到节点，用几何位置: " + 目标X + "," + 目标Y + "\n";
-}
-
-// 3) 填话术
+sleep(900);
 try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
 sleep(2200);
-报告 += "已填话术，准备点同位置\n";
+报告 += "话术已填入\n";
 
 var 已发 = false;
-for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
-    click(目标X, 目标Y);
-    sleep(2000);
+
+// 1) press enter
+try {
+    press("enter");
+    sleep(2400);
     已发 = 发出去了();
-    报告 += "第" + r + "次 click(" + 目标X + "," + 目标Y + "): " + 已发 + "\n";
-    if (已发) break;
-    try { swipe(目标X - 4, 目标Y - 4, 目标X + 4, 目标Y + 4, 80); } catch (e) {}
-    sleep(2000);
-    已发 = 发出去了();
-    报告 += "第" + r + "次 swipe: " + 已发 + "\n";
+    报告 += "press enter: " + 已发 + "\n";
+} catch (e) {
+    报告 += "press enter 异常: " + e + "\n";
 }
 
+// 2) keyCode 66
 if (!已发) {
-    var 笑X = device.width - 282, 笑Y = 框.centerY();
-    var 前 = classNameMatches(/.+/).find().size();
-    click(笑X, 笑Y);
-    sleep(1800);
-    var 后 = classNameMatches(/.+/).find().size();
-    报告 += "自检 点笑脸 节点 " + 前 + "→" + 后 + "\n";
-    报告 += (后 &gt; 前 + 10) ? "手势能传进 App\n" : "手势被忽略\n";
-    输入.click(); sleep(600);
+    try {
+        keyCode(66);
+        sleep(2400);
+        已发 = 发出去了();
+        报告 += "keyCode 66: " + 已发 + "\n";
+    } catch (e) { 报告 += "keyCode 异常: " + e + "\n"; }
 }
 
-sleep(800);
+// 3) 输入框 performAction 焦点 + IME 回车（Android 11+）
+if (!已发) {
+    try {
+        输入.performAction(1);
+        sleep(500);
+        输入.performAction(2097152);
+        sleep(2400);
+        已发 = 发出去了();
+        报告 += "IME ACTION: " + 已发 + "\n";
+    } catch (e) { 报告 += "IME 异常: " + e + "\n"; }
+}
+
+// 4) shell keyevent（有 root 才可用）
+if (!已发) {
+    try {
+        var r = shell("input keyevent 66", true);
+        报告 += "shell keyevent: " + r.code + " " + r.result + "\n";
+        sleep(2400);
+        已发 = 发出去了();
+        报告 += "shell 后: " + 已发 + "\n";
+    } catch (e) { 报告 += "shell 异常: " + e + "\n"; }
+}
+
+sleep(1000);
 setClip(报告);
-toastLog(已发 ? "发出去了" : "没发出去");
+toastLog(已发 ? "发出去了" : "回车也没发出去");
 </pre>
 </div>
 
-<div class="foot">发出去了聊天区会多一个绿气泡</div>
+<div class="foot">报告会逐条写四种通道成没成</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 14 步：先认加号，再点同位纸飞机\n * 空框时右侧是圆圈加号，有字同位置变纸飞机。先清空，扫出加号坐标，填字，再点同一坐标。\n */\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar 报告 = \"\";\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\n\nif (currentPackage() != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n    exit();\n}\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(\"没找到输入框\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n\nfunction 发出去了() {\n    return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2500);\n}\n\n// 扫右侧那个圆形按钮（加号/纸飞机），取最靠右的小节点\nfunction 找右侧按钮(框) {\n    var 全部 = classNameMatches(/.+/).find();\n    var 最佳 = null;\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var b = w.bounds();\n        if (b.width() < 30 || b.width() > 280) continue;\n        if (b.height() < 30 || b.height() > 280) continue;\n        if (b.centerX() < device.width * 0.80) continue;\n        if (Math.abs(b.centerY() - 框.centerY()) > 170) continue;\n        if (!最佳 || b.centerX() > 最佳.centerX()) 最佳 = b;\n    }\n    return 最佳;\n}\n\n// 1) 清空\n输入.click();\nsleep(1000);\ntry { 输入.setText(\"\"); } catch (e) {}\nsleep(600);\ntry { 输入.setText(\"\"); } catch (e) {}\nsleep(1600);\n报告 += \"已清空\\n\";\n\nvar 框 = 输入.bounds();\n报告 += \"输入框: \" + 框.left + \",\" + 框.top + \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n\n// 2) 认加号\nvar 钮 = 找右侧按钮(框);\nvar 目标X, 目标Y;\nif (钮) {\n    目标X = 钮.centerX();\n    目标Y = 钮.centerY();\n    报告 += \"扫到圆钮(加号): \" + 目标X + \",\" + 目标Y + \"  \" + 钮.width() + \"x\" + 钮.height() + \"\\n\";\n} else {\n    目标X = device.width - 100;\n    目标Y = 框.centerY();\n    报告 += \"没扫到节点，用几何位置: \" + 目标X + \",\" + 目标Y + \"\\n\";\n}\n\n// 3) 填话术\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2200);\n报告 += \"已填话术，准备点同位置\\n\";\n\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    click(目标X, 目标Y);\n    sleep(2000);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次 click(\" + 目标X + \",\" + 目标Y + \"): \" + 已发 + \"\\n\";\n    if (已发) break;\n    try { swipe(目标X - 4, 目标Y - 4, 目标X + 4, 目标Y + 4, 80); } catch (e) {}\n    sleep(2000);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次 swipe: \" + 已发 + \"\\n\";\n}\n\nif (!已发) {\n    var 笑X = device.width - 282, 笑Y = 框.centerY();\n    var 前 = classNameMatches(/.+/).find().size();\n    click(笑X, 笑Y);\n    sleep(1800);\n    var 后 = classNameMatches(/.+/).find().size();\n    报告 += \"自检 点笑脸 节点 \" + 前 + \"→\" + 后 + \"\\n\";\n    报告 += (后 > 前 + 10) ? \"手势能传进 App\\n\" : \"手势被忽略\\n\";\n    输入.click(); sleep(600);\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 15 步：改用回车键发送\n * 坐标手势被系统拦了，试试键盘回车通道。\n */\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar 报告 = \"\";\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\n\nif (currentPackage() != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n    exit();\n}\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(\"没找到输入框\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n\nfunction 发出去了() {\n    return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2500);\n}\n\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2200);\n报告 += \"话术已填入\\n\";\n\nvar 已发 = false;\n\n// 1) press enter\ntry {\n    press(\"enter\");\n    sleep(2400);\n    已发 = 发出去了();\n    报告 += \"press enter: \" + 已发 + \"\\n\";\n} catch (e) {\n    报告 += \"press enter 异常: \" + e + \"\\n\";\n}\n\n// 2) keyCode 66\nif (!已发) {\n    try {\n        keyCode(66);\n        sleep(2400);\n        已发 = 发出去了();\n        报告 += \"keyCode 66: \" + 已发 + \"\\n\";\n    } catch (e) { 报告 += \"keyCode 异常: \" + e + \"\\n\"; }\n}\n\n// 3) 输入框 performAction 焦点 + IME 回车（Android 11+）\nif (!已发) {\n    try {\n        输入.performAction(1);\n        sleep(500);\n        输入.performAction(2097152);\n        sleep(2400);\n        已发 = 发出去了();\n        报告 += \"IME ACTION: \" + 已发 + \"\\n\";\n    } catch (e) { 报告 += \"IME 异常: \" + e + \"\\n\"; }\n}\n\n// 4) shell keyevent（有 root 才可用）\nif (!已发) {\n    try {\n        var r = shell(\"input keyevent 66\", true);\n        报告 += \"shell keyevent: \" + r.code + \" \" + r.result + \"\\n\";\n        sleep(2400);\n        已发 = 发出去了();\n        报告 += \"shell 后: \" + 已发 + \"\\n\";\n    } catch (e) { 报告 += \"shell 异常: \" + e + \"\\n\"; }\n}\n\nsleep(1000);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"回车也没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
