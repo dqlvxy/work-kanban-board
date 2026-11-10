@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 21 步 摸我的页</title>
+<title>手机自动投递 · 第 22 步 认最右页签</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,15 +39,15 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 21 步</h1>
-<div class="sub">先确认在 BOSS 里，再摸「我的」页。</div>
+<h1>手机自动投递 · 第 22 步</h1>
+<div class="sub">按位置认页签，不靠文字。</div>
 
-<div class="warn">上一版退太多次，把 BOSS 退了，脚本跑到 AutoJs6 自己界面上瞎点。这版每步都校验前台是不是 BOSS，掉出去就拉回来。</div>
+<div class="warn">上一版两个 bug：一是那几个页签的可点节点文字是空的，按文字找不到；二是循环先检查后返回，最后一次返回完就到列表页却没再检查。这版改成认出最下面、最右边那个可点节点，就是「我的」。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>21.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>运行，不用管当前停在哪</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>22.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>运行，不用管停在哪</p></div>
 <div class="step"><div class="n">4</div><p>把剪贴板发我</p></div>
 </div>
 
@@ -57,9 +57,9 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 21 步：找到「我的」页签并摸清设置入口
- * 上一版教训：back 次数多了会把 BOSS 退掉，脚本跑到 AutoJs6 界面里乱点。
- * 这版每步都校验前台包名，一旦掉出 BOSS 立刻 launcher 拉回来。
+ * 手机自动投递 · 第 22 步：认最右页签（我的），摸清设置入口
+ * 上版教训：底部 4 个页签的 clickable 节点文字是空的，text("我的") 匹配不到；
+ * 另外循环时序错了，最后一次 back 完就到列表页，却没再检查一次。
  */
 
 var PKG = "com.hpbr.bosszhipin";
@@ -70,15 +70,27 @@ var 报告 = "";
 function 在BOSS() { return currentPackage() === PKG; }
 
 function 回BOSS() {
-    for (var i = 0; i &lt; 4 &amp;&amp; !在BOSS(); i++) {
+    for (var i = 0; i &lt; 3 &amp;&amp; !在BOSS(); i++) {
         app.launchPackage(PKG);
-        sleep(2800);
+        sleep(2600);
     }
     return 在BOSS();
 }
 
+// 底部最右页签（我的）节点：clickable、在最下、横扫最右
+function 找最右页签() {
+    var best = null;
+    packageName(PKG).clickable(true).find().forEach(function (n) {
+        var b = n.bounds();
+        if (b.top &gt; device.height * 0.80 &amp;&amp; b.width() &gt; 60 &amp;&amp; b.height() &gt; 60) {
+            if (!best || b.left &gt; best.bounds().left) best = n;
+        }
+    });
+    return best;
+}
+
 function 抓页(标签) {
-    if (!在BOSS()) { 报告 += "\n===== " + 标签 + " =====\n（不在 BOSS 前台，跳过）\n"; return; }
+    if (!在BOSS()) { 报告 += "\n===== " + 标签 + " =====\n（不在 BOSS）\n"; return; }
     var 文 = [], 钮 = [];
     packageName(PKG).className("android.widget.TextView").find().forEach(function (n) {
         var t = n.text();
@@ -86,9 +98,9 @@ function 抓页(标签) {
     });
     packageName(PKG).find().forEach(function (n) {
         if (!n.clickable()) return;
-        var d = (n.desc() || "") + "|" + (n.text() || "");
         var b = n.bounds();
-        if (b.width() &gt; 0 &amp;&amp; b.height() &gt; 0) 钮.push(d + "@" + (b.left + b.width() / 2) + "," + (b.top + b.height() / 2));
+        if (b.width() &gt; 0 &amp;&amp; b.height() &gt; 0)
+            钮.push((n.desc() || "") + "|" + (n.text() || "") + "@" + (b.left + b.width() / 2) + "," + (b.top + b.height() / 2));
     });
     报告 += "\n===== " + 标签 + " =====\n";
     报告 += "文字 " + 文.length + ": " + 文.join(" / ") + "\n";
@@ -96,52 +108,50 @@ function 抓页(标签) {
 }
 
 回BOSS();
-sleep(1500);
 报告 += "启动后前台: " + currentPackage() + "\n";
+sleep(1500);
 
-// 找底部「我的」页签：最多 back 4 次，每次校验包名
-var 找到我的 = false;
-for (var i = 0; i &lt; 4 &amp;&amp; !找到我的; i++) {
-    if (!回BOSS()) { 报告 += "第" + (i+1) + "轮拉不回 BOSS\n"; break; }
-    var 我 = text("我的").findOnce(600);
-    if (我 &amp;&amp; 我.bounds().top &gt; device.height * 0.82) { 找到我的 = true; 报告 += "底部见到「我的」页签\n"; break; }
-    报告 += "第" + (i+1) + "轮没见底部页签，按返回\n";
+// 先 back 再检查，最多 5 轮
+var 页签 = null;
+for (var i = 0; i &lt; 5; i++) {
+    页签 = 找最右页签();
+    if (页签) { 报告 += "第" + (i + 1) + "次检查见到底部页签\n"; break; }
+    报告 += "第" + (i + 1) + "次没见，按返回\n";
     back();
     sleep(1600);
-    报告 += "  返回后前台: " + currentPackage() + "\n";
+    回BOSS();
 }
 
-if (!找到我的) {
+if (!页签) {
     抓页("当前位置");
-    setClip(报告 + "\n没摸到底部「我的」页签");
-    toastLog("没摸到我的页签");
+    setClip(报告 + "\n五轮都没摸到底部页签");
+    toastLog("没摸到底部页签");
     exit();
 }
 
-var 我 = text("我的").findOnce(600);
-var p = 我;
-for (var k = 0; k &lt; 4 &amp;&amp; p &amp;&amp; !p.clickable(); k++) p = p.parent();
-if (!p) p = 我;
-p.click();
-sleep(2500);
-报告 += "点完「我的」前台: " + currentPackage() + "\n";
+var b = 页签.bounds();
+报告 += "最右页签 @ " + (b.left + b.width() / 2) + "," + (b.top + b.height() / 2) + " " + b.width() + "x" + b.height() + "\n";
+页签.click();
+sleep(2600);
+报告 += "点完前台: " + currentPackage() + "\n";
 抓页("我的页");
 
-// 我的页里找设置类入口
+// 我的页里找设置入口
 var 候选 = ["设置", "打招呼", "隐私"];
 for (var c = 0; c &lt; 候选.length; c++) {
-    var n = textContains(候选[c]).findOnce(400);
+    var n = textContains(候选[c]).findOnce(500);
     if (n) {
         var q = n;
-        for (var j = 0; j &lt; 4 &amp;&amp; q &amp;&amp; !q.clickable(); j++) q = q.parent();
+        for (var j = 0; j &lt; 5 &amp;&amp; q &amp;&amp; !q.clickable(); j++) q = q.parent();
         if (q) {
             q.click();
-            sleep(2200);
+            sleep(2400);
             报告 += "点了「" + 候选[c] + "」\n";
-            抓页("点了" + 候选[c] + "之后");
+            抓页("点" + 候选[c] + "之后");
             back();
-            sleep(1500);
+            sleep(1600);
             回BOSS();
+            抓页("回来的页面");
             break;
         }
     }
@@ -152,10 +162,10 @@ toastLog("结构已复制到剪贴板");
 </pre>
 </div>
 
-<div class="foot">这版只摸路，一轮就能把入口摸清</div>
+<div class="foot">这版该能进到「我的」页了</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 21 步：找到「我的」页签并摸清设置入口\n * 上一版教训：back 次数多了会把 BOSS 退掉，脚本跑到 AutoJs6 界面里乱点。\n * 这版每步都校验前台包名，一旦掉出 BOSS 立刻 launcher 拉回来。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 在BOSS() { return currentPackage() === PKG; }\n\nfunction 回BOSS() {\n    for (var i = 0; i < 4 && !在BOSS(); i++) {\n        app.launchPackage(PKG);\n        sleep(2800);\n    }\n    return 在BOSS();\n}\n\nfunction 抓页(标签) {\n    if (!在BOSS()) { 报告 += \"\\n===== \" + 标签 + \" =====\\n（不在 BOSS 前台，跳过）\\n\"; return; }\n    var 文 = [], 钮 = [];\n    packageName(PKG).className(\"android.widget.TextView\").find().forEach(function (n) {\n        var t = n.text();\n        if (t && t.length) 文.push(t);\n    });\n    packageName(PKG).find().forEach(function (n) {\n        if (!n.clickable()) return;\n        var d = (n.desc() || \"\") + \"|\" + (n.text() || \"\");\n        var b = n.bounds();\n        if (b.width() > 0 && b.height() > 0) 钮.push(d + \"@\" + (b.left + b.width() / 2) + \",\" + (b.top + b.height() / 2));\n    });\n    报告 += \"\\n===== \" + 标签 + \" =====\\n\";\n    报告 += \"文字 \" + 文.length + \": \" + 文.join(\" / \") + \"\\n\";\n    报告 += \"可点 \" + 钮.length + \": \" + 钮.slice(0, 45).join(\"  \") + \"\\n\";\n}\n\n回BOSS();\nsleep(1500);\n报告 += \"启动后前台: \" + currentPackage() + \"\\n\";\n\n// 找底部「我的」页签：最多 back 4 次，每次校验包名\nvar 找到我的 = false;\nfor (var i = 0; i < 4 && !找到我的; i++) {\n    if (!回BOSS()) { 报告 += \"第\" + (i+1) + \"轮拉不回 BOSS\\n\"; break; }\n    var 我 = text(\"我的\").findOnce(600);\n    if (我 && 我.bounds().top > device.height * 0.82) { 找到我的 = true; 报告 += \"底部见到「我的」页签\\n\"; break; }\n    报告 += \"第\" + (i+1) + \"轮没见底部页签，按返回\\n\";\n    back();\n    sleep(1600);\n    报告 += \"  返回后前台: \" + currentPackage() + \"\\n\";\n}\n\nif (!找到我的) {\n    抓页(\"当前位置\");\n    setClip(报告 + \"\\n没摸到底部「我的」页签\");\n    toastLog(\"没摸到我的页签\");\n    exit();\n}\n\nvar 我 = text(\"我的\").findOnce(600);\nvar p = 我;\nfor (var k = 0; k < 4 && p && !p.clickable(); k++) p = p.parent();\nif (!p) p = 我;\np.click();\nsleep(2500);\n报告 += \"点完「我的」前台: \" + currentPackage() + \"\\n\";\n抓页(\"我的页\");\n\n// 我的页里找设置类入口\nvar 候选 = [\"设置\", \"打招呼\", \"隐私\"];\nfor (var c = 0; c < 候选.length; c++) {\n    var n = textContains(候选[c]).findOnce(400);\n    if (n) {\n        var q = n;\n        for (var j = 0; j < 4 && q && !q.clickable(); j++) q = q.parent();\n        if (q) {\n            q.click();\n            sleep(2200);\n            报告 += \"点了「\" + 候选[c] + \"」\\n\";\n            抓页(\"点了\" + 候选[c] + \"之后\");\n            back();\n            sleep(1500);\n            回BOSS();\n            break;\n        }\n    }\n}\n\nsetClip(报告);\ntoastLog(\"结构已复制到剪贴板\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 22 步：认最右页签（我的），摸清设置入口\n * 上版教训：底部 4 个页签的 clickable 节点文字是空的，text(\"我的\") 匹配不到；\n * 另外循环时序错了，最后一次 back 完就到列表页，却没再检查一次。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 在BOSS() { return currentPackage() === PKG; }\n\nfunction 回BOSS() {\n    for (var i = 0; i < 3 && !在BOSS(); i++) {\n        app.launchPackage(PKG);\n        sleep(2600);\n    }\n    return 在BOSS();\n}\n\n// 底部最右页签（我的）节点：clickable、在最下、横扫最右\nfunction 找最右页签() {\n    var best = null;\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        if (b.top > device.height * 0.80 && b.width() > 60 && b.height() > 60) {\n            if (!best || b.left > best.bounds().left) best = n;\n        }\n    });\n    return best;\n}\n\nfunction 抓页(标签) {\n    if (!在BOSS()) { 报告 += \"\\n===== \" + 标签 + \" =====\\n（不在 BOSS）\\n\"; return; }\n    var 文 = [], 钮 = [];\n    packageName(PKG).className(\"android.widget.TextView\").find().forEach(function (n) {\n        var t = n.text();\n        if (t && t.length) 文.push(t);\n    });\n    packageName(PKG).find().forEach(function (n) {\n        if (!n.clickable()) return;\n        var b = n.bounds();\n        if (b.width() > 0 && b.height() > 0)\n            钮.push((n.desc() || \"\") + \"|\" + (n.text() || \"\") + \"@\" + (b.left + b.width() / 2) + \",\" + (b.top + b.height() / 2));\n    });\n    报告 += \"\\n===== \" + 标签 + \" =====\\n\";\n    报告 += \"文字 \" + 文.length + \": \" + 文.join(\" / \") + \"\\n\";\n    报告 += \"可点 \" + 钮.length + \": \" + 钮.slice(0, 45).join(\"  \") + \"\\n\";\n}\n\n回BOSS();\n报告 += \"启动后前台: \" + currentPackage() + \"\\n\";\nsleep(1500);\n\n// 先 back 再检查，最多 5 轮\nvar 页签 = null;\nfor (var i = 0; i < 5; i++) {\n    页签 = 找最右页签();\n    if (页签) { 报告 += \"第\" + (i + 1) + \"次检查见到底部页签\\n\"; break; }\n    报告 += \"第\" + (i + 1) + \"次没见，按返回\\n\";\n    back();\n    sleep(1600);\n    回BOSS();\n}\n\nif (!页签) {\n    抓页(\"当前位置\");\n    setClip(报告 + \"\\n五轮都没摸到底部页签\");\n    toastLog(\"没摸到底部页签\");\n    exit();\n}\n\nvar b = 页签.bounds();\n报告 += \"最右页签 @ \" + (b.left + b.width() / 2) + \",\" + (b.top + b.height() / 2) + \" \" + b.width() + \"x\" + b.height() + \"\\n\";\n页签.click();\nsleep(2600);\n报告 += \"点完前台: \" + currentPackage() + \"\\n\";\n抓页(\"我的页\");\n\n// 我的页里找设置入口\nvar 候选 = [\"设置\", \"打招呼\", \"隐私\"];\nfor (var c = 0; c < 候选.length; c++) {\n    var n = textContains(候选[c]).findOnce(500);\n    if (n) {\n        var q = n;\n        for (var j = 0; j < 5 && q && !q.clickable(); j++) q = q.parent();\n        if (q) {\n            q.click();\n            sleep(2400);\n            报告 += \"点了「\" + 候选[c] + \"」\\n\";\n            抓页(\"点\" + 候选[c] + \"之后\");\n            back();\n            sleep(1600);\n            回BOSS();\n            抓页(\"回来的页面\");\n            break;\n        }\n    }\n}\n\nsetClip(报告);\ntoastLog(\"结构已复制到剪贴板\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
