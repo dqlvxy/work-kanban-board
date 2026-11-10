@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>杜全龙 · 工作看板</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#fff; --line:#e6eaf0; --text:#14181f; --muted:#77808f;
+    --blue:#2369aa; --blue-soft:#e9f1f9; --green:#4f8f1f; --green-soft:#eef6e6;
+    --amber:#b8791a; --amber-soft:#fdf4e4; --red:#c0392b;
+    --chip:#f1f4f8; --chip-txt:#4d5462; --track:#eef1f6; --soft2:#fafbfd;
+    --desc:#2c333d; --dim:#a2aab8; --chev:#c3cad6; --cbbd:#cfd6e0;
+    --donebg:#f6fbf1; --donebd:#d6e8c4;
+    --mg:#3d6f18; --ma:#8a5c11; --mb:#1c5183; --why:#39404b; --info-p:#3d4450;
+    --tabh:82px;
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 6px 18px rgba(16,24,40,.06);
+    /* 玻璃顶栏 / 底栏 */
+    --hb-bg:rgba(255,255,255,.82);
+    --nav-bg:linear-gradient(135deg,rgba(255,255,255,.80) 0%,rgba(255,255,255,.58) 45%,rgba(255,255,255,.44) 72%,rgba(255,255,255,.68) 100%),rgba(240,245,255,.60);
+    --nav-bd:rgba(255,255,255,.92);
+    --nav-sh:inset 0 1px 0 rgba(255,255,255,1),inset 0 -1px 0 rgba(255,255,255,.5),inset 0 -8px 20px rgba(60,90,150,.10),0 10px 28px rgba(30,50,110,.20),0 2px 8px rgba(30,50,110,.12),0 0 0 1px rgba(255,255,255,.42);
+    --nav-sub:#8b95a6;
+    --nav-blob-op:.42; --nav-blob-blend:normal;
+    --glare:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.18) 30%,rgba(255,255,255,.9) 50%,rgba(255,255,255,.18) 70%,transparent 100%);
+  }
+  [data-theme="dark"]{
+    --bg:#0b1020; --card:#141b2e; --line:rgba(255,255,255,.10); --text:#eaf0ff; --muted:#8b97b3;
+    --blue:#5b9bff; --blue-soft:rgba(91,155,255,.16); --green:#4fd18b; --green-soft:rgba(79,209,139,.14);
+    --amber:#ffb43d; --amber-soft:rgba(255,180,61,.14); --red:#ff6b6b;
+    --chip:rgba(255,255,255,.07); --chip-txt:#b9c3d8; --track:rgba(255,255,255,.09); --soft2:rgba(255,255,255,.045);
+    --desc:#c6cfe2; --dim:#6b7691; --chev:#4a5470; --cbbd:rgba(255,255,255,.24);
+    --donebg:rgba(79,209,139,.10); --donebd:rgba(79,209,139,.30);
+    --mg:#7ee08f; --ma:#ffc76b; --mb:#7cb6ff; --why:#aeb8cd; --info-p:#b7c1d6;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.38);
+    --hb-bg:rgba(11,16,32,.80);
+    --nav-bg:linear-gradient(135deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.06) 40%,rgba(255,255,255,.02) 70%,rgba(255,255,255,.09) 100%),rgba(16,22,42,.72);
+    --nav-bd:rgba(255,255,255,.20);
+    --nav-sh:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 -8px 20px rgba(0,0,0,.26),0 10px 30px rgba(0,0,0,.48),0 2px 8px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.05);
+    --nav-sub:#8b97b3;
+    --nav-blob-op:.55; --nav-blob-blend:screen;
+    --glare:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.05) 30%,rgba(255,255,255,.45) 50%,rgba(255,255,255,.05) 70%,transparent 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px;line-height:1.5;
+    padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom, 0px));
+    overflow-x:hidden;
+  }
+
+  /* ============ 顶部（玻璃顶栏 + 四个图标按钮） ============ */
+  .hbar{
+    position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;
+    background:linear-gradient(180deg,var(--hb-bg) 60%,transparent);
+    -webkit-backdrop-filter:blur(16px) saturate(1.4);
+    backdrop-filter:blur(16px) saturate(1.4);
+  }
+  .hbar h1{font-size:16.5px;font-weight:800;letter-spacing:.2px;display:flex;align-items:center;gap:7px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .hbar h1 em{font-style:normal;color:var(--blue)}
+  .hbar h1 .dot{width:8px;height:8px;border-radius:50%;flex:none;
+    background:linear-gradient(135deg,var(--blue),#38c8e8);box-shadow:0 0 10px var(--blue)}
+  .动效开 .hbar h1 .dot{animation:pulse 2.2s infinite}
+  @keyframes pulse{50%{opacity:.42;transform:scale(.8)}}
+
+  .hbtns{display:flex;gap:6px;flex:none}
+  .iconbtn{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);cursor:pointer;
+    background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16),var(--shadow);
+    transition:transform .15s ease,color .2s,border-color .2s,background .2s;font-family:inherit}
+  .iconbtn:active{transform:scale(.9)}
+  .iconbtn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .iconbtn.on{color:var(--blue);border-color:rgba(61,123,255,.55)}
+  .iconbtn.auto-on{color:var(--green);border-color:rgba(79,143,31,.5)}
+  .iconbtn.auto-on svg{animation:none}
+  .动效开 .iconbtn.auto-on svg{animation:autoSpin 2.4s ease-in-out infinite}
+  @keyframes autoSpin{0%,100%{transform:rotate(0)}50%{transform:rotate(36deg)}}
+  .spin{animation:rot 1s linear infinite}
+  @keyframes rot{to{transform:rotate(360deg)}}
+
+  /* 状态条 */
+  .statusbar{
+    margin:0 12px 8px;border-radius:13px;padding:8px 12px;display:flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--line);font-size:11.5px;color:var(--muted);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--shadow)
+  }
+  .statusbar .st-dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 8px var(--green);flex:none}
+  .statusbar .st-dot.busy{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 1s infinite}
+  .statusbar b{color:var(--text);font-weight:700}
+  .statusbar .sp{margin-left:auto;font-size:10.5px;color:var(--dim);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;flex:none}
+  .statusbar .sp b{color:var(--blue);font-variant-numeric:tabular-nums}
+
+  /* ============ 页面 ============ */
+  main{padding:12px 12px 20px}
+  .page{display:none;animation:fade .22s ease}
+  .page.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* 概览 */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:10px 10px 9px;box-shadow:var(--shadow);text-align:center}
+  .stat .v{font-size:19px;font-weight:700;letter-spacing:-.5px;line-height:1.15}
+  .stat .v small{font-size:11px;font-weight:500;color:var(--muted);margin-left:1px}
+  .stat .k{font-size:10.5px;color:var(--muted);margin-top:3px}
+  .stat.a .v{color:var(--green)}
+  .stat.b .v{color:var(--red)}
+
+  /* 城市卡（概览页） */
+  .city{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+    border-radius:15px;padding:14px 15px;margin-bottom:10px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden}
+  .city::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}
+  .city.sz::before{background:var(--green)}
+  .city.ak::before{background:var(--amber)}
+  .city .lb{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+    font-size:15px;font-weight:700;color:#fff;background:var(--blue);letter-spacing:.5px}
+  .city.sz .lb{background:var(--green)}
+  .city.ak .lb{background:var(--amber)}
+  .city .bd{flex:1;min-width:0}
+  .city .bd .n{font-size:15px;font-weight:700;line-height:1.35}
+  .city .bd .n i{font-style:normal;font-size:10px;font-weight:600;color:var(--muted);
+    background:var(--chip);color:var(--chip-txt);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:2px}
+  .city .bd .d{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.6}
+  .city .rt{flex:none;text-align:right}
+  .city .rt b{display:block;font-size:16px;color:var(--red);font-weight:700;letter-spacing:-.4px}
+  .city .rt span{font-size:10.5px;color:var(--muted)}
+  .city .go{flex:none;color:var(--chev);font-size:17px;margin-left:2px}
+
+  /* 筛选 */
+  .chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:none;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--muted);
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:7px 14px;transition:.15s
+  }
+  .chip.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+
+  /* 岗位卡 */
+  .job{
+    background:var(--card);border:1px solid var(--line);border-radius:15px;
+    padding:13px 14px;margin-bottom:10px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden
+  }
+  .job::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}
+  .job.g::before{background:var(--green)}
+  .job.a::before{background:var(--amber)}
+  .job .h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .job .co{font-size:15px;font-weight:700;letter-spacing:-.2px;line-height:1.35}
+  .job .co i{font-style:normal;font-size:10px;font-weight:600;color:var(--muted);
+    background:var(--chip);color:var(--chip-txt);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:2px}
+
+  /* 复制公司名小按钮 */
+  .cpbtn{display:inline-block;font-family:inherit;font-size:9.5px;font-weight:600;
+    line-height:1.75;color:var(--blue);background:var(--blue-soft);border:0;border-radius:8px;
+    padding:0 7px;margin-left:5px;vertical-align:1.5px;transition:.15s;white-space:nowrap}
+  .cpbtn:active{background:var(--blue-soft)}
+  .cpbtn.done{background:var(--green);color:#fff}
+  .job .role{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+  .job .pay{text-align:right;flex:none}
+  .job .pay b{font-size:16.5px;color:var(--red);font-weight:700;letter-spacing:-.4px;white-space:nowrap}
+  .job .pay i{display:block;font-style:normal;font-size:10.5px;color:var(--muted);margin-top:1px}
+
+  .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .m{font-size:10.5px;padding:2.5px 7px;border-radius:5px;background:var(--chip);color:var(--chip-txt)}
+  .m.g{background:var(--green-soft);color:var(--mg)}
+  .m.a{background:var(--amber-soft);color:var(--ma)}
+  .m.b{background:var(--blue-soft);color:var(--mb)}
+
+  .score{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .track{flex:1;height:5px;border-radius:3px;background:var(--track);overflow:hidden}
+  .fill{height:100%;border-radius:3px;background:var(--green);transition:width .5s ease}
+  .fill.b{background:var(--blue)} .fill.a{background:var(--amber)}
+  .score span{font-size:11px;font-weight:700;color:var(--muted);width:34px;text-align:right}
+
+  .toggle{width:100%;margin-top:9px;background:none;border:0;border-top:1px dashed var(--line);
+    padding:8px 0 0;font-family:inherit;font-size:11.5px;color:var(--blue);text-align:left;font-weight:500}
+  .why{display:none;font-size:12.5px;line-height:1.75;color:var(--why);
+    background:var(--soft2);border-radius:9px;padding:10px 12px;margin-top:8px}
+  .why.on{display:block}
+  .why b{color:var(--blue)}
+
+  /* 话术 */
+  .msg{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    margin-bottom:9px;box-shadow:var(--shadow);overflow:hidden}
+  .msg .bar{display:flex;justify-content:space-between;align-items:center;
+    padding:12px 14px;gap:10px}
+  .msg .bar .l{min-width:0}
+  .msg .bar .t{font-size:13.5px;font-weight:700;line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .msg .bar .s{font-size:11px;color:var(--muted);margin-top:2px}
+  .msg .bar .p{font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;flex:none}
+  .msg .body{display:none;padding:0 14px 13px}
+  .msg .body.on{display:block}
+  .msg .body p{font-size:12.8px;line-height:1.9;color:var(--desc);background:var(--soft2);
+    border:1px solid var(--track);border-radius:9px;padding:11px 12px}
+  .msg .btns{display:flex;gap:8px;margin-top:9px}
+  .msg .btns button, .msg .btns a{
+    flex:1;font-family:inherit;font-size:12.5px;font-weight:600;text-align:center;
+    padding:9px 0;border-radius:9px;border:0;text-decoration:none;line-height:1.4
+  }
+  .msg .btns button{background:var(--blue);color:#fff}
+  .msg .btns button.done{background:var(--green)}
+  .msg .btns a{background:var(--blue-soft);color:var(--blue)}
+
+  /* 岗位卡操作行：为什么匹配 + 话术 双胶囊平分宽度 */
+  .actrow{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:9px;
+    margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
+  .actrow .toggle{
+    width:100%;min-width:0;display:flex;align-items:center;justify-content:center;gap:4px;
+    margin-top:0;box-sizing:border-box;overflow:hidden;
+    font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.5px;
+    color:var(--blue);background:var(--blue-soft);
+    border:1.5px solid var(--blue);border-radius:999px;padding:7px 0;
+    transition:.15s}
+  .actrow .toggle:active{transform:scale(.96)}
+  .msbtn{
+    width:100%;min-width:0;justify-content:center;overflow:hidden;
+    font-family:inherit;font-size:12px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,var(--blue),#5a3fd6);
+    border:0;border-radius:999px;padding:8px 12px 8px 12px;
+    display:flex;align-items:center;gap:4px;
+    box-shadow:0 3px 10px rgba(35,105,170,.32);
+    transition:.15s;letter-spacing:.5px}
+  .msbtn svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .msbtn:active{transform:scale(.92)}
+
+  /* 话术详情 · 底部弹层 */
+  .mask{position:fixed;inset:0;z-index:200;background:rgba(10,14,22,.45);
+    -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;transition:.25s}
+  .mask.on{opacity:1;pointer-events:auto}
+  .sheet{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;
+    background:var(--card);border-radius:20px 20px 0 0;
+    transform:translateY(104%);transition:transform .32s cubic-bezier(.32,.72,.28,1);
+    box-shadow:0 -8px 40px rgba(16,24,40,.22);
+    padding:6px 16px calc(env(safe-area-inset-bottom,0px) + 14px)}
+  .mask.on .sheet{transform:translateY(0)}
+  .sheet-grab{width:36px;height:4.5px;border-radius:3px;background:var(--cbbd);
+    margin:6px auto 10px}
+  .sheet-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:2px 2px 10px;border-bottom:1px solid var(--line)}
+  .sheet-hd .t{font-size:15px;font-weight:700;line-height:1.35}
+  .sheet-hd .s{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .sheet-hd .p{font-size:14px;font-weight:800;color:var(--red);white-space:nowrap;flex:none}
+  .sheet-bd{max-height:52vh;overflow-y:auto;padding:12px 2px 4px;
+    -webkit-overflow-scrolling:touch}
+  .sheet-bd p{font-size:13px;line-height:1.95;color:var(--desc);background:var(--soft2);
+    border:1px solid var(--track);border-radius:10px;padding:12px 13px;white-space:pre-wrap}
+  .sheet-btns{display:flex;gap:9px;padding-top:11px}
+  .sheet-btns button, .sheet-btns a{
+    flex:1;font-family:inherit;font-size:13.5px;font-weight:700;text-align:center;
+    padding:12px 0;border-radius:12px;border:0;text-decoration:none;
+    transition:.15s;display:block}
+  .sheet-btns button{background:linear-gradient(135deg,var(--blue),#5a3fd6);color:#fff;
+    box-shadow:0 3px 12px rgba(35,105,170,.3)}
+  .sheet-btns button.done{background:var(--green);box-shadow:none}
+  .sheet-btns a{background:var(--blue-soft);color:var(--blue)}
+
+  /* 打卡 */
+  .prog{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:14px 16px;margin-bottom:11px;box-shadow:var(--shadow)}
+  .prog .t{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .prog .t b{color:var(--text);font-size:14px}
+  .prog .track{height:7px}
+  .prog .fill{background:linear-gradient(90deg,#6aa832,#4f8f1f)}
+
+  .grouphd{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+    color:var(--muted);margin:14px 0 8px;padding-left:2px}
+  .grouphd:first-child{margin-top:0}
+  .grouphd::before{content:"";width:3px;height:11px;border-radius:2px;background:var(--blue)}
+  .grouphd.sz::before{background:var(--green)}
+  .grouphd.ak::before{background:var(--amber)}
+  .grouphd em{font-style:normal;font-weight:500;color:var(--dim)}
+
+  .ck{display:flex;align-items:center;gap:11px;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:8px;
+    box-shadow:var(--shadow);transition:.15s}
+  .ck.done{background:var(--donebg);border-color:var(--donebd)}
+  .ck .box{flex:none;width:22px;height:22px;border-radius:7px;border:1.8px solid var(--cbbd);
+    display:grid;place-items:center;transition:.15s}
+  .ck.done .box{background:var(--green);border-color:var(--green)}
+  .ck .box svg{opacity:0;transition:.15s}
+  .ck.done .box svg{opacity:1}
+  .ck .txt{flex:1;min-width:0}
+  .ck .txt .n{font-size:13.5px;font-weight:600;line-height:1.4}
+  .ck .txt .m2{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* 说明 */
+  .info{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:15px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+  .info h3{font-size:13.5px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .info h3::before{content:"";width:3px;height:12px;border-radius:2px;background:var(--blue)}
+  .info p{font-size:12.5px;line-height:1.85;color:var(--info-p)}
+  .info p + p{margin-top:7px}
+  .info b{color:var(--blue)}
+  .kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+  .kv:last-child{border-bottom:0}
+  .kv span{color:var(--muted)}
+  .kv b{color:var(--text);font-weight:600}
+
+  /* ============ 底部导航（玻璃胶囊 · 液态流动 · 扫光 · 果冻回弹） ============ */
+  .bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;justify-content:center;
+    padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 8px);
+    background:linear-gradient(180deg,transparent,var(--bg) 52%);
+    pointer-events:none}
+  .bnav-in{position:relative;display:flex;gap:1px;padding:5px;border-radius:24px;
+    width:100%;max-width:430px;pointer-events:auto;
+    overflow:hidden;isolation:isolate;touch-action:pan-y;
+    background:var(--nav-bg);
+    border:1px solid var(--nav-bd);
+    -webkit-backdrop-filter:blur(20px) saturate(1.5) brightness(1.04);
+    backdrop-filter:blur(20px) saturate(1.5) brightness(1.04);
+    box-shadow:var(--nav-sh)}
+  /* 顶部一道高光细线 */
+  .bnav-in::before{content:"";position:absolute;left:8%;right:8%;top:0;height:1.5px;z-index:3;
+    border-radius:999px;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.9) 18%,rgba(255,255,255,1) 50%,rgba(255,255,255,.9) 82%,transparent);
+    opacity:.75;filter:blur(.3px)}
+  /* 内部液态色斑流动 */
+  .bnav-in::after{content:"";position:absolute;inset:-40% -20%;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(closest-side ellipse at 22% 18%,rgba(120,180,255,.55),transparent 68%),
+      radial-gradient(closest-side ellipse at 78% 26%,rgba(190,140,255,.45),transparent 66%),
+      radial-gradient(closest-side ellipse at 55% 92%,rgba(80,220,230,.38),transparent 70%);
+    mix-blend-mode:var(--nav-blob-blend);opacity:var(--nav-blob-op);
+    animation:液态流动 11s ease-in-out infinite alternate}
+  @keyframes 液态流动{
+    0%{transform:translate3d(-3%,-2%,0) scale(1.02)}
+    50%{transform:translate3d(3%,2%,0) scale(1.06)}
+    100%{transform:translate3d(-2%,3%,0) scale(1.02)}
+  }
+  /* 周期性扫光 */
+  .bnav-glare{position:absolute;top:-60%;bottom:-60%;left:-30%;width:38%;z-index:2;pointer-events:none;
+    background:var(--glare);
+    transform:translateX(-120%) skewX(-14deg);filter:blur(3px);opacity:0;
+    animation:底栏扫光 7.5s cubic-bezier(.5,0,.3,1) infinite}
+  @keyframes 底栏扫光{
+    0%,62%{transform:translateX(-120%) skewX(-14deg);opacity:0}
+    68%{opacity:.9}
+    88%{transform:translateX(360%) skewX(-14deg);opacity:0}
+    100%{transform:translateX(360%) skewX(-14deg);opacity:0}
+  }
+  body:not(.动效开) .bnav-in::after,
+  body:not(.动效开) .bnav-glare{animation-play-state:paused}
+
+  /* 滑块胶囊 */
+  .bnav-cap{position:absolute;top:5px;bottom:5px;left:0;width:var(--w,0px);z-index:0;
+    border-radius:999px;pointer-events:none;overflow:hidden;
+    background:linear-gradient(135deg,rgba(90,150,255,.95),rgba(140,100,255,.9) 55%,rgba(90,150,255,.94));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.7),
+      inset 0 -6px 14px rgba(30,20,90,.30),
+      inset 0 0 0 1px rgba(255,255,255,.22),
+      0 4px 14px rgba(61,123,255,.45),
+      0 1px 3px rgba(61,123,255,.4);
+    transform:translateX(var(--x,0px)) scaleX(1);
+    transition:transform .52s cubic-bezier(.34,1.56,.64,1)}
+  .bnav-cap::before{content:"";position:absolute;left:6%;right:6%;top:0;height:42%;pointer-events:none;
+    background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 100%);
+    border-radius:999px 999px 40% 40%/999px 999px 60% 60%;opacity:.7}
+  .bnav-cap::after{content:"";position:absolute;left:10%;right:10%;bottom:0;height:26%;pointer-events:none;
+    background:linear-gradient(0deg,rgba(255,255,255,.28),transparent);border-radius:0 0 999px 999px;opacity:.6}
+  .bnav-cap.初始{transition:none}
+  @keyframes capStretch{0%{scale:1}35%{scale:1.22 1}70%{scale:.94 1}100%{scale:1}}
+  .bnav-cap.跳{animation:capStretch .52s cubic-bezier(.34,1.56,.64,1)}
+
+  /* 页签 */
+  .bnav-it{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:2px;padding:6px 0 4px;
+    border:none;background:transparent;color:var(--nav-sub);cursor:pointer;border-radius:14px;
+    font-family:inherit;font-size:9.5px;font-weight:600;letter-spacing:-.2px;
+    transition:color .3s ease}
+  .bnav-it svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.85;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .bnav-it span{white-space:nowrap;transform:scaleX(.94);transform-origin:center}
+  .bnav-it.on{color:#fff;font-weight:700}
+  .bnav-it.on svg{transform:scale(1.06);stroke-width:2.1}
+  .bnav-it .badge{position:absolute;top:3px;right:calc(50% - 16px);min-width:14px;height:14px;z-index:3;
+    border-radius:7px;background:var(--red);color:#fff;font-size:9px;font-weight:800;
+    display:grid;place-items:center;padding:0 3px;box-shadow:0 0 0 1.5px var(--card)}
+
+  @keyframes 果冻{
+    0%{transform:scale(1,1)}
+    26%{transform:scale(1.34,.72)}
+    46%{transform:scale(.84,1.2)}
+    64%{transform:scale(1.1,.93)}
+    82%{transform:scale(.97,1.03)}
+    100%{transform:scale(1,1)}
+  }
+  .bnav-it.jelly{animation:果冻 .52s cubic-bezier(.34,1.56,.64,1);will-change:transform;z-index:2}
+
+  @media (prefers-reduced-motion:reduce){
+    .bnav-cap,.bnav-cap.跳{transition:none;animation:none}
+    .bnav-it svg{transition:none}
+    .bnav-in::after,.bnav-glare{animation:none}
+    .bnav-glare{opacity:0}
+  }
+
+  /* 轻提示 */
+  #toast{position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 10px);
+    transform:translate(-50%,10px);z-index:200;background:rgba(20,26,40,.92);color:#fff;
+    font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:14px;
+    opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;white-space:nowrap;
+    box-shadow:0 10px 26px rgba(0,0,0,.28);max-width:86vw;overflow:hidden;text-overflow:ellipsis}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+
+  /* 小屏微调 */
+  @media (max-width:360px){
+    body{font-size:14px}
+    .job .co{font-size:14px}
+    .job .pay b{font-size:15px}
+    .stat .v{font-size:17px}
+    .bnav-it{font-size:9px}
+    .bnav-it svg{width:18px;height:18px}
+    .city .lb{width:40px;height:40px;font-size:13px}
+    .iconbtn{width:31px;height:31px;border-radius:10px}
+    .hbar h1{font-size:14.5px}
+  }
+  /* 大屏手机 / 折叠屏展开 */
+  @media (min-width:600px){
+    main{max-width:560px;margin:0 auto}
+    .hbar,.statusbar{max-width:560px;margin-left:auto;margin-right:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 顶部栏（四个图标按钮） ================= -->
+<header class="hbar">
+  <h1><span class="dot"></span>杜全龙 · <em>工作看板</em></h1>
+  <div class="hbtns">
+    <button class="iconbtn" id="themeBtn" title="切换主题" aria-label="切换主题"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+    <button class="iconbtn" id="dlBtn" title="下载到桌面" aria-label="下载到桌面"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+    <button class="iconbtn" id="refreshBtn" title="刷新数据" aria-label="刷新数据"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg></button>
+    <button class="iconbtn auto-on" id="autoBtn" title="自动刷新（每10分钟）" aria-label="自动刷新开关"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3.5 2"/></svg></button>
+  </div>
+</header>
+
+<div class="statusbar" id="statusbar">
+  <span class="st-dot" id="stDot"></span>
+  <span id="stText">数据快照已载入</span>
+  <span class="sp">更新于 <b id="upd">--:--</b> · <b id="cd">10:00</b></span>
+</div>
+
+<main>
+
+  <!-- ========== 1 概览 ========== -->
+  <section class="page on" id="p-home">
+    <div class="stats">
+      <div class="stat a"><div class="v" id="h1n">20<small>家</small></div><div class="k">三城总计</div></div>
+      <div class="stat b"><div class="v" id="h2n">35<small>K</small></div><div class="k">最高月薪</div></div>
+      <div class="stat"><div class="v" id="h3n">9<small>家</small></div><div class="k">大专可投</div></div>
+    </div>
+
+    <div class="city" onclick="go('p-xa')">
+      <div class="lb">西安</div>
+      <div class="bd">
+        <div class="n">西安 <i>离家近</i></div>
+        <div class="d"><span id="c-xa-n">10</span> 家家 · 大专可投 <span id="c-xa-e">2</span> 家 · 岗位最全但卡学历最狠</div>
+      </div>
+      <div class="rt"><b id="c-xa-p">30K</b><span>薪资上限</span></div>
+      <div class="go">›</div>
+    </div>
+
+    <div class="city sz" onclick="go('p-sz')">
+      <div class="lb">深圳</div>
+      <div class="bd">
+        <div class="n">深圳 <i>老本行 金矿</i></div>
+        <div class="d"><span id="c-sz-n">9</span> 家 · 大专可投 <span id="c-sz-e">6</span> 家 · 测试治具岗位密集，最对口</div>
+      </div>
+      <div class="rt"><b id="c-sz-p">35K</b><span>薪资上限</span></div>
+      <div class="go">›</div>
+    </div>
+
+    <div class="city ak" onclick="go('p-ak')">
+      <div class="lb">安康</div>
+      <div class="bd">
+        <div class="n">安康 <i>退路</i></div>
+        <div class="d"><span id="c-ak-n">1</span> 家值得投 · 学历零门槛，薪资要当面谈</div>
+      </div>
+      <div class="rt"><b id="c-ak-p">12K</b><span>预估</span></div>
+      <div class="go">›</div>
+    </div>
+
+    <div class="info" style="margin-top:14px">
+      <h3>怎么打这三座城</h3>
+      <p><b>深圳是你的金矿，不是退路。</b>你 10 年的 ICT／FCT 测试治具、FPC 连接器治具经验，在深圳是密集在招的硬需求：光我抓到的治具岗就有 9 家在招，其中 <b>6 家明写大专可投</b>，薪资上限 35K。西安的岗位更多是"非标自动化"泛岗，卡本科的比例高得多。</p>
+      <p><b>西安适合长期落点。</b>离家近、生活成本低，汉沣精机、永邦两家大专可投，是能拿到的保底 offer。</p>
+      <p><b>安康只有一家能谈。</b>轩意光电方向对口、只要求高中，但薪资天花板低。策略是拿外地 offer 抬价再谈。</p>
+    </div>
+
+    <div class="info">
+      <h3>投递顺序（按这个打）</h3>
+      <p><b>第一波 · 深圳治具 4 家</b>：欣同达 18-25K、深极测 15-25K、嘉欣钰 16-21K、长盈精密 13-20K。全部大专可投、全部测试治具方向，命中率最高、薪资最高，先打这批。</p>
+      <p><b>第二波 · 西安保底 2 家</b>：汉沣精机 10-15K、永邦 6-12K。大专明确可投，拿下其中一个当保底。</p>
+      <p><b>第三波 · 高薪冲刺</b>：共进电子 18-35K、达四海 16-30K、中诺通讯 15-25K、比亚迪 15-30K。卡本科，靠 18 年经验硬顶。</p>
+      <p><b>第四波 · 收尾</b>：安康轩意、利和兴（技术完全对口但薪资低，可作谈判筹码）。</p>
+    </div>
+  </section>
+
+  <!-- ========== 2 西安 ========== -->
+  <section class="page" id="p-xa">
+    <div class="stats">
+      <div class="stat a"><div class="v">10<small>家</small></div><div class="k">在招岗位</div></div>
+      <div class="stat b"><div class="v">30<small>K</small></div><div class="k">最高月薪</div></div>
+      <div class="stat"><div class="v">2<small>家</small></div><div class="k">大专可投</div></div>
+    </div>
+    <div class="chips" data-city="xa">
+      <button class="chip on" data-f="all">全部 10</button>
+      <button class="chip" data-f="edu">大专可投 2</button>
+      <button class="chip" data-f="core">核心对口 3</button>
+      <button class="chip" data-f="near">相近可投 4</button>
+      <button class="chip" data-f="risk">有硬门槛 3</button>
+    </div>
+    <div class="joblist" data-city="xa"></div>
+  </section>
+
+  <!-- ========== 3 深圳 ========== -->
+  <section class="page" id="p-sz">
+    <div class="stats">
+      <div class="stat a"><div class="v">9<small>家</small></div><div class="k">在招岗位</div></div>
+      <div class="stat b"><div class="v">35<small>K</small></div><div class="k">最高月薪</div></div>
+      <div class="stat"><div class="v">6<small>家</small></div><div class="k">大专可投</div></div>
+    </div>
+    <div class="chips" data-city="sz">
+      <button class="chip on" data-f="all">全部 9</button>
+      <button class="chip" data-f="edu">大专可投 6</button>
+      <button class="chip" data-f="core">测试治具 6</button>
+      <button class="chip" data-f="near">非标自动化 3</button>
+    </div>
+    <div class="joblist" data-city="sz"></div>
+  </section>
+
+  <!-- ========== 4 安康 ========== -->
+  <section class="page" id="p-ak">
+    <div class="stats">
+      <div class="stat a"><div class="v">1<small>家</small></div><div class="k">值得投</div></div>
+      <div class="stat b"><div class="v">12<small>K</small></div><div class="k">预估上限</div></div>
+      <div class="stat"><div class="v">0<small>家</small></div><div class="k">明标 10K+</div></div>
+    </div>
+    <div class="joblist" data-city="ak"></div>
+
+    <div class="info">
+      <h3>安康的实话</h3>
+      <p>安康机械类岗位薪资集中在 <b>5-9K</b>，明写 10K 以上的基本没有。这不是你没谈好，是本地产业和薪资水平就这个档。</p>
+      <p>整个安康只有 <b>轩意光电</b> 值得投：它是省级专精特新、国家级高新，做非标自动化设备，方向与你完全一致，且 JD 只要求高中。薪资未公开，同类岗位估 8-12K，<b>必须当面谈</b>，别按招聘启事的默认档接受。</p>
+      <p><b>正确打法</b>：先拿深圳或西安的 offer，用"我手上有 18K 的 offer"去谈轩意的价格。安康本地人这个身份是你的加分项，稳定性这张牌一定要打——前提是你先把薪资锚点立起来，否则对方只会按本地行情给。</p>
+    </div>
+
+    <div class="info">
+      <h3>安康其他线索（薪资不达标，仅记录）</h3>
+      <p>陕西维讯创展半导体（汉滨区）· 研发工程师 4-10K，做摄像头模组，上限刚够 1 万。</p>
+      <p>安康高新区 2026 企业招聘第八期 · 冲压模具设计 8-12K，与你的治具方向不同。</p>
+    </div>
+  </section>
+
+  <!-- ========== 5 面试备战 ========== -->
+  <section class="page" id="p-msg">
+    <div class="info" style="margin-bottom:12px">
+      <p>面试必问的几个问题，<b>点开看答法</b>。话术不用背原文，记住每题的<b>落点</b>：离职说规划、空窗说充电、学历说战绩、年龄说稳定、薪资不先松口。</p>
+    </div>
+
+    <div class="info"><h3>必问五题 · 答法</h3></div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">① 为什么离开上一家？</div><div class="s">离职原因 · 30 秒说完不拖泥带水</div></div>
+        <div class="p">必问</div>
+      </div>
+      <div class="body">
+        <p id="faq1">上一家做石油装备方向，项目周期告一段落，而我个人最核心的积累在 3C 非标治具和测试自动化这条线上。我想回到自己最熟、产出最快的领域，所以趁这个窗口看机会。就这一个原因，没有别的。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq1')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">② 空窗 4 个月在干什么？</div><div class="s">2026.07 至今 · 主动选择，不是被动待业</div></div>
+        <div class="p">必问</div>
+      </div>
+      <div class="body">
+        <p id="faq2">上半年项目收尾后，我给自己留了一段时间做两件事：一是把这几年做过的治具和整机项目整理成案例集——图纸、BOM、现场照片都归了档，面试可以带过来看；二是系统过了一遍 SolidWorks 高级装配和出图规范。期间也推掉过几个方向不合适的 offer，我要找的是能长期做的岗位，不是随便上一个。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq2')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">③ 大专学历怎么看？</div><div class="s">不辩解，直接用战绩顶上去</div></div>
+        <div class="p">必问</div>
+      </div>
+      <div class="body">
+        <p id="faq3">我是大专学历，这点不瞒您。但这一行看的是出图和交付：18 年机械设计、10 年 3C 测试治具，华为、OPPO、小米、比亚迪、华勤、龙旗的项目我都做过配套，ICT／FCT 方案、FPC 连接器治具从方案到验收一个人走完。图纸和案例我都带来了，您看 5 分钟作品，比看学历直接。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq3')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">④ 38 岁，体力和加班跟得上吗？</div><div class="s">把年龄翻译成「即战力 + 稳定性」</div></div>
+        <div class="p">高频</div>
+      </div>
+      <div class="body">
+        <p id="faq4">38 岁在这个岗位上是优势：现场调试、外协跟单、客户评审这些坑我全踩过，来了就能独立扛项目，不需要人带。体力上，装配调试跟现场我一直没离开过。稳定性您放心——家在西安，孩子在这边上学，我要找的就是能做五年的地方，不是跳板。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq4')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">⑤ 薪资期望多少？</div><div class="s">先让对方出牌，锚定区间中上</div></div>
+        <div class="p">必问</div>
+      </div>
+      <div class="body">
+        <p id="faq5">先问一句：贵司这个岗位的预算区间是多少？——对方说了区间后，报区间中上偏上，再补一句理由：我这个年限能独立带整机项目，从方案到验收不用配助理，这一条在区间里值中上。手上有外地 offer 在谈（深圳方向 18-25K），但优先想在西安长期做，具体可以聊。⚠️ 千万别第一个报价，别报"底线价"。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq5')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:14px"><h3>面试要带的东西</h3></div>
+    <div class="info">
+      <div class="kv"><span>简历打印件</span><b>3 份（多带不亏）</b></div>
+      <div class="kv"><span>项目案例集</span><b>平板或纸质，图纸 + 现场照片</b></div>
+      <div class="kv"><span>最拿得出手的 3 张图</span><b>双车床单元 / 保压回流线 / 转盘机</b></div>
+      <div class="kv"><span>离职证明</span><b>原件或照片，入职要用</b></div>
+      <div class="kv"><span>身份证</span><b>原件</b></div>
+      <div class="kv"><span>着装</span><b>干净polo衫即可，机械行业不讲究西装</b></div>
+    </div>
+
+    <div class="info">
+      <h3>反问环节（一定要问，别空着）</h3>
+      <p><b>①</b> 这个岗位目前最大的项目瓶颈是什么？——把话题引向你擅长的方向。</p>
+      <p><b>②</b> 团队现在几个人、设计跟装配怎么分工？——判断是不是"光杆设计"岗。</p>
+      <p><b>③</b> 入职头三个月，您希望我先落地哪件事？——表明你以交付为先。</p>
+    </div>
+  </section>
+
+  <!-- ========== 6 打卡 ========== -->
+  <section class="page" id="p-ck">
+    <div class="prog">
+      <div class="t"><span>投递进度</span><span><b id="ckN">0</b> / <span id="ckT">20</span></span></div>
+      <div class="track"><div class="fill" id="ckFill" style="width:0%"></div></div>
+    </div>
+    <div id="cklist"></div>
+    <div style="text-align:center;margin-top:14px">
+      <button onclick="resetCk()" style="font-family:inherit;font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:16px;padding:6px 16px">清空打卡记录</button>
+    </div>
+    <div class="info" style="margin-top:14px">
+      <h3>数据状态</h3>
+      <div class="kv"><span>数据来源</span><b>BOSS直聘 / 猎聘 / 智联 / 一览</b></div>
+      <div class="kv"><span>抓取时间</span><b id="upd2">--:--</b></div>
+      <div class="kv"><span>岗位总数</span><b>20 家 · 三城</b></div>
+      <div class="kv"><span>自动刷新</span><b>每 10 分钟</b></div>
+      <div class="kv"><span>打卡存储</span><b>本机浏览器</b></div>
+    </div>
+    <div class="info">
+      <h3>刷新机制说明</h3>
+      <p>页面每 <b>10 分钟</b>自动重载一次（顶部倒计时归零即刷新），重载时读取最新的岗位数据。</p>
+      <p>当前岗位数据是 <b>2026-11-10 14:44 实抓</b>的快照。要让它真正自动更新，需要接云端数据源（下一步做），否则重载读的还是这份快照。</p>
+      <p>打卡记录存在本机浏览器，换设备不同步。要四端同步同样需要接云端。</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= 话术详情弹层（底部抽屉） ================= -->
+<div class="mask" id="msgMask">
+  <div class="sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-hd">
+      <div class="l">
+        <div class="t" id="msCo"></div>
+        <div class="s" id="msRole"></div>
+      </div>
+      <div class="p" id="msPay"></div>
+    </div>
+    <div class="sheet-bd" id="msBody"></div>
+    <div class="sheet-btns">
+      <button id="msCopy" onclick="copyM(this, curMsgId)">复制话术</button>
+      <a id="msLink" target="_blank" rel="noopener">去投递 ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 底部导航（6 页 · 玻璃胶囊） ================= -->
+<nav class="bnav"><div class="bnav-in" id="bnavIn"><i class="bnav-glare" aria-hidden="true"></i></div></nav>
+<div id="toast"></div>
+
+<!-- ====== 数据区（每 10 分钟刷新时读这里） ====== -->
+<script id="jobdata" type="application/json">
+{
+  "updated": "2026-11-10 14:54",
+  "round": 0,
+  "jobs": [
+    {"id":1,"city":"xa","co":"西安汉沣精机","coTag":"高新企业","role":"工装夹具工程师","area":"雁塔区电子城","exp":"5-10年","edu":"大专","eduOk":true,"pay":"10-15K","payNote":"13薪","score":92,"g":"core","cls":"g","chips":["大专可投","年限超额","西安保底"],"why":"JD 写大专即可、5-10 年，你 18 年远超要求。做精密机加工装夹具与刀具选型，你双车床上下料柔性单元的定位夹紧、气动回路经验直接能用。这家面试要谈 13K，别按 10K 开口。"},
+    {"id":2,"city":"xa","co":"西安永邦精密机械","coTag":"数控机床","role":"夹具工程师","area":"雁塔区科技西路","exp":"3-5年","edu":"大专","eduOk":true,"pay":"6-12K","payNote":"","score":76,"g":"near","cls":"g","chips":["大专可投","气动夹具对口","下限低必须谈"],"why":"数控车床与加工中心自动装夹工装，要熟悉液压气动系统。做过双车床柔性单元的人正好对口。下限只有 6K，但上限 12K，你 18 年经验直接报 11K 起。"},
+    {"id":3,"city":"xa","co":"中诺通讯","coTag":"上市 ODM","role":"工装夹具设计工程师","area":"雁塔区沣惠南路","exp":"3-5年","edu":"本科","eduOk":false,"pay":"15-25K","payNote":"15薪","score":95,"g":"core","cls":"","chips":["行业完全对口","薪资最高","卡本科照投"],"why":"西安最该投的一家。JD 写的是 MBB、CPE、手机类终端测试夹具，跟你做了十年的手机／手表／耳机测试治具是同一条产品线。FPC 连接器治具、测试点位、探针选型全在对方需求里，华为小米客户经验直接对上。"},
+    {"id":4,"city":"xa","co":"比亚迪","coTag":"上市公司","role":"机械工程师","area":"长安区郭杜／高新区","exp":"3-5年","edu":"本科","eduOk":false,"pay":"15-30K","payNote":"","score":88,"g":"core","cls":"","chips":["客户背景加持","大厂流程","卡本科"],"why":"非标设备新工艺研发、产线自动化改进、结构设计与选型，逐条对上你的日常。你服务过比亚迪，这是简历里现成的敲门砖，比任何自荐话术都管用。"},
+    {"id":5,"city":"xa","co":"威尔量仪","coTag":"仪器仪表","role":"非标自动化机械设计工程师","area":"西安","exp":"3-5年","edu":"本科","eduOk":false,"pay":"13-18K","payNote":"","score":83,"g":"near","cls":"b","chips":["全流程闭环","产线集成","卡本科"],"why":"产线研发设计、BOM 输出、装配调试技术支持，是一条完整的闭环岗。你方案→建模→出图→BOM→跟样调试→交付的全流程能力正好对齐。"},
+    {"id":6,"city":"xa","co":"科甬泰自动化","coTag":"自动化设备","role":"非标机械设计工程师","area":"雁塔区高新软件园","exp":"3-5年","edu":"本科","eduOk":false,"pay":"12-20K","payNote":"","score":82,"g":"near","cls":"b","chips":["要求极简","高新区","卡本科"],"why":"熟练 SolidWorks／ProE、非标自动化三年以上，等于照着你的简历写的。这类中小非标厂看作品不看学历，把三台整机项目拿出来讲就够。"},
+    {"id":7,"city":"xa","co":"舜元科技","coTag":"A轮 智能硬件","role":"机加工装夹具设计工程师","area":"未央区文景路","exp":"3-5年","edu":"本科","eduOk":false,"pay":"11-17K","payNote":"13薪","score":80,"g":"near","cls":"b","chips":["夹具主业","智能硬件","卡本科"],"why":"机加工非标工装夹具设计加客户对接、方案评审、帮项目解决组装调试问题。你的夹具设计加现场整改能力直接命中。"},
+    {"id":8,"city":"xa","co":"西安汉沣精密机械","coTag":"智能产线","role":"机械设计工程师","area":"鄠邑区沣京工业园","exp":"5年以上","edu":"本科","eduOk":false,"pay":"10-15K","payNote":"招2人","score":84,"g":"core","cls":"b","chips":["项目经验同构","智能产线","地点偏鄠邑"],"why":"智能柔性产线方案、非标单元模块详细设计、外购件选型、出图跟采购。8 年整机或非标经验即可，你的双车床上下料、屏幕保压回流线是同类项目。做实了是长期饭碗。"},
+    {"id":9,"city":"xa","co":"三一集团","coTag":"上市公司","role":"工装工程师","area":"长安区","exp":"3年以上","edu":"本科","eduOk":false,"pay":"15-25K","payNote":"13薪","score":72,"g":"risk","cls":"a","chips":["行业跨界","薪资高","卡本科"],"why":"钱给得痛快，但方向是焊接与装调全序工装，重工路子，跟你的 3C 精密小件治具隔一段。工装方法论相通，可以聊，但要接受行业切换的适应期。"},
+    {"id":10,"city":"xa","co":"捷科智能装备","coTag":"常驻西安","role":"机械设计工程师","area":"高新区","exp":"3年以上","edu":"本科","eduOk":false,"pay":"9-20K","payNote":"","score":55,"g":"risk","cls":"a","chips":["年龄硬卡30岁","半导体方向"],"why":"JD 明写年龄一般不超过 30 岁，你 38，简历筛选大概率过不去。除非能走内推，否则别浪费精力。"},
+
+    {"id":21,"city":"sz","co":"深圳市欣同达科技","coTag":"半导体测试座","role":"高级治具设计工程师","area":"龙华区大浪","exp":"5年以上","edu":"大专","eduOk":true,"pay":"18-25K","payNote":"招2人","score":96,"g":"core","cls":"g","chips":["大专可投","测试治具主业","深圳第一顺位"],"why":"深圳这批里最该投的一家：JD 写测试治具、测试座、测试夹具结构设计，5 年经验、大专即可。你做的是 FPC 连接器测试治具，BGA／QFN 测试座的结构逻辑（定位、压合、探针导向、防呆）跟你是同一套。18 年经验顶 5 年门槛，薪资 18-25K 可以直接谈上限。"},
+    {"id":22,"city":"sz","co":"深极测","coTag":"新能源测试","role":"治具机械工程师","area":"深圳","exp":"3-5年","edu":"大专","eduOk":true,"pay":"15-25K","payNote":"","score":94,"g":"core","cls":"g","chips":["大专可投","DFM报告","客户方案对接"],"why":"夹／治具机械结构方案设计、编 DFM 报告、跟客户讲方案推共识。这三件事是你做了十年的日常，不是新学的。测试治具设计经验明确要求，你有 10 年。大专可投，薪资 15-25K。"},
+    {"id":23,"city":"sz","co":"深圳市长盈精密","coTag":"上市 万人大厂","role":"治具设计工程师","area":"龙华区大浪","exp":"3-5年","edu":"大专","eduOk":true,"pay":"13-20K","payNote":"","score":91,"g":"core","cls":"g","chips":["上市公司","大专可投","芯片测试治具"],"why":"负责芯片测试治具方案制定与结构设计、前期可行性分析、3D 建模。万人大厂的平台和流程，对你后面跳槽是加分。芯片治具你没直接做过，但连接器治具的精度逻辑一致，面试时讲清迁移路径即可。"},
+    {"id":24,"city":"sz","co":"深圳市嘉欣钰电子","coTag":"仪器仪表","role":"治具设计工程师","area":"宝安区石岩","exp":"3-5年","edu":"学历不限","eduOk":true,"pay":"16-21K","payNote":"","score":90,"g":"core","cls":"g","chips":["学历不限","薪资上限高","纯治具设计"],"why":"学历完全不卡，只看能不能出方案和图纸。负责治具方案设计、3D／2D 出图、BOM 编制，这是你的标准交付物。薪资 16-21K，比西安同类高一大截。"},
+    {"id":25,"city":"sz","co":"明信测试","coTag":"电子硬件","role":"夹治具设计工程师","area":"龙华区观澜","exp":"3-5年","edu":"大专","eduOk":true,"pay":"11-20K","payNote":"","score":88,"g":"core","cls":"g","chips":["大专可投","手机夹具优先","CAD/ProE"],"why":"JD 写手机夹具设计经验优先——你服务过华为、OPPO、小米、华勤、龙旗的手机项目，这条线就是主场。薪资 11-20K 上限不错。"},
+    {"id":26,"city":"sz","co":"深圳市利和兴","coTag":"上市 治具设备","role":"夹具工程师","area":"龙华区清湖","exp":"3年以上","edu":"大专","eduOk":true,"pay":"8-15K","payNote":"","score":86,"g":"core","cls":"g","chips":["ICT治具直接命中","华为中兴优先","薪资偏低"],"why":"技术匹配度是深圳这批里最高的：JD 明写精通 ICT 测试治具设计、熟悉工装夹具工艺与气动、做过华为／中兴测试夹具优先，三条你全占。唯一问题是薪资 8-15K 偏低，建议当谈判筹码或备选，别当主力。"},
+    {"id":27,"city":"sz","co":"深圳市强瑞精密","coTag":"华为/vivo供应商","role":"夹具工程师","area":"龙华区","exp":"1-2年","edu":"学历不限","eduOk":true,"pay":"10-15K","payNote":"招10人","score":85,"g":"core","cls":"g","chips":["学历不限","招10人","探针射频针"],"why":"学历不限、招 10 人，是深圳最容易进的一家。3C 夹治具设计、手机夹具优先、单板测试与探针射频针选型，全是你的活。它是华为、vivo、BYD、富士康的供应商，这些客户你全服务过，知道他们的验收标准。薪资中等，适合快速拿 offer 保底。"},
+    {"id":28,"city":"sz","co":"共进电子","coTag":"上市 万人大厂","role":"非标自动化机械设计工程师","area":"龙华区龙华","exp":"5-10年","edu":"本科","eduOk":false,"pay":"18-35K","payNote":"13薪","score":89,"g":"near","cls":"","chips":["薪资天花板 35K","上市大厂","卡本科"],"why":"三城薪资上限最高的一家。非标自动化设备设计开发，要求独立完成项目从技术交流、方案检讨到 3D 设计与选型，跟你的整机项目经验完全对齐。卡本科，但 5-10 年经验你给到 18 年，用项目案例硬顶。"},
+    {"id":29,"city":"sz","co":"达四海","coTag":"自动化设备","role":"非标自动化机械设计工程师","area":"宝安区沙井","exp":"5-10年","edu":"大专","eduOk":true,"pay":"16-30K","payNote":"电机焊接设备","score":82,"g":"near","cls":"g","chips":["大专可投","薪资 16-30K","焊接是新方向"],"why":"大专可投的高薪岗，16-30K。方向是电机焊接设备，你没直接做过，但机构原理（定位夹紧、上下料、节拍、气动与伺服选型）是通的，双车床上下料柔性单元的机构复杂度比焊接线还高。值得一试。"},
+
+    {"id":11,"city":"ak","co":"陕西轩意光电","coTag":"安康 · 专精特新","role":"非标自动化设备机械设计","area":"安康汉滨区","exp":"5-8年","edu":"高中","eduOk":true,"pay":"面议","payNote":"估8-12K","score":90,"g":"core","cls":"g","chips":["学历零障碍","你是安康人","薪资必须谈"],"why":"安康唯一值得投的一家，JD 只要求高中。整体方案策划、独立机械结构设计、全程跟组装调试、编 BOM 与设备规格书，全是你的强项。你是安康本地人（高中在安康四中），稳定性这张牌要打出来。但薪资未公开，必须当面谈到 10K 以上才值。"}
+  ]
+}
+</script>
+
+<script>
+/* ================= 数据加载 ================= */
+var DATA = { updated: "--", jobs: [] };
+var CITY_NAME = { xa:"西安", sz:"深圳", ak:"安康" };
+var CITY_ORDER = ["xa","sz","ak"];
+
+/* 话术库（与岗位 id 对应） */
+var MSGS = {
+  1:{t:"汉沣精机 · 工装夹具工程师", s:"西安 · 10-15K·13薪 · 大专可投", p:"10-15K",
+     m:"您好，应聘工装夹具工程师。我独立做过双车床机器人上下料柔性单元整机——平行四边形摆臂双夹爪同步取放、三轴龙门码垛、多工位旋转料仓，从方案、三维建模、工程图、BOM 到样机调试全程自己走完。车床夹具怎么选定位基准、夹紧力怎么控住不伤件、气动回路怎么配节拍，都是项目里实际做过的。贵司做精密机加工装和刀具选型，这块我能直接出方案。学历大专，JD 写高中即可、要求 5-10 年，我 18 年。我知道你们可能担心中年人开价高、干不久——我看重的是在西安长期做下去，13K 这个档我可以接受。"},
+  2:{t:"永邦精密 · 夹具工程师", s:"西安 · 6-12K · 大专可投", p:"6-12K",
+     m:"您好，应聘夹具工程师。JD 要求熟悉液压气动系统，这块我有实操：我做的双车床柔性单元里，双夹爪摆臂同步取放成品与毛坯靠气缸和电磁阀时序配合，多工位料仓定位用液压夹紧。数控车床和加工中心的自动装夹工装，核心就三件事——定位基准怎么定、夹紧力怎么控不压伤工件、换型要多久。这三件我在柔性单元项目里都解决过。SolidWorks 出图、BOM、跟外协、现场调试我全包。大专学历符合要求。薪资我期望 11K，比下限高，但比我能干的活低，可以先聊项目再谈钱。"},
+  3:{t:"中诺通讯 · 工装夹具设计工程师", s:"西安 · 15-25K·15薪 · 卡本科", p:"15-25K",
+     m:"您好，应聘工装夹具设计工程师。我做过十年手机、智能手表、TWS 耳机的功能测试治具，MBB 和 CPE 这类终端产品的夹具虽然没直接做，逻辑是同一套：射频屏蔽、天线测试点位、接口插拔寿命、多机种快换。ICT／FCT 测试方案、FPC 连接器治具、探针选型、防呆设计是我的日常。我给华为、OPPO、小米、华勤、龙旗做过配套治具——这几个牌子的项目你们应该也在接，测试标准是同一份。SolidWorks 到 2D 出图、BOM、外协跟加工、现场调试交付，整机我能一手带到底。学历是大专，JD 写本科，但这条产品线我做了十年，能不能先看作品再谈学历？"},
+  4:{t:"比亚迪 · 机械工程师", s:"西安 · 15-30K · 卡本科", p:"15-30K",
+     m:"您好，应聘机械工程师。先说一件对你们有用的事：我给比亚迪做过手机与电子类的测试治具和自动化设备配套项目，熟悉贵司的设备验收节奏和图纸规范，进来不用重新适应流程。我独立带过整机项目：手机屏幕全自动保压拆解回流机台（夹取、装盒、扫码、码垛、保压、拆解、取屏加料盒全流程回流）、双车床机器人上下料柔性单元。非标设备新工艺研发、产线自动化改进、结构设计与选型，是我每天的活。SolidWorks 精通，气动、伺服、导轨、丝杆选型熟练。学历大专，18 年经验，其中 10 年直接服务贵司这条线。"},
+  5:{t:"威尔量仪 · 非标自动化机械设计", s:"西安 · 13-18K · 卡本科", p:"13-18K",
+     m:"您好，应聘非标自动化机械设计工程师。量仪这类产品最看重重复定位精度，我做测试治具十年做的就是精度活：探针压合行程控制在零点几毫米、多工位重复定位、长期使用不漂移，这些是我每天在解决的事。独立承担过电子烟四工位转盘组装测试一体机、手机屏幕保压拆解回流线、双车床上下料单元，方案、建模、出图、BOM、跟加工、装配调试到验收一个人走完。多工位转盘、夹取定位、分拣机构、气动回路设计熟练，标准件选型是日常。贵司做量仪和自动化产线，精度要求只会比我以前做的更高，但方法是同一套。大专学历，18 年经验。"},
+  6:{t:"科甬泰自动化 · 非标机械设计", s:"西安 · 12-20K · 卡本科", p:"12-20K",
+     m:"您好，应聘非标机械设计工程师。JD 两条我直接过关：熟练 SolidWorks 用了十几年，非标自动化三年以上我做了十年。我更想说另一件事——我一个人能从一个客户需求做到设备验收，中间不需要配助理、不需要电气帮我兜方案。做过手机屏幕全自动保压拆解回流机台、电子烟四工位转盘组装测试一体机、双车床机器人上下料柔性单元。中小厂最怕设计的人画完图就不管落地，我是从出图一直跟到现场调到跑稳的那种。大专学历，18 年经验，可以带图纸和案例过来聊。"},
+  7:{t:"舜元科技 · 机加工装夹具设计", s:"西安 · 11-17K·13薪 · 卡本科", p:"11-17K",
+     m:"您好，应聘机加工装夹具设计工程师。JD 里有一句我很在意——要能对接客户、参与方案评审、帮项目解决组装调试问题。这三件事恰恰是我最擅长的：我常年直接对客户，能把客户嘴里的需求翻译成能加工的图纸，评审时把工艺问题提前挑出来，不让它流到装配环节再返工。夹具方面，FPC 连接器测试治具、快换治具、防呆设计做了十年；机加柔性单元也独立做过双车床上下料整机。A 轮阶段的公司节奏快，需要能自己拍板的人，我不需要工程再帮我翻译一遍。大专学历，18 年经验。"},
+  8:{t:"汉沣精密机械 · 机械设计工程师", s:"西安 · 10-15K · 招2人", p:"10-15K",
+     m:"您好，应聘机械设计工程师。我做过和贵司最接近的项目：双车床机器人上下料柔性单元，集成 2 台 CNC 数控车床、平行四边形摆臂移栽、三轴龙门码垛、多工位旋转料仓，支持多品种小批量快速换产——这就是智能柔性产线的典型形态。产线布局、单元模块详细设计、外购件选型、出图发采购、装调技术支持，这条链我全程走过。贵司做智能柔性产线和航发航空类精密自动化，航空件的精度和追溯要求更高，我的习惯是把工艺和公差先在图纸上锁死。地点在鄠邑我能接受，可以在厂附近住。大专学历，18 年经验。"},
+  9:{t:"三一集团 · 工装工程师", s:"西安 · 15-25K·13薪 · 卡本科", p:"15-25K",
+     m:"您好，应聘工装工程师。我做了十年工装夹具，核心能力不是画图，是把工装从设计管到报废：方案、3D 建模、2D 出图、BOM、外协加工跟进、现场装配调试、验收交付，加上工装台账和图纸归档，一直是我在管。JD 提到焊接与装调全序工装——焊接工装我没直接做过，但工装的底层是相通的：定位基准、夹紧力与变形控制、防呆快换、现场问题排查。重工件和 3C 精密件的差别在刚性要求和安全余量，这个我能补。三一的工装量级比我以前做的大，我愿意从头学，也扛得住强度。大专学历，18 年经验。"},
+  10:{t:"捷科智能 · 机械设计（常驻西安）", s:"西安 · 9-20K · 明写不超30岁", p:"9-20K",
+     m:"您好，应聘常驻西安的机械设计工程师。先把最难的一关说清楚：JD 写年龄一般不超过 30 岁，我 38。如果这条是硬线，不用往下看，不浪费您时间。但如果贵司西安这边真正缺的是能独立扛项目、不用人带、直接对交付负责的人，那我合适：18 年机械设计、10 年非标自动化，独立带过多个整机项目从方案到客户验收，汽车电子类非标设备和测试产线是我熟的领域。半导体和面板我没做过，愿意从头学——机械的底子、选型逻辑、项目方法是现成的，学工艺比学设计快。大专学历。"},
+
+  21:{t:"欣同达 · 高级治具设计工程师", s:"深圳 · 18-25K · 大专可投", p:"18-25K",
+     m:"您好，应聘高级治具设计工程师。我做了十年 3C 测试治具，核心是让探针可靠地压在测试点上：压合行程、受力均匀性、导向精度、长期使用不漂移。贵司做 BGA／QFN 测试座和 Socket 老化座，从弹簧探针到垂直导电胶这条产品线，结构和我的 FPC 连接器治具是同一套逻辑，只是精度等级更高、寿命要求更长——老化座要经历几千次插拔和高温，材料选型和结构补偿是关键，这块我上手会很快。手机、手表、TWS 耳机测试治具、ICT／FCT 方案、FPC 连接器治具我做了十年，3D 出图、BOM、装配工艺文件、试装验证能独立走完全程。大专学历符合 JD，5 年门槛我有 18 年。"},
+  22:{t:"深极测 · 治具机械工程师", s:"深圳 · 15-25K · 大专可投", p:"15-25K",
+     m:"您好，应聘治具机械工程师。JD 两条核心要求——扎实的测试治具设计经验、能编 DFM 报告跟客户讲方案，这两件是我做了十年的日常。我做过手机、手表、耳机的功能测试治具、FPC 连接器治具、ICT／FCT 整线方案，也独立做过整机自动化：手机屏幕保压拆解回流线、电子烟四工位转盘组装测试一体机、双车床上下料柔性单元。新能源测试治具和 3C 的差别我看得清：工件更大更重、载流更大、安全余量要求更高，定位和夹紧的刚性要上一个档次，但治具的设计方法论没变。DFM 我能自己写、自己讲，不用工程替我翻译。大专学历，18 年经验。"},
+  23:{t:"长盈精密 · 治具设计工程师", s:"深圳 · 13-20K · 大专可投", p:"13-20K",
+     m:"您好，应聘治具设计工程师。JD 第一句是治具设计方案的制定与结构设计，第二句是前期可行性分析和结构方案评估——这两件正是我每个项目必做的动作：先判断这个治具在现有工艺下能不能做出来、成本划不划算，再动手画。芯片测试治具我没直接做过，但 FPC 连接器测试治具和 ICT／FCT 治具我做了十年，定位、压合、探针导向、防呆这套逻辑完全通用，芯片治具多的是精度和洁净要求。万人大厂的流程和文档规范我适应得了：图纸标准、BOM 规范、版本管理，我一直按规矩做。大专学历，符合要求，3D 建模出图熟练。"},
+  24:{t:"嘉欣钰 · 治具设计工程师", s:"深圳 · 16-21K · 学历不限", p:"16-21K",
+     m:"您好，应聘治具设计工程师。贵司规模不大，我猜你们要的是一个人能把方案、图纸、BOM 全包下来的人——这正好是我的工作方式：客户给需求，我出方案、3D 建模、2D 工程图、BOM 清单，然后跟加工、跟装配，一直到能用。测试治具、工装夹具、气动夹具、快换治具我做了十年，手机、手表、耳机的治具都出过。JD 没写学历，我实际是大专，18 年经验。小厂没有大厂的资源，设计的人必须自己判断工艺可行性，不能画完就扔给加工——这一点我做了十几年。"},
+  25:{t:"明信测试 · 夹治具设计工程师", s:"深圳 · 11-20K · 大专可投", p:"11-20K",
+     m:"您好，应聘夹治具设计工程师。JD 写手机夹具设计经验优先——这正好是我最硬的资历：我给华为、OPPO、小米、华勤、龙旗的手机项目做过配套夹具，FPC 连接器测试治具、快换治具、防呆结构是常规活。手机夹具的难点在薄、小、密：0.3mm 的连接器要可靠压合又不能压伤，多机种共线要能快速换型，这些我天天在解决。CAD、ProE 熟练，SolidWorks 更熟，独立完成设计、出图、BOM、跟装配调试没问题。大专学历，18 年经验，其中 10 年就干这个。"},
+  26:{t:"利和兴 · 夹具工程师", s:"深圳 · 8-15K · 大专可投", p:"8-15K",
+     m:"您好，应聘夹具工程师。JD 三条硬要求我逐条对：一、精通 ICT 测试治具设计——我做了十年 ICT／FCT，FPC 连接器治具、测试点位布局、探针选型、气动压合结构都是实操；二、熟悉工装夹具制造工艺与气动——外协加工、钣金、机加、气动回路我都跟；三、有华为／中兴测试夹具经验优先——这两家我都服务过。另外 JD 提到报价和指导后续设备调试，这两件是主管级的活，我一直在做：能判断一个夹具的成本在哪、难点在哪，也能带人把设备调到量产状态。大专学历，符合要求。薪资可以谈，但这个岗位我能立刻上手。"},
+  27:{t:"强瑞精密 · 夹具工程师", s:"深圳 · 10-15K · 学历不限", p:"10-15K",
+     m:"您好，应聘夹具工程师。看到招 10 人，说明贵司在扩产，需要能立刻上手的人——我就是。10 年 3C 夹治具设计：手机夹具、单板测试夹具、波峰焊与回流焊载具都做过，探针和射频针的选型与压合结构熟悉，气动元件（气缸、电磁阀、滑轨）选型是日常。贵司是华为、vivo、BYD、富士康的供应商，这四家我全部服务过，知道他们的验收标准长什么样、会因为什么退回重做——这一点能帮你们少走弯路。学历大专，18 年经验，非标夹具的结构设计和现场异常处理能独立扛。"},
+  28:{t:"共进电子 · 非标自动化机械设计", s:"深圳 · 18-35K·13薪 · 卡本科", p:"18-35K",
+     m:"您好，应聘非标自动化机械设计工程师。贵司做通信和网络设备，这类产线的特点是品种多、批量中等、测试环节密集——恰好是我最熟的场景：我给手机、手表、耳机做过大量测试治具和自动化设备，知道多机种共线怎么设计快换、测试工位怎么排布不打架。独立带过整机项目：手机屏幕全自动保压拆解回流机台、电子烟四工位转盘组装测试一体机、双车床机器人上下料柔性单元。前期技术交流、方案检讨、3D 详细设计、标准件选型、2D 与 BOM、外协跟加工、整机调试到客户验收，全流程一手走完。学历大专，JD 写本科，但 18 年整机经验，可以带图纸来证明。"},
+  29:{t:"达四海 · 非标自动化（电机焊接）", s:"深圳 · 16-30K · 大专可投", p:"16-30K",
+     m:"您好，应聘非标自动化机械设计工程师（电机焊接设备方向）。焊接设备我没直接做过，但我想说清一件事：这类设备的核心难点不是焊，是上下料、定位、节拍和多工位协同——这四件我全干过。双车床机器人上下料柔性单元，平行四边形摆臂双夹爪同步取放、三轴龙门码垛、多工位旋转料仓；电子烟四工位转盘组装测试一体机，转盘分度、工位协同、检测联动。焊接本身是工艺，可以学；机构设计和节拍规划是硬功夫，我有。大专学历符合 JD，18 年经验，能直接扛项目。"},
+
+  11:{t:"轩意光电（安康）· 非标自动化设备机械设计", s:"安康 · 面议 · 仅要求高中", p:"面议",
+     m:"您好，应聘非标自动化设备机械设计工程师。我是安康人，高中在安康四中读的，一直想回安康长期发展——这一点您可以放心，我不是过渡。能力上：18 年机械设计、10 年非标自动化，主导设计过手机屏幕全自动保压拆解回流机台（夹取、装盒、扫码、码垛、保压、拆解、取屏加料盒循环回流全流程）、电子烟四工位转盘组装测试一体机、双车床机器人上下料柔性单元。能独立做整机方案策划、出全套 2D 加工图、编 BOM 和设备规格书，全程跟装配调试到客户验收。光电产品对洁净和精度的要求，跟我做 3C 精密件治具的经验相通。学历大专，JD 写高中即可。薪资我手上有外地的 offer，可以当面聊。"}
+};
+
+var LINKS = {
+  1:"https://www.zhipin.com/web/geek/jobs?query=%E5%B7%A5%E8%A3%85%E5%A4%B9%E5%85%B7&city=101110100",
+  2:"https://www.zhaopin.com/jobdetail/CC460016316J90250178000.htm",
+  3:"https://www.zhipin.com/web/geek/jobs?query=%E5%B7%A5%E8%A3%85%E5%A4%B9%E5%85%B7&city=101110100",
+  4:"https://www.zhipin.com/web/geek/jobs?query=%E6%9C%BA%E6%A2%B0%E5%B7%A5%E7%A8%8B%E5%B8%88&city=101110100",
+  5:"https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96&city=101110100",
+  6:"https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E6%9C%BA%E6%A2%B0%E8%AE%BE%E8%AE%A1&city=101110100",
+  7:"https://www.zhipin.com/web/geek/jobs?query=%E6%9C%BA%E5%8A%A0%E5%B7%A5%E8%A3%85&city=101110100",
+  8:"https://dq.xiaofangyc.com/Job_Detail.asp?Comid=HNZi5y24ytvnrm5162&Param=68868",
+  9:"https://m.zhaopin.com/jobs/CC134218700J40888268410.htm",
+  10:"https://m.liepin.com/job/1985252527.shtml",
+  11:"https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96&city=101280300",
+  21:"https://m.liepin.com/job/1986258753.shtml",
+  22:"https://www.zhipin.com/zhaopin/8952b6a4efb8ec361Hdy39-_EA~~/",
+  23:"https://www.zhipin.com/zhaopin/39b10c2a0baa32ca03R50ti4GQ~~/",
+  24:"https://www.zhipin.com/zhaopin/39b10c2a0baa32ca03R50ti4GQ~~/",
+  25:"https://www.zhipin.com/zhaopin/8952b6a4efb8ec361Hdy39-_EA~~/",
+  26:"https://cncjd.job1001.com/jobs/53311734.html",
+  27:"https://7jd.job1001.com/jobs/53476222.html",
+  28:"https://www.zhipin.com/zhaopin/5f7069615ae718da1HR539q5EQ~~/",
+  29:"https://www.zhipin.com/zhaopin/14aa0d35c2c742940ndz2dW1EA~~/"
+};
+
+/* ================= 渲染 ================= */
+function loadData(){
+  try{
+    var raw = document.getElementById('jobdata').textContent;
+    var d = JSON.parse(raw);
+    if (d && d.jobs && d.jobs.length){ DATA = d; }
+  }catch(e){ console.warn('数据解析失败', e); }
+}
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function byCity(city){
+  return DATA.jobs.filter(function(j){ return j.city === city; });
+}
+
+var jobFilter = { xa:'all', sz:'all', ak:'all' };
+
+function renderJobs(city, filter){
+  if (arguments.length === 1){ filter = jobFilter[city] || 'all'; }
+  jobFilter[city] = filter;
+  var host = document.querySelector('.joblist[data-city="' + city + '"]');
+  if (!host) return;
+  var list = byCity(city).filter(function(j){
+    if (filter === 'all') return true;
+    if (filter === 'edu') return j.eduOk === true;
+    return j.g === filter;
+  });
+  if (!list.length){
+    host.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:40px 0">这个分类暂时没有岗位</div>';
+    return;
+  }
+  host.innerHTML = list.map(function(j){
+    var cls = j.cls === 'g' ? 'g' : (j.cls === 'a' ? 'a' : '');
+    var fillc = j.score >= 88 ? '' : (j.score >= 78 ? 'b' : 'a');
+    var chips = (j.chips||[]).filter(function(c){
+      /* 学历已单独成标签，去掉重复项 */
+      if (j.eduOk && (c === '大专可投' || c === '学历不限')) return false;
+      if (!j.eduOk && c === '卡本科') return false;
+      return true;
+    }).map(function(c,i){
+      var k = i === 0 ? (j.eduOk ? 'g' : 'a') : '';
+      return '<span class="m ' + k + '">' + esc(c) + '</span>';
+    }).join('');
+    return '<div class="job ' + cls + '">' +
+      '<div class="h">' +
+        '<div style="min-width:0">' +
+          '<div class="co">' + esc(j.co) +
+            '<button class="cpbtn" onclick="copyCo(this,\'' + esc(j.co) + '\')">复制</button>' +
+            (j.coTag ? '<i>' + esc(j.coTag) + '</i>' : '') + '</div>' +
+          '<div class="role">' + esc(j.role) + '</div>' +
+        '</div>' +
+        '<div class="pay"><b>' + esc(j.pay) + '</b>' + (j.payNote ? '<i>' + esc(j.payNote) + '</i>' : '') + '</div>' +
+      '</div>' +
+      '<div class="meta"><span class="m b">' + esc(j.area) + '</span><span class="m">' + esc(j.exp) + '</span>' +
+        '<span class="m ' + (j.eduOk ? 'g' : 'a') + '">' + esc(j.edu) + (j.eduOk ? '｜可投' : '｜卡本科') + '</span>' + chips + '</div>' +
+      '<div class="score"><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
+        '<span>' + j.score + '%</span></div>' +
+      '<div class="actrow">' +
+        '<button class="toggle" onclick="toggleWhy(this)">为什么匹配 ↓</button>' +
+        '<button class="msbtn" onclick="openMsg(' + j.id + ')">' +
+          '<svg viewBox="0 0 24 24"><path d="M20.5 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.2-.65L4.5 20l1.4-4.1A7.5 7.5 0 1 1 20.5 11.5Z"/><path d="M9 11h6M9 14h4"/></svg>话术</button>' +
+      '</div>' +
+      '<div class="why">' + j.why + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleWhy(btn){
+  var w = btn.nextElementSibling;
+  w.classList.toggle('on');
+  btn.textContent = w.classList.contains('on') ? '收起 ↑' : '为什么匹配 ↓';
+}
+
+/* ================= 话术详情弹层（岗位卡胶囊按钮 → 底部抽屉） ================= */
+var curMsgId = null;
+
+function openMsg(id){
+  var m = MSGS[id];
+  if (!m) return;
+  curMsgId = id;
+  var j = DATA.jobs.filter(function(x){ return x.id == id; })[0] || {};
+  document.getElementById('msCo').textContent = m.t;
+  document.getElementById('msRole').textContent = (j.area ? j.area + ' · ' : '') +
+    (j.exp ? j.exp + ' · ' : '') + (j.edu || '');
+  document.getElementById('msPay').textContent = m.p;
+  document.getElementById('msBody').innerHTML = '<p>' + esc(m.m) + '</p>';
+  var link = document.getElementById('msLink');
+  if (LINKS[id]){ link.href = LINKS[id]; link.style.display = ''; }
+  else { link.style.display = 'none'; }
+  var cp = document.getElementById('msCopy');
+  cp.textContent = '复制话术'; cp.classList.remove('done');
+  document.getElementById('msgMask').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+
+function closeMsg(){
+  document.getElementById('msgMask').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+/* 面试页：复制答法 */
+function copyEl(btn, id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  var txt = el.textContent;
+  var ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+  if (!ok && navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){ done(true); }).catch(function(){ done(false); });
+  } else { done(ok); }
+  function done(s){
+    btn.textContent = s ? '已复制 ✓' : '复制失败，长按选择';
+    btn.classList.toggle('done', s);
+    if (navigator.vibrate) navigator.vibrate(12);
+    setTimeout(function(){ btn.textContent = '复制答法'; btn.classList.remove('done'); }, 2000);
+  }
+}
+
+function toggleMsg(b){
+  var body = b.parentElement.querySelector('.body');
+  body.classList.toggle('on');
+}
+
+function copyM(btn, id){
+  var txt = MSGS[id].m;
+  var ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+  if (!ok && navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){ done(true); }).catch(function(){ done(false); });
+  } else { done(ok); }
+  function done(s){
+    btn.textContent = s ? '已复制 ✓' : '复制失败，长按选择';
+    btn.classList.toggle('done', s);
+    if (navigator.vibrate) navigator.vibrate(12);
+    setTimeout(function(){ btn.textContent = '复制话术'; btn.classList.remove('done'); }, 2000);
+  }
+}
+
+/* 复制公司名（方便去 BOSS／猎聘搜索框直接粘贴） */
+function copyCo(btn, name){
+  var ta = document.createElement('textarea');
+  ta.value = name; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+  if (!ok && navigator.clipboard){
+    navigator.clipboard.writeText(name).then(function(){ done(true); }).catch(function(){ done(false); });
+  } else { done(ok); }
+  function done(s){
+    btn.textContent = s ? '已复制' : '复制失败';
+    btn.classList.toggle('done', s);
+    if (navigator.vibrate) navigator.vibrate(12);
+    setTimeout(function(){ btn.textContent = '复制'; btn.classList.remove('done'); }, 1600);
+  }
+}
+
+/* ================= 打卡 ================= */
+var CKEY = 'du_apply_v2';
+function getCk(){ try{ return JSON.parse(localStorage.getItem(CKEY) || '{}'); }catch(e){ return {}; } }
+function setCk(o){ localStorage.setItem(CKEY, JSON.stringify(o)); }
+
+function renderCk(){
+  var st = getCk();
+  var host = document.getElementById('cklist');
+  var html = '';
+  CITY_ORDER.forEach(function(city){
+    var list = byCity(city);
+    if (!list.length) return;
+    var doneN = list.filter(function(j){ return st[j.id]; }).length;
+    html += '<div class="grouphd ' + city + '">' + CITY_NAME[city] +
+      ' <em>' + doneN + ' / ' + list.length + '</em></div>';
+    html += list.map(function(j){
+      var on = !!st[j.id];
+      return '<div class="ck ' + (on?'done':'') + '" onclick="toggleCk(' + j.id + ')">' +
+        '<div class="box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"/></svg></div>' +
+        '<div class="txt"><div class="n">' + esc(j.co) +
+          '<button class="cpbtn" onclick="event.stopPropagation();copyCo(this,\'' + esc(j.co) + '\')">复制</button></div>' +
+          '<div class="m2">' + esc(j.role) + '　·　' + esc(j.pay) + '</div></div>' +
+        '<div style="font-size:11px;color:' + (on?'var(--green)':'var(--muted)') + ';font-weight:600">' + (on?'已投':'待投') + '</div>' +
+      '</div>';
+    }).join('');
+  });
+  host.innerHTML = html;
+
+  var n = DATA.jobs.filter(function(j){ return st[j.id]; }).length;
+  var total = DATA.jobs.length;
+  document.getElementById('ckN').textContent = n;
+  document.getElementById('ckT').textContent = total;
+  document.getElementById('ckFill').style.width = (total ? (n/total*100) : 0) + '%';
+}
+
+function toggleCk(id){
+  var st = getCk();
+  st[id] = !st[id];
+  setCk(st); renderCk();
+  if (navigator.vibrate) navigator.vibrate(10);
+}
+function resetCk(){
+  if (confirm('清空全部打卡记录？')){ setCk({}); renderCk(); }
+}
+
+/* ================= 底部导航（玻璃胶囊 · 拖动 · 果冻） ================= */
+var IC = {
+  home:'<svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z"/><path d="M9.5 20.5v-6h5v6"/></svg>',
+  xa:'<svg viewBox="0 0 24 24"><path d="M3 20.5h18"/><path d="M5 20.5V9.5l5-3.5 5 3.5v11"/><path d="M15 20.5v-8h4v8"/><path d="M8.5 12h2.5M8.5 15.5h2.5"/></svg>',
+  sz:'<svg viewBox="0 0 24 24"><path d="M4 20.5h16"/><path d="M6.5 20.5V7.5h5v13"/><path d="M11.5 20.5V4h6v16.5"/><path d="M14 7.5h1.5M14 11h1.5M14 14.5h1.5"/></svg>',
+  ak:'<svg viewBox="0 0 24 24"><path d="M3 18.5 9 8.5l4 6 2.5-3.5 5.5 7.5Z"/><circle cx="16.5" cy="6" r="2"/></svg>',
+  msg:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.2-2.6 3.6"/><path d="M12 17h.01"/></svg>',
+  ck:'<svg viewBox="0 0 24 24"><path d="M9 3h6a1.5 1.5 0 0 1 1.5 1.5V5H17a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h.5V4.5A1.5 1.5 0 0 1 9 3Z"/><path d="m8.5 13 2.2 2.2L15.5 10"/></svg>'
+};
+
+var NAVS = [
+  ['p-home','概览',IC.home],
+  ['p-xa','西安',IC.xa],
+  ['p-sz','深圳',IC.sz],
+  ['p-ak','安康',IC.ak],
+  ['p-msg','面试',IC.msg],
+  ['p-ck','打卡',IC.ck]
+];
+var curPage = 'p-home';
+
+function buildNav(){
+  var host = document.getElementById('bnavIn');
+  if (!host) return;
+  host.innerHTML = '<i class="bnav-glare" aria-hidden="true"></i>'
+    + '<i class="bnav-cap 初始" id="bnavCap"></i>'
+    + NAVS.map(function(n){
+        return '<button class="bnav-it' + (n[0] === curPage ? ' on' : '') + '" data-p="' + n[0] + '" title="' + n[1] + '">'
+          + n[2] + '<span>' + n[1] + '</span></button>';
+      }).join('');
+  Array.prototype.forEach.call(host.querySelectorAll('.bnav-it'), function(b){
+    /* 点击统一直接调 go：pointer capture 会把 click 重定向到容器，
+       所以 pointerup 里按坐标兜底（见 导航拖动·结束），这里只处理无捕获场景 */
+    b.addEventListener('click', function(e){
+      if (window.__nav抑制) return;
+      if (e.target && e.target.closest && e.target.closest('.bnav-it') === b) go(b.dataset.p);
+    });
+  });
+  摆胶囊(false);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    var c = document.getElementById('bnavCap');
+    if (c) c.classList.remove('初始');
+  }); });
+  if (!window.__navResize){
+    window.__navResize = true;
+    window.addEventListener('resize', function(){
+      var c = document.getElementById('bnavCap');
+      if (!c) return;
+      c.classList.add('初始'); 摆胶囊(true); c.classList.remove('初始');
+    });
+  }
+  导航拖动();
+}
+
+function go(pid){
+  curPage = pid;
+  Array.prototype.forEach.call(document.querySelectorAll('.page'), function(p){
+    p.classList.toggle('on', p.id === pid);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.bnav-it'), function(b){
+    b.classList.toggle('on', b.dataset.p === pid);
+  });
+  摆胶囊(false);
+  window.scrollTo(0, 0);
+  if (pid === 'p-ck') renderCk();
+}
+
+/* 胶囊：按当前页签量出位置与宽度，两端留边 */
+function 摆胶囊(立即){
+  var cap = document.getElementById('bnavCap');
+  if (!cap) return;
+  requestAnimationFrame(function(){
+    var it = document.querySelector('.bnav-it.on');
+    if (!it){ cap.style.setProperty('--w','0px'); return; }
+    var 左 = it.offsetLeft, 宽 = it.offsetWidth;
+    var 均分 = 宽 > 0 ? 宽 : 56;
+    var 外扩量 = Math.min(8, 均分 * 0.18);
+    var 容器 = cap.parentElement;
+    var 边距 = 3;
+    var 容宽 = 容器 ? 容器.clientWidth : Infinity;
+    var 左余 = 左 - 边距;
+    var 右余 = (容宽 - 边距) - (左 + 宽);
+    var 实扩 = Math.max(0, Math.min(外扩量, 左余, 右余));
+    cap.style.setProperty('--x', (左 - 实扩) + 'px');
+    cap.style.setProperty('--w', (宽 + 实扩 * 2) + 'px');
+    if (!立即){
+      cap.classList.remove('跳');
+      requestAnimationFrame(function(){ cap.classList.add('跳'); });
+    }
+  });
+}
+
+/* 手指/鼠标在底栏上横向拖动：胶囊跟手走，松手落到对应页 */
+function 导航拖动(){
+  var box = document.getElementById('bnavIn');
+  if (!box) return;
+  var cap = document.getElementById('bnavCap');
+  var items = Array.prototype.slice.call(box.querySelectorAll('.bnav-it'));
+  if (items.length < 2) return;
+
+  var 拖中 = false, 起点X = 0, 起点Y = 0, 阈值 = 6, 最后Idx = -1;
+
+  function idxAt(cx){
+    for (var i = 0; i < items.length; i++){
+      var r = items[i].getBoundingClientRect();
+      if (cx >= r.left && cx <= r.right) return i;
+    }
+    var f = items[0].getBoundingClientRect(), l = items[items.length-1].getBoundingClientRect();
+    if (cx < f.left) return 0;
+    if (cx > l.right) return items.length - 1;
+    return -1;
+  }
+  function 预览落点(idx){
+    if (idx < 0 || idx >= items.length) return;
+    items.forEach(function(b,i){ b.classList.toggle('on', i === idx); });
+    if (!cap) return;
+    var it = items[idx], 容器 = cap.parentElement, 容宽 = 容器 ? 容器.clientWidth : Infinity;
+    var 左 = it.offsetLeft, 宽 = it.offsetWidth, pad = 3;
+    var 外扩 = Math.min(8, (宽 > 0 ? 宽 : 56) * 0.18);
+    var 实扩 = Math.max(0, Math.min(外扩, 左 - pad, (容宽 - pad) - (左 + 宽)));
+    cap.style.setProperty('--x', (左 - 实扩) + 'px');
+    cap.style.setProperty('--w', (宽 + 实扩 * 2) + 'px');
+  }
+  function 果冻(idx){
+    if (idx < 0 || idx >= items.length) return;
+    items.forEach(function(b){ b.classList.remove('jelly'); });
+    var el = items[idx];
+    void el.offsetWidth;
+    el.classList.add('jelly');
+    el.addEventListener('animationend', function(){ el.classList.remove('jelly'); }, {once:true});
+    if (navigator.vibrate) navigator.vibrate(6);
+  }
+
+  box.addEventListener('pointerdown', function(e){
+    拖中 = false; 最后Idx = -1;
+    起点X = e.clientX; 起点Y = e.clientY;
+    if (box.setPointerCapture){ try{ box.setPointerCapture(e.pointerId); }catch(_){} }
+  }, {passive:true});
+
+  box.addEventListener('pointermove', function(e){
+    if (e.pointerType === 'mouse' && e.buttons === 0) return;
+    var dx = e.clientX - 起点X, dy = e.clientY - 起点Y;
+    if (!拖中){
+      if (Math.abs(dx) < 阈值 && Math.abs(dy) < 阈值) return;
+      拖中 = true;
+      if (cap) cap.style.transition = 'transform .16s cubic-bezier(.34,1.56,.64,1)';
+    }
+    if (e.cancelable) e.preventDefault();
+    var idx = idxAt(e.clientX);
+    if (idx !== 最后Idx){ 最后Idx = idx; 预览落点(idx); 果冻(idx); }
+  }, {passive:false});
+
+  function 结束(e){
+    if (box.releasePointerCapture && e && e.pointerId != null){
+      try{ box.releasePointerCapture(e.pointerId); }catch(_){}
+    }
+    拖中 = false;
+    window.__nav抑制 = true; setTimeout(function(){ window.__nav抑制 = false; }, 90);
+    if (cap) cap.style.transition = '';
+    /* pointer capture 会把 click 吃掉，无论是否拖动，都在这里按坐标落点切页 */
+    var idx = -1;
+    if (e && typeof e.clientX === 'number'){
+      var r = box.getBoundingClientRect();
+      if (e.clientY >= r.top && e.clientY <= r.bottom) idx = idxAt(e.clientX);
+    }
+    if (idx >= 0) go(items[idx].dataset.p);
+    else 摆胶囊(false);
+  }
+  box.addEventListener('pointerup', 结束, {passive:true});
+  box.addEventListener('pointercancel', function(){
+    拖中 = false;
+    window.__nav抑制 = true; setTimeout(function(){ window.__nav抑制 = false; }, 90);
+    if (cap) cap.style.transition = '';
+    摆胶囊(false);
+  }, {passive:true});
+}
+
+/* 页面不可见时暂停扫光与流动，省电 */
+function 同步动效开关(){
+  document.body.classList.toggle('动效开', !document.hidden && document.hasFocus());
+}
+document.addEventListener('visibilitychange', 同步动效开关);
+window.addEventListener('focus', 同步动效开关);
+window.addEventListener('blur', 同步动效开关);
+
+/* ================= 轻提示 ================= */
+var _toastTimer = null;
+function toast(msg){
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 2000);
+}
+
+/* ================= 顶部四个图标按钮 ================= */
+var 主题顺序 = ['system','light','dark'];
+var 主题名 = {system:'跟随系统', light:'浅色', dark:'深色'};
+
+function setTheme(mode){
+  if (主题顺序.indexOf(mode) < 0) mode = 'system';
+  var 实际 = mode === 'system'
+    ? ((window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light')
+    : mode;
+  document.body.dataset.theme = 实际;
+  document.documentElement.dataset.themeMode = mode;
+  try{ localStorage.setItem('wb_theme', mode); }catch(_){}
+  var 钮 = document.getElementById('themeBtn');
+  if (钮){
+    钮.title = '切换主题 · 当前：' + 主题名[mode];
+    钮.setAttribute('aria-label', 钮.title);
+    钮.classList.toggle('on', mode !== 'system');
+  }
+  var 元 = document.querySelector('meta[name="theme-color"]');
+  if (元) 元.setAttribute('content', 实际 === 'dark' ? '#0b1020' : '#f4f6f9');
+  /* 换主题后底栏宽度不变，但重摆一次防止亚像素偏差 */
+  setTimeout(function(){ 摆胶囊(true); }, 30);
+}
+
+function 切换主题(){
+  var 当前 = document.documentElement.dataset.themeMode || 'system';
+  var 下一个 = 主题顺序[(主题顺序.indexOf(当前) + 1) % 主题顺序.length];
+  setTheme(下一个);
+  toast('已切换到' + 主题名[下一个]);
+}
+
+if (window.matchMedia){
+  var mq = matchMedia('(prefers-color-scheme: dark)');
+  if (mq.addEventListener) mq.addEventListener('change', function(){
+    if ((document.documentElement.dataset.themeMode || 'system') === 'system') setTheme('system');
+  });
+}
+
+/* ③ 下载到桌面：导出一份干净的离线副本 */
+function 下载到桌面(){
+  var clone = document.documentElement.cloneNode(true);
+  Array.prototype.forEach.call(clone.querySelectorAll('.joblist'), function(el){ el.innerHTML = ''; });
+  ['cklist'].forEach(function(id){
+    var el = clone.querySelector('#' + id);
+    if (el) el.innerHTML = '';
+  });
+  /* 导出前清空弹层内容并保证关闭态 */
+  var mask = clone.querySelector('#msgMask');
+  if (mask){ mask.classList.remove('on'); var bd = mask.querySelector('.sheet-bd'); if (bd) bd.innerHTML = ''; }
+  var nav = clone.querySelector('#bnavIn');
+  if (nav) nav.innerHTML = '<i class="bnav-glare" aria-hidden="true"></i>';
+  Array.prototype.forEach.call(clone.querySelectorAll('.page'), function(p){
+    p.classList.toggle('on', p.id === 'p-home');
+  });
+  var body = clone.querySelector('body');
+  if (body) body.classList.remove('动效开');
+  var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  try{
+    var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = '工作看板.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+    toast('已导出，双击即可离线打开');
+  }catch(err){
+    toast('导出失败：浏览器不允许，请用 Ctrl+S 保存');
+  }
+}
+
+/* ② 刷新数据：重新读数据区并全部重绘（不白屏） */
+var refreshing = false;
+function 刷新数据(){
+  if (refreshing) return;
+  refreshing = true;
+  var btn = document.getElementById('refreshBtn');
+  var svg = btn ? btn.querySelector('svg') : null;
+  var dot = document.getElementById('stDot');
+  var st = document.getElementById('stText');
+  if (svg) svg.classList.add('spin');
+  if (dot) dot.className = 'st-dot busy';
+  if (st) st.textContent = '正在读取最新数据…';
+
+  setTimeout(function(){
+    loadData();
+    renderJobs('xa'); renderJobs('sz'); renderJobs('ak');
+    renderCk();
+    var now = new Date();
+    var hh = ('0' + now.getHours()).slice(-2), mm = ('0' + now.getMinutes()).slice(-2);
+    var 时间 = DATA.updated || (hh + ':' + mm);
+    var 短 = String(时间).replace(/^\d{4}-\d{2}-\d{2}\s*/, '');
+    var el = document.getElementById('upd');
+    if (el) el.textContent = 短;
+    var el2 = document.getElementById('upd2');
+    if (el2) el2.textContent = 时间;
+    nextAt = Date.now() + PERIOD;
+    tick();
+    if (svg) svg.classList.remove('spin');
+    if (dot) dot.className = 'st-dot';
+    if (st) st.textContent = '已刷新 · ' + DATA.jobs.length + ' 家岗位';
+    refreshing = false;
+    toast('已刷新 · 数据快照 ' + (DATA.updated || ''));
+    if (navigator.vibrate) navigator.vibrate(8);
+  }, 420);
+}
+
+/* ④ 自动刷新开关 */
+var autoRefresh = true;
+function toggleAuto(){
+  autoRefresh = !autoRefresh;
+  var b = document.getElementById('autoBtn');
+  if (b){
+    b.classList.toggle('auto-on', autoRefresh);
+    b.title = '自动刷新' + (autoRefresh ? '（每10分钟）' : '已暂停');
+  }
+  tick();
+  toast(autoRefresh ? '自动刷新已开启：每 10 分钟' : '自动刷新已暂停');
+}
+
+document.getElementById('themeBtn').addEventListener('click', 切换主题);
+document.getElementById('dlBtn').addEventListener('click', 下载到桌面);
+document.getElementById('refreshBtn').addEventListener('click', 刷新数据);
+document.getElementById('autoBtn').addEventListener('click', function(){ toggleAuto(); });
+
+/* 城市页筛选 */
+document.querySelectorAll('.chips[data-city]').forEach(function(box){
+  box.addEventListener('click', function(e){
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    box.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    renderJobs(box.dataset.city, b.dataset.f);
+  });
+});
+
+/* 弹层：点遮罩关闭 */
+document.getElementById('msgMask').addEventListener('click', function(e){
+  if (e.target === this) closeMsg();
+});
+
+/* ================= 10 分钟自动刷新 ================= */
+var PERIOD = 10 * 60 * 1000;
+var nextAt = Date.now() + PERIOD;
+
+function tick(){
+  var el = document.getElementById('cd');
+  if (!el) return;
+  if (!autoRefresh){ el.textContent = '已暂停'; return; }
+  var left = Math.max(0, nextAt - Date.now());
+  var m = Math.floor(left/60000), s = Math.floor(left%60000/1000);
+  el.textContent = m + ':' + (s < 10 ? '0' + s : s);
+  if (left <= 0){
+    el.textContent = '刷新中';
+    location.reload();
+  }
+}
+
+function hardRefresh(){
+  nextAt = Date.now() + PERIOD;
+  location.reload();
+}
+
+/* ================= 启动 ================= */
+loadData();
+
+/* 主题：默认跟随系统，记住上次选择 */
+var 存的主题 = null;
+try{ 存的主题 = localStorage.getItem('wb_theme'); }catch(_){}
+setTheme(存的主题 || 'system');
+同步动效开关();
+
+/* 底栏必须等数据载入后再建（话术徽标取岗位总数） */
+buildNav();
+
+renderJobs('xa','all');
+renderJobs('sz','all');
+renderJobs('ak','all');
+renderCk();
+
+/* 状态条 */
+document.getElementById('stText').textContent = '数据快照 · ' + DATA.jobs.length + ' 家岗位 · 三城';
+
+/* 概览数字 */
+var upTxt = DATA.updated || '--:--';
+var upShort = String(upTxt).replace(/^\d{4}-\d{2}-\d{2}\s*/, '');
+document.getElementById('upd').textContent = upShort;
+document.getElementById('upd2').textContent = upTxt;
+document.getElementById('h1n').innerHTML = DATA.jobs.length + '<small>家</small>';
+
+function maxPayOf(city){
+  var mx = 0;
+  byCity(city).forEach(function(j){
+    var m = String(j.pay).match(/(\d+)\s*-\s*(\d+)K/);
+    if (m){ var hi = parseInt(m[2],10); if (hi > mx) mx = hi; }
+    else if (j.payNote){
+      var m2 = String(j.payNote).match(/(\d+)\s*-\s*(\d+)K/);
+      if (m2){ var hi2 = parseInt(m2[2],10); if (hi2 > mx) mx = hi2; }
+    }
+  });
+  return mx;
+}
+
+CITY_ORDER.forEach(function(c){
+  var list = byCity(c);
+  var elN = document.getElementById('c-' + c + '-n');
+  if (elN) elN.textContent = list.length;
+  var elE = document.getElementById('c-' + c + '-e');
+  if (elE) elE.textContent = list.filter(function(j){ return j.eduOk; }).length;
+  var elP = document.getElementById('c-' + c + '-p');
+  if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
+});
+
+tick();
+setInterval(tick, 1000);
+
+/* 页面重新可见时校正倒计时（手机切后台会暂停计时器） */
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden){ tick(); renderCk(); }
+});
+</script>
+</body>
+</html>
