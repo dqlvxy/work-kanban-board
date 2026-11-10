@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 6 步 试投一家</title>
+<title>手机自动投递 · 第 7 步 发话术</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,17 +39,17 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 6 步</h1>
-<div class="sub">真点一次「立即沟通」，只点不发。</div>
+<h1>手机自动投递 · 第 7 步</h1>
+<div class="sub">把定制话术键入并发送。</div>
 
-<div class="warn">这一步会真的向 1 位 HR 建立沟通，是第一次真投。跑之前想清楚，跑完不满意可以手动在 BOSS 里撤回不了，只能不理。</div>
+<div class="warn">这条发出去就真到 HR 手里了。脚本会自己点发送，你不用动手。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本进剪贴板</b></p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>6.js</b>，粘贴，保存</b></div></div>
-<div class="step"><div class="n">3</div><p>去 BOSS，点进一个岗位，停在<b>「立即沟通」</b>那屏，然后按 Home 退出</p></div>
-<div class="step"><div class="n">4</div><p>回 AutoJs6 运行 6.js。它会自己点那一下，点完把新界面复制到剪贴板</p></div>
-<div class="step"><div class="n">5</div><p>切回豆包，长按粘贴发我</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>7.js</b>，粘贴，保存</p></div>
+<div class="step"><div class="n">3</div><p>保证手机停在<b>刚才那个聊天页</b>（能看到底部输入框），按 Home 退出</p></div>
+<div class="step"><div class="n">4</div><p>回 AutoJs6 运行 7.js，它会自己填字、按发送</p></div>
+<div class="step"><div class="n">5</div><p>切回豆包粘贴，把发送后的界面发我看</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -58,9 +58,8 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 6 步：真点一次「立即沟通」
- * 只点这一下，不自动发消息。点完把新界面结构复制到剪贴板。
- * 用法：先在 BOSS 停在某个岗位详情页，按 Home 退出，再运行本脚本。
+ * 手机自动投递 · 第 7 步：把定制话术发出去
+ * 前提：已经停在 BOSS 的聊天页（输入框可见）
  */
 
 function 扫描() {
@@ -79,41 +78,53 @@ function 扫描() {
     return "节点总数: " + 全部.size() + "  含文字: " + 行.length + "\n----\n" + 行.join("\n");
 }
 
+var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？";
+
 auto.waitFor();
 sleep(800);
 
 var ok = launchApp("BOSS直聘");
-toastLog("拉起 BOSS: " + ok);
-sleep(5000);
+sleep(4000);
 
 var 包 = currentPackage();
-
 if (包 != "com.hpbr.bosszhipin") {
     setClip("不在 BOSS 前台，当前包名: " + 包);
     toastLog("不在 BOSS 前台");
 } else {
-    var 按钮 = text("立即沟通").findOne(6000);
-    if (!按钮) {
-        setClip("没找到「立即沟通」按钮，当前界面:\n" + 扫描());
-        toastLog("没找到按钮，已复制界面结构");
+    var 输入 = className("android.widget.EditText").findOne(6000);
+    if (!输入) {
+        setClip("没找到输入框，当前界面:\n" + 扫描());
+        toastLog("没找到输入框");
     } else {
-        var cx = 按钮.bounds().centerX();
-        var cy = 按钮.bounds().centerY();
-        toastLog("找到「立即沟通」@ " + cx + "," + cy + "，3 秒后点击");
+        toastLog("找到输入框，先点一下聚焦");
+        输入.click();
+        sleep(1200);
+
+        输入.setText(话术);
+        sleep(2000);
+        toastLog("文字已填入，找发送按钮");
+
+        var 发送 = text("发送").findOne(2500);
+        if (发送) {
+            toastLog("找到「发送」按钮，点击");
+            发送.click();
+        } else {
+            toastLog("没有「发送」按钮，按坐标点输入框右侧");
+            click(1050, 2291);
+        }
+
         sleep(3000);
-        按钮.click();
-        sleep(7000);
-        setClip("已点击「立即沟通」\n点击后包名: " + currentPackage() + "\n" + 扫描());
-        toastLog("点完了，界面结构已复制到剪贴板");
+        setClip("已尝试发送话术后界面:\n" + 扫描());
+        toastLog("发完了，界面结构已复制到剪贴板");
     }
 }
 </pre>
 </div>
 
-<div class="foot">跑完 BOSS 可能停在聊天页，属正常</div>
+<div class="foot">话术写在代码里，想改哪句改哪句</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 6 步：真点一次「立即沟通」\n * 只点这一下，不自动发消息。点完把新界面结构复制到剪贴板。\n * 用法：先在 BOSS 停在某个岗位详情页，按 Home 退出，再运行本脚本。\n */\n\nfunction 扫描() {\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n    return \"节点总数: \" + 全部.size() + \"  含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n}\n\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\ntoastLog(\"拉起 BOSS: \" + ok);\nsleep(5000);\n\nvar 包 = currentPackage();\n\nif (包 != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台，当前包名: \" + 包);\n    toastLog(\"不在 BOSS 前台\");\n} else {\n    var 按钮 = text(\"立即沟通\").findOne(6000);\n    if (!按钮) {\n        setClip(\"没找到「立即沟通」按钮，当前界面:\\n\" + 扫描());\n        toastLog(\"没找到按钮，已复制界面结构\");\n    } else {\n        var cx = 按钮.bounds().centerX();\n        var cy = 按钮.bounds().centerY();\n        toastLog(\"找到「立即沟通」@ \" + cx + \",\" + cy + \"，3 秒后点击\");\n        sleep(3000);\n        按钮.click();\n        sleep(7000);\n        setClip(\"已点击「立即沟通」\\n点击后包名: \" + currentPackage() + \"\\n\" + 扫描());\n        toastLog(\"点完了，界面结构已复制到剪贴板\");\n    }\n}\n";
+var CODE = "/**\n * 手机自动投递 · 第 7 步：把定制话术发出去\n * 前提：已经停在 BOSS 的聊天页（输入框可见）\n */\n\nfunction 扫描() {\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n    return \"节点总数: \" + 全部.size() + \"  含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n}\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\nsleep(4000);\n\nvar 包 = currentPackage();\nif (包 != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台，当前包名: \" + 包);\n    toastLog(\"不在 BOSS 前台\");\n} else {\n    var 输入 = className(\"android.widget.EditText\").findOne(6000);\n    if (!输入) {\n        setClip(\"没找到输入框，当前界面:\\n\" + 扫描());\n        toastLog(\"没找到输入框\");\n    } else {\n        toastLog(\"找到输入框，先点一下聚焦\");\n        输入.click();\n        sleep(1200);\n\n        输入.setText(话术);\n        sleep(2000);\n        toastLog(\"文字已填入，找发送按钮\");\n\n        var 发送 = text(\"发送\").findOne(2500);\n        if (发送) {\n            toastLog(\"找到「发送」按钮，点击\");\n            发送.click();\n        } else {\n            toastLog(\"没有「发送」按钮，按坐标点输入框右侧\");\n            click(1050, 2291);\n        }\n\n        sleep(3000);\n        setClip(\"已尝试发送话术后界面:\\n\" + 扫描());\n        toastLog(\"发完了，界面结构已复制到剪贴板\");\n    }\n}\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
