@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 12 步 锁定纸飞机</title>
+<title>手机自动投递 · 第 13 步 看气泡判断</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,16 +39,16 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 12 步</h1>
-<div class="sub">锁定纸飞机位置，直接点。</div>
+<h1>手机自动投递 · 第 13 步</h1>
+<div class="sub">不看字数，只看气泡。</div>
 
-<div class="warn">空框右侧是加号，有字才变纸飞机，两者位置完全一样。这版就是照这个位置点：屏宽往左 100 像素，高度对齐输入框中线。</div>
+<div class="warn">你那版框里其实是有字的，是脚本读不出来才误判停手。这版先填一遍，再按固定位置点纸飞机，点完看聊天区有没有冒出含「杜全龙」的绿气泡。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>12.js</b>，粘贴，保存</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>13.js</b>，粘贴，保存</p></div>
 <div class="step"><div class="n">3</div><p>停在孙先生聊天页，按 Home 退出</p></div>
-<div class="step"><div class="n">4</div><p>运行 12.js，等结果</p></div>
+<div class="step"><div class="n">4</div><p>运行 13.js，等结果</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -57,9 +57,8 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 12 步：确认有字 → 点纸飞机 → 手势自检
- * 空框时右侧是圆圈加号，有字才变纸飞机，位置固定：
- * x = 屏宽 - 100，y = 输入框垂直中心。
+ * 手机自动投递 · 第 13 步：不读字数，只看有没有发出新气泡
+ * BOSS 输入框是无障碍读不出文本的 Web 控件，text() 恒为空，不能用字数判断成败。
  */
 
 var 话术 = "孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？";
@@ -68,7 +67,7 @@ auto.waitFor();
 sleep(800);
 
 var 报告 = "";
-var 拉起 = launchApp("BOSS直聘");
+launchApp("BOSS直聘");
 sleep(4500);
 
 if (currentPackage() != "com.hpbr.bosszhipin") {
@@ -84,101 +83,66 @@ if (!输入) {
     exit();
 }
 
-function 字数() {
-    return ((输入.text() || "").trim()).length;
+// 成功判据：聊天区出现一段含「杜全龙」的 TextView（气泡才会变成 TextView）
+function 发出去了() {
+    var t = textContains("杜全龙").className("android.widget.TextView").findOnce(2500);
+    return !!t;
 }
 
-// 1) 把话术弄进去，多路径，直到字数过关
+var 已发 = 发出去了();
+报告 += "开跑前已有气泡: " + 已发 + "\n";
+
+// 填字（读不到也无所谓，照样填一遍）
 输入.click();
-sleep(1000);
-报告 += "初始字数: " + 字数() + "\n";
-
-if (字数() &lt; 100) {
-    try { 输入.setText(话术); } catch (e) {}
-    sleep(1600);
-    报告 += "setText 后: " + 字数() + "\n";
-
-    if (字数() &lt; 100) {
-        setClip(话术);
-        sleep(400);
-        try {
-            var 框0 = 输入.bounds();
-            longClick(框0.centerX(), 框0.centerY());
-            sleep(1600);
-            var 粘 = textContains("粘贴").findOne(2000);
-            if (粘) { 粘.click(); sleep(1400); }
-        } catch (e) { 报告 += "粘贴异常: " + e + "\n"; }
-        报告 += "粘贴后: " + 字数() + "\n";
-    }
-
-    if (字数() &lt; 100) {
-        输入.click();
-        sleep(600);
-        try { 输入.setText(话术); } catch (e) {}
-        sleep(1500);
-        报告 += "二次 setText 后: " + 字数() + "\n";
-    }
-}
-
-if (字数() &lt; 100) {
-    setClip(报告 + "话术进不去，停止");
-    toastLog("话术进不去");
-    exit();
-}
-
 sleep(1200);
+try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
+sleep(1800);
+
 var 框 = 输入.bounds();
 var 目标X = device.width - 100;
 var 目标Y = 框.centerY();
 报告 += "输入框: " + 框.left + "," + 框.top + " " + 框.width() + "x" + 框.height() + "\n";
 报告 += "目标点: " + 目标X + "," + 目标Y + "\n";
 
-var 已发 = false;
-
-// 2) 点纸飞机：click 与 swipe 交替，各点两轮
-for (var r = 0; r &lt; 2 &amp;&amp; !已发; r++) {
+// 点纸飞机
+for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
     click(目标X, 目标Y);
-    sleep(1800);
-    报告 += "第" + (r + 1) + "次 click 后字数: " + 字数() + "\n";
-    if (字数() &lt; 8) { 已发 = true; 报告 += "click 发出去\n"; break; }
+    sleep(2000);
+    已发 = 发出去了();
+    报告 += "第" + r + "次 click: " + 已发 + "\n";
+    if (已发) break;
 
     try { swipe(目标X - 4, 目标Y - 4, 目标X + 4, 目标Y + 4, 80); } catch (e) {}
-    sleep(1800);
-    报告 += "第" + (r + 1) + "次 swipe 后字数: " + 字数() + "\n";
-    if (字数() &lt; 8) { 已发 = true; 报告 += "swipe 发出去\n"; break; }
+    sleep(2000);
+    已发 = 发出去了();
+    报告 += "第" + r + "次 swipe: " + 已发 + "\n";
 }
 
-// 3) 手势自检：点笑脸，看手势到底能不能传进去
+// 手势自检：点笑脸
 if (!已发) {
     var 笑X = device.width - 282;
     var 笑Y = 框.centerY();
-    var 前字 = 字数();
     var 前节点 = classNameMatches(/.+/).find().size();
     click(笑X, 笑Y);
-    sleep(1600);
-    var 后字 = 字数();
+    sleep(1800);
     var 后节点 = classNameMatches(/.+/).find().size();
-    报告 += "自检 点笑脸: 字数 " + 前字 + "→" + 后字 + "  节点 " + 前节点 + "→" + 后节点 + "\n";
-    if (后节点 &gt; 前节点 + 10 || 后字 != 前字) {
-        报告 += "结论: 手势可以传进 App\n";
-        输入.click();
-        sleep(800);
-        try { back(); } catch (e) {}
-    } else {
-        报告 += "结论: 手势被 App 忽略，坐标点无效\n";
-    }
+    报告 += "自检 点笑脸: 节点 " + 前节点 + "→" + 后节点 + "\n";
+    if (后节点 &gt; 前节点 + 10) 报告 += "结论: 手势能传进 App\n";
+    else 报告 += "结论: 手势被忽略\n";
+    输入.click();
+    sleep(600);
 }
 
 sleep(800);
 setClip(报告);
-toastLog(已发 ? "发出去了" : "没发出去，看报告");
+toastLog(已发 ? "发出去了" : "没发出去");
 </pre>
 </div>
 
-<div class="foot">点失败它会自动测一次笑脸，判断手势能不能传进 App</div>
+<div class="foot">发出去了右边会从纸飞机变回加号</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 12 步：确认有字 → 点纸飞机 → 手势自检\n * 空框时右侧是圆圈加号，有字才变纸飞机，位置固定：\n * x = 屏宽 - 100，y = 输入框垂直中心。\n */\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar 报告 = \"\";\nvar 拉起 = launchApp(\"BOSS直聘\");\nsleep(4500);\n\nif (currentPackage() != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n    exit();\n}\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(\"没找到输入框\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n\nfunction 字数() {\n    return ((输入.text() || \"\").trim()).length;\n}\n\n// 1) 把话术弄进去，多路径，直到字数过关\n输入.click();\nsleep(1000);\n报告 += \"初始字数: \" + 字数() + \"\\n\";\n\nif (字数() < 100) {\n    try { 输入.setText(话术); } catch (e) {}\n    sleep(1600);\n    报告 += \"setText 后: \" + 字数() + \"\\n\";\n\n    if (字数() < 100) {\n        setClip(话术);\n        sleep(400);\n        try {\n            var 框0 = 输入.bounds();\n            longClick(框0.centerX(), 框0.centerY());\n            sleep(1600);\n            var 粘 = textContains(\"粘贴\").findOne(2000);\n            if (粘) { 粘.click(); sleep(1400); }\n        } catch (e) { 报告 += \"粘贴异常: \" + e + \"\\n\"; }\n        报告 += \"粘贴后: \" + 字数() + \"\\n\";\n    }\n\n    if (字数() < 100) {\n        输入.click();\n        sleep(600);\n        try { 输入.setText(话术); } catch (e) {}\n        sleep(1500);\n        报告 += \"二次 setText 后: \" + 字数() + \"\\n\";\n    }\n}\n\nif (字数() < 100) {\n    setClip(报告 + \"话术进不去，停止\");\n    toastLog(\"话术进不去\");\n    exit();\n}\n\nsleep(1200);\nvar 框 = 输入.bounds();\nvar 目标X = device.width - 100;\nvar 目标Y = 框.centerY();\n报告 += \"输入框: \" + 框.left + \",\" + 框.top + \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n报告 += \"目标点: \" + 目标X + \",\" + 目标Y + \"\\n\";\n\nvar 已发 = false;\n\n// 2) 点纸飞机：click 与 swipe 交替，各点两轮\nfor (var r = 0; r < 2 && !已发; r++) {\n    click(目标X, 目标Y);\n    sleep(1800);\n    报告 += \"第\" + (r + 1) + \"次 click 后字数: \" + 字数() + \"\\n\";\n    if (字数() < 8) { 已发 = true; 报告 += \"click 发出去\\n\"; break; }\n\n    try { swipe(目标X - 4, 目标Y - 4, 目标X + 4, 目标Y + 4, 80); } catch (e) {}\n    sleep(1800);\n    报告 += \"第\" + (r + 1) + \"次 swipe 后字数: \" + 字数() + \"\\n\";\n    if (字数() < 8) { 已发 = true; 报告 += \"swipe 发出去\\n\"; break; }\n}\n\n// 3) 手势自检：点笑脸，看手势到底能不能传进去\nif (!已发) {\n    var 笑X = device.width - 282;\n    var 笑Y = 框.centerY();\n    var 前字 = 字数();\n    var 前节点 = classNameMatches(/.+/).find().size();\n    click(笑X, 笑Y);\n    sleep(1600);\n    var 后字 = 字数();\n    var 后节点 = classNameMatches(/.+/).find().size();\n    报告 += \"自检 点笑脸: 字数 \" + 前字 + \"→\" + 后字 + \"  节点 \" + 前节点 + \"→\" + 后节点 + \"\\n\";\n    if (后节点 > 前节点 + 10 || 后字 != 前字) {\n        报告 += \"结论: 手势可以传进 App\\n\";\n        输入.click();\n        sleep(800);\n        try { back(); } catch (e) {}\n    } else {\n        报告 += \"结论: 手势被 App 忽略，坐标点无效\\n\";\n    }\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去，看报告\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 13 步：不读字数，只看有没有发出新气泡\n * BOSS 输入框是无障碍读不出文本的 Web 控件，text() 恒为空，不能用字数判断成败。\n */\n\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\n\nvar 报告 = \"\";\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\n\nif (currentPackage() != \"com.hpbr.bosszhipin\") {\n    setClip(\"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n    exit();\n}\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) {\n    setClip(\"没找到输入框\");\n    toastLog(\"没找到输入框\");\n    exit();\n}\n\n// 成功判据：聊天区出现一段含「杜全龙」的 TextView（气泡才会变成 TextView）\nfunction 发出去了() {\n    var t = textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2500);\n    return !!t;\n}\n\nvar 已发 = 发出去了();\n报告 += \"开跑前已有气泡: \" + 已发 + \"\\n\";\n\n// 填字（读不到也无所谓，照样填一遍）\n输入.click();\nsleep(1200);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(1800);\n\nvar 框 = 输入.bounds();\nvar 目标X = device.width - 100;\nvar 目标Y = 框.centerY();\n报告 += \"输入框: \" + 框.left + \",\" + 框.top + \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n报告 += \"目标点: \" + 目标X + \",\" + 目标Y + \"\\n\";\n\n// 点纸飞机\nfor (var r = 1; r <= 3 && !已发; r++) {\n    click(目标X, 目标Y);\n    sleep(2000);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次 click: \" + 已发 + \"\\n\";\n    if (已发) break;\n\n    try { swipe(目标X - 4, 目标Y - 4, 目标X + 4, 目标Y + 4, 80); } catch (e) {}\n    sleep(2000);\n    已发 = 发出去了();\n    报告 += \"第\" + r + \"次 swipe: \" + 已发 + \"\\n\";\n}\n\n// 手势自检：点笑脸\nif (!已发) {\n    var 笑X = device.width - 282;\n    var 笑Y = 框.centerY();\n    var 前节点 = classNameMatches(/.+/).find().size();\n    click(笑X, 笑Y);\n    sleep(1800);\n    var 后节点 = classNameMatches(/.+/).find().size();\n    报告 += \"自检 点笑脸: 节点 \" + 前节点 + \"→\" + 后节点 + \"\\n\";\n    if (后节点 > 前节点 + 10) 报告 += \"结论: 手势能传进 App\\n\";\n    else 报告 += \"结论: 手势被忽略\\n\";\n    输入.click();\n    sleep(600);\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
