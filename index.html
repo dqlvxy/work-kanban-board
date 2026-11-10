@@ -442,6 +442,10 @@
     font-family:inherit;font-size:11.5px;font-weight:700;color:var(--muted);
     background:var(--soft2);border:1px solid var(--line);border-radius:999px;
     padding:8px 0;margin-top:0;text-align:center;display:flex;align-items:center;gap:3px}
+
+  /* ===== 投递引导浮层 ===== */
+  .gd-tip{font-size:12px;font-weight:700;color:var(--green);padding:9px 2px 0}
+  .gd-steps{font-size:11.5px;line-height:1.85;color:var(--muted);padding:9px 2px 0}
 </style>
 </head>
 <body>
@@ -700,6 +704,26 @@
       <button id="msCopy" onclick="copyM(this, curMsgId)">复制话术</button>
       <a id="msLink" target="_blank" rel="noopener" onclick="applyOne(event, curMsgId)">一键投递 ↗</a>
     </div>
+  </div>
+</div>
+
+<!-- ================= 投递引导浮层 ================= -->
+<div class="mask" id="guideMask" onclick="if(event.target===this)closeGuide()">
+  <div class="sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-hd">
+      <div class="l">
+        <div class="t" id="gdCo"></div>
+        <div class="s" id="gdRole"></div>
+      </div>
+    </div>
+    <div class="sheet-bd"><p id="gdMsg" onclick="selAll('gdMsg')"></p></div>
+    <div class="gd-tip" id="gdTip">话术复制中…</div>
+    <div class="sheet-btns">
+      <button onclick="copyGd()">重新复制</button>
+      <a id="gdGo" target="_blank" rel="noopener" onclick="closeGuide()">打开岗位页 ↗</a>
+    </div>
+    <div class="gd-steps">到页面后三步：① 点右下角「立即沟通」（没登录会先跳登录）② 输入框长按 → 粘贴 → 发送 ③ 回来打卡页会自动多一条「已投」</div>
   </div>
 </div>
 
@@ -1025,17 +1049,43 @@ function applyOne(e, id){
   });
 }
 
+function selAll(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  var r = document.createRange(); r.selectNodeContents(el);
+  var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  toast('已选中，长按就能复制');
+}
+function copyGd(){
+  var txt = document.getElementById('gdMsg').textContent;
+  copyText(txt, function(ok){
+    document.getElementById('gdTip').textContent = ok ? '话术已复制到剪贴板' : '没复制上，点一下话术框全选再长按';
+    toast(ok ? '已复制' : '复制失败');
+  });
+}
+function closeGuide(){
+  document.getElementById('guideMask').classList.remove('on');
+  document.body.style.overflow = '';
+}
 function applyJob(id){
   var m = MSGS[id];
   if (!m){ toast('这家没有定制话术，先点「话术」看看'); return; }
-  var url = LINKS[id] || 'https://www.zhipin.com/';
-  var win = window.open(url, '_blank');
+  var j = DATA.jobs.filter(function(x){ return x.id == id; })[0] || {};
+  document.getElementById('gdCo').textContent = j.co || '';
+  document.getElementById('gdRole').textContent = (j.role || '') +
+    (j.pay ? '　·　' + j.pay : '') + (j.city === 'sz' ? '　·　深圳' : j.city === 'xa' ? '　·　西安' : '');
+  document.getElementById('gdMsg').textContent = m.m;
+  document.getElementById('gdGo').href = LINKS[id] || 'https://www.zhipin.com/';
+  document.getElementById('gdTip').textContent = '话术复制中…';
+  document.getElementById('guideMask').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  markOne(id);
   copyText(m.m, function(ok){
-    markOne(id);
-    if (ok) toast('话术已复制 · 在岗位页粘贴发送');
-    else toast('复制失败了，点「话术」进去长按复制');
+    document.getElementById('gdTip').textContent = ok
+      ? '话术已复制到剪贴板（已记为已投）'
+      : '自动复制被浏览器拦了，点一下话术框全选再长按复制';
   });
-  if (win && win.focus) { try{ win.focus(); }catch(_){} }
+  if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
 }
 
 /* ================= 打卡 ================= */
