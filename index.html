@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
@@ -692,7 +691,7 @@
     <div class="sheet-bd" id="msBody"></div>
     <div class="sheet-btns">
       <button id="msCopy" onclick="copyM(this, curMsgId)">复制话术</button>
-      <a id="msLink" target="_blank" rel="noopener">去投递 ↗</a>
+      <a id="msLink" target="_blank" rel="noopener" onclick="applyOne(event, curMsgId)">一键投递 ↗</a>
     </div>
   </div>
 </div>
@@ -975,6 +974,46 @@ function copyCo(btn, name){
   }
 }
 
+/* ================= 手机一键投递 ================= */
+var TKEY = 'du_apply_time';
+function getT(){ try{ return JSON.parse(localStorage.getItem(TKEY) || '{}'); }catch(e){ return {}; } }
+function setT(o){ try{ localStorage.setItem(TKEY, JSON.stringify(o)); }catch(e){} }
+function timeTag(ts){
+  var d = new Date(ts);
+  function p2(n){ return (n < 10 ? '0' : '') + n; }
+  return p2(d.getMonth()+1) + '-' + p2(d.getDate()) + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes());
+}
+function copyText(txt, cb){
+  var ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try{ ta.setSelectionRange(0, txt.length); }catch(_){}
+  var ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  if (!ok && navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){ cb(true); }).catch(function(){ cb(false); });
+    return;
+  }
+  cb(ok);
+}
+function markOne(id){
+  var st = getCk(); st[id] = true; setCk(st);
+  var t = getT(); t[id] = Date.now(); setT(t);
+  renderCk();
+  if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
+}
+function applyOne(e, id){
+  var m = MSGS[id];
+  if (!m) return;
+  copyText(m.m, function(ok){
+    if (ok){ markOne(id); toast('话术已复制 · 已记为已投，去沟通页粘贴发送'); }
+    else { toast('复制失败，请在弹层里长按话术手动复制'); }
+  });
+}
+
 /* ================= 打卡 ================= */
 var CKEY = 'du_apply_v2';
 function getCk(){ try{ return JSON.parse(localStorage.getItem(CKEY) || '{}'); }catch(e){ return {}; } }
@@ -982,6 +1021,7 @@ function setCk(o){ localStorage.setItem(CKEY, JSON.stringify(o)); }
 
 function renderCk(){
   var st = getCk();
+  var tt = getT();
   var host = document.getElementById('cklist');
   var html = '';
   CITY_ORDER.forEach(function(city){
@@ -996,7 +1036,7 @@ function renderCk(){
         '<div class="box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"/></svg></div>' +
         '<div class="txt"><div class="n">' + esc(j.co) +
           '<button class="cpbtn" onclick="event.stopPropagation();copyCo(this,\'' + esc(j.co) + '\')">复制</button></div>' +
-          '<div class="m2">' + esc(j.role) + '　·　' + esc(j.pay) + '</div></div>' +
+          '<div class="m2">' + esc(j.role) + '　·　' + esc(j.pay) + (on && tt[j.id] ? '　·　' + timeTag(tt[j.id]) + ' 投的' : '') + '</div></div>' +
         '<div style="font-size:11px;color:' + (on?'var(--green)':'var(--muted)') + ';font-weight:600">' + (on?'已投':'待投') + '</div>' +
       '</div>';
     }).join('');
@@ -1013,7 +1053,9 @@ function renderCk(){
 function toggleCk(id){
   var st = getCk();
   st[id] = !st[id];
-  setCk(st); renderCk();
+  setCk(st);
+  if (!st[id]){ var t = getT(); delete t[id]; setT(t); }
+  renderCk();
   if (navigator.vibrate) navigator.vibrate(10);
 }
 function resetCk(){
