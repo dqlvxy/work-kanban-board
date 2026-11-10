@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 9 步 结构找发送</title>
+<title>手机自动投递 · 第 10 步 网格扫</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,17 +39,16 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 9 步</h1>
-<div class="sub">按结构找按钮，逐个试，发出就停。</div>
+<h1>手机自动投递 · 第 10 步</h1>
+<div class="sub">网格试探发送键，点中即停。</div>
 
-<div class="warn">会先点输入框把键盘弹起来，再按真实布局找发送键，最多试几个候选，一旦发出去立即停止。</div>
+<div class="warn">会连点十几次，慢一点，别急着切走。发出去了它会立刻停手。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点下面按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>9.js</b>，粘贴，保存</p></div>
-<div class="step"><div class="n">3</div><p>停在那个聊天页（输入框里有字），按 Home 退出</p></div>
-<div class="step"><div class="n">4</div><p>运行 9.js，看它弹的是「发出去了」还是「还是没发出去」</p></div>
-<div class="step"><div class="n">5</div><p>切回豆包粘贴，把报告发我</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>10.js</b>，粘贴，保存</p></div>
+<div class="step"><div class="n">3</div><p>停在那个聊天页（框里有字），按 Home 退出</p></div>
+<div class="step"><div class="n">4</div><p>运行 10.js，等它弹结果</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -58,25 +57,9 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 9 步：按界面结构找发送按钮
- * 不再硬点坐标。筛出右下区域所有可点击节点，逐个试，发出去就停。
+ * 手机自动投递 · 第 10 步：网格扫发送键
+ * 先把输入框点一下让键盘弹出，再以输入框为基准在右侧网格里逐点试探。
  */
-
-function 扫描() {
-    var 全部 = classNameMatches(/.+/).find();
-    var 行 = [];
-    for (var i = 0; i &lt; 全部.size(); i++) {
-        var w = 全部.get(i);
-        var 文 = (w.text() || "").trim();
-        var 述 = (w.desc() || "").trim();
-        if (!文 &amp;&amp; !述) continue;
-        var b = w.bounds();
-        行.push(w.className().replace("android.widget.", "").replace("android.view.", "") +
-            " | " + 文 + " | " + 述 + " | " +
-            b.left + "," + b.top + " " + b.width() + "x" + b.height());
-    }
-    return 行.join("\n");
-}
 
 auto.waitFor();
 sleep(800);
@@ -85,7 +68,7 @@ var ok = launchApp("BOSS直聘");
 sleep(4500);
 
 var 包 = currentPackage();
-var 报告 = "包名: " + 包 + "\n";
+var 报告 = "包名: " + 包 + "  屏宽: " + device.width + "  屏高: " + device.height + "\n";
 
 if (包 != "com.hpbr.bosszhipin") {
     setClip(报告 + "不在 BOSS 前台");
@@ -93,69 +76,72 @@ if (包 != "com.hpbr.bosszhipin") {
 } else {
     var 输入 = className("android.widget.EditText").findOne(6000);
     if (!输入) {
-        setClip(报告 + "没找到输入框\n" + 扫描());
+        setClip(报告 + "没找到输入框");
         toastLog("没找到输入框");
     } else {
-        // 点一下输入框，让键盘弹起来，布局才是真实发送时的样子
         输入.click();
-        sleep(1500);
+        sleep(2200);
 
         var 原有 = (输入.text() || "").trim();
-        报告 += "输入框字数: " + 原有.length + "\n";
+        var 框 = 输入.bounds();
+        报告 += "字数: " + 原有.length + "\n输入框: " + 框.left + "," + 框.top +
+            " " + 框.width() + "x" + 框.height() + "\n";
+
         if (原有.length &lt; 10) {
-            setClip(报告 + "输入框是空的，先把 7.js 跑一遍填字，再来跑这个");
+            setClip(报告 + "输入框是空的，先跑第 7 步填字");
             toastLog("输入框是空的");
         } else {
-            var 框 = 输入.bounds();
-            报告 += "输入框位置: " + 框.left + "," + 框.top + " " + 框.width() + "x" + 框.height() + "\n";
+            var 已发 = false;
 
-            // 筛右下区域可点击节点
-            var 候选 = [];
+            function 清空了吗() {
+                var t = (输入.text() || "").trim();
+                return t.length &lt; 8;
+            }
+
+            // 第一轮：右侧可点节点
             var 全部 = classNameMatches(/.+/).find();
+            var 候选 = [];
             for (var i = 0; i &lt; 全部.size(); i++) {
                 var w = 全部.get(i);
                 var b = w.bounds();
                 if (b.width() &lt;= 0 || b.height() &lt;= 0) continue;
-                if (!w.clickable()) continue;
-                if (b.centerX() &lt; device.width * 0.85) continue;
-                if (b.centerY() &lt; 框.top - 150 || b.centerY() &gt; 框.top + 框.height() + 150) continue;
-                候选.push({ 节点: w, x: b.centerX(), y: b.centerY(), 类: w.className(), 述: w.desc() || "" });
+                if (b.centerX() &lt; device.width * 0.82) continue;
+                if (Math.abs(b.centerY() - 框.centerY()) &gt; 200) continue;
+                候选.push(w);
             }
+            报告 += "右侧节点 " + 候选.length + " 个\n";
 
-            报告 += "候选按钮 " + 候选.length + " 个\n";
-            for (var j = 0; j &lt; 候选.length; j++) {
-                报告 += "  候选" + j + ": " + 候选[j].类 + " | " + 候选[j].述 +
-                    " | " + 候选[j].x + "," + 候选[j].y + "\n";
-            }
-
-            var 已发 = false;
-            for (var k = 0; k &lt; 候选.length; k++) {
-                toastLog("试点候选 " + k + " @" + 候选[k].x + "," + 候选[k].y);
-                候选[k].节点.click();
-                sleep(1800);
-                if (((输入.text() || "").trim()).length &lt; 8) {
+            for (var k = 0; k &lt; 候选.length &amp;&amp; !已发; k++) {
+                var bb = 候选[k].bounds();
+                候选[k].click();
+                sleep(1400);
+                if (清空了吗()) {
                     已发 = true;
-                    报告 += "第 " + k + " 个候选点中了，输入框已清空\n";
-                    break;
+                    报告 += "节点点击命中: " + bb.centerX() + "," + bb.centerY() + "\n";
                 }
             }
 
+            // 第二轮：网格试探
             if (!已发) {
-                报告 += "所有候选都没点中，改试三个纵向坐标\n";
-                for (var m = -60; m &lt;= 60; m += 60) {
-                    click(device.width - 105, Math.round(框.centerY() + m));
-                    sleep(1500);
-                    if (((输入.text() || "").trim()).length &lt; 8) {
-                        已发 = true;
-                        报告 += "坐标 " + (框.centerY() + m) + " 点中了\n";
-                        break;
+                var xs = [device.width - 120, device.width - 100, device.width - 80,
+                          device.width - 140, device.width - 60];
+                var ys = [框.centerY() - 80, 框.centerY() - 40, 框.centerY(),
+                          框.centerY() + 40, 框.centerY() + 80, 框.centerY() + 120];
+                for (var a = 0; a &lt; ys.length &amp;&amp; !已发; a++) {
+                    for (var c = 0; c &lt; xs.length &amp;&amp; !已发; c++) {
+                        click(xs[c], ys[a]);
+                        sleep(1100);
+                        if (清空了吗()) {
+                            已发 = true;
+                            报告 += "网格命中: " + xs[c] + "," + ys[a] + "\n";
+                        }
                     }
                 }
             }
 
-            if (!已发) 报告 += "全部失败，输入框仍有字\n";
-            sleep(1500);
-            setClip(报告 + "----\n" + 扫描());
+            if (!已发) 报告 += "两轮都没命中\n";
+            sleep(1200);
+            setClip(报告);
             toastLog(已发 ? "发出去了" : "还是没发出去");
         }
     }
@@ -163,10 +149,10 @@ if (包 != "com.hpbr.bosszhipin") {
 </pre>
 </div>
 
-<div class="foot">发出去后输入框会清空，脚本以此判断成功</div>
+<div class="foot">这次只回传几十字结果，不用再发长截图</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 9 步：按界面结构找发送按钮\n * 不再硬点坐标。筛出右下区域所有可点击节点，逐个试，发出去就停。\n */\n\nfunction 扫描() {\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n    return 行.join(\"\\n\");\n}\n\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\nsleep(4500);\n\nvar 包 = currentPackage();\nvar 报告 = \"包名: \" + 包 + \"\\n\";\n\nif (包 != \"com.hpbr.bosszhipin\") {\n    setClip(报告 + \"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n} else {\n    var 输入 = className(\"android.widget.EditText\").findOne(6000);\n    if (!输入) {\n        setClip(报告 + \"没找到输入框\\n\" + 扫描());\n        toastLog(\"没找到输入框\");\n    } else {\n        // 点一下输入框，让键盘弹起来，布局才是真实发送时的样子\n        输入.click();\n        sleep(1500);\n\n        var 原有 = (输入.text() || \"\").trim();\n        报告 += \"输入框字数: \" + 原有.length + \"\\n\";\n        if (原有.length < 10) {\n            setClip(报告 + \"输入框是空的，先把 7.js 跑一遍填字，再来跑这个\");\n            toastLog(\"输入框是空的\");\n        } else {\n            var 框 = 输入.bounds();\n            报告 += \"输入框位置: \" + 框.left + \",\" + 框.top + \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n\n            // 筛右下区域可点击节点\n            var 候选 = [];\n            var 全部 = classNameMatches(/.+/).find();\n            for (var i = 0; i < 全部.size(); i++) {\n                var w = 全部.get(i);\n                var b = w.bounds();\n                if (b.width() <= 0 || b.height() <= 0) continue;\n                if (!w.clickable()) continue;\n                if (b.centerX() < device.width * 0.85) continue;\n                if (b.centerY() < 框.top - 150 || b.centerY() > 框.top + 框.height() + 150) continue;\n                候选.push({ 节点: w, x: b.centerX(), y: b.centerY(), 类: w.className(), 述: w.desc() || \"\" });\n            }\n\n            报告 += \"候选按钮 \" + 候选.length + \" 个\\n\";\n            for (var j = 0; j < 候选.length; j++) {\n                报告 += \"  候选\" + j + \": \" + 候选[j].类 + \" | \" + 候选[j].述 +\n                    \" | \" + 候选[j].x + \",\" + 候选[j].y + \"\\n\";\n            }\n\n            var 已发 = false;\n            for (var k = 0; k < 候选.length; k++) {\n                toastLog(\"试点候选 \" + k + \" @\" + 候选[k].x + \",\" + 候选[k].y);\n                候选[k].节点.click();\n                sleep(1800);\n                if (((输入.text() || \"\").trim()).length < 8) {\n                    已发 = true;\n                    报告 += \"第 \" + k + \" 个候选点中了，输入框已清空\\n\";\n                    break;\n                }\n            }\n\n            if (!已发) {\n                报告 += \"所有候选都没点中，改试三个纵向坐标\\n\";\n                for (var m = -60; m <= 60; m += 60) {\n                    click(device.width - 105, Math.round(框.centerY() + m));\n                    sleep(1500);\n                    if (((输入.text() || \"\").trim()).length < 8) {\n                        已发 = true;\n                        报告 += \"坐标 \" + (框.centerY() + m) + \" 点中了\\n\";\n                        break;\n                    }\n                }\n            }\n\n            if (!已发) 报告 += \"全部失败，输入框仍有字\\n\";\n            sleep(1500);\n            setClip(报告 + \"----\\n\" + 扫描());\n            toastLog(已发 ? \"发出去了\" : \"还是没发出去\");\n        }\n    }\n}\n";
+var CODE = "/**\n * 手机自动投递 · 第 10 步：网格扫发送键\n * 先把输入框点一下让键盘弹出，再以输入框为基准在右侧网格里逐点试探。\n */\n\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\nsleep(4500);\n\nvar 包 = currentPackage();\nvar 报告 = \"包名: \" + 包 + \"  屏宽: \" + device.width + \"  屏高: \" + device.height + \"\\n\";\n\nif (包 != \"com.hpbr.bosszhipin\") {\n    setClip(报告 + \"不在 BOSS 前台\");\n    toastLog(\"不在 BOSS\");\n} else {\n    var 输入 = className(\"android.widget.EditText\").findOne(6000);\n    if (!输入) {\n        setClip(报告 + \"没找到输入框\");\n        toastLog(\"没找到输入框\");\n    } else {\n        输入.click();\n        sleep(2200);\n\n        var 原有 = (输入.text() || \"\").trim();\n        var 框 = 输入.bounds();\n        报告 += \"字数: \" + 原有.length + \"\\n输入框: \" + 框.left + \",\" + 框.top +\n            \" \" + 框.width() + \"x\" + 框.height() + \"\\n\";\n\n        if (原有.length < 10) {\n            setClip(报告 + \"输入框是空的，先跑第 7 步填字\");\n            toastLog(\"输入框是空的\");\n        } else {\n            var 已发 = false;\n\n            function 清空了吗() {\n                var t = (输入.text() || \"\").trim();\n                return t.length < 8;\n            }\n\n            // 第一轮：右侧可点节点\n            var 全部 = classNameMatches(/.+/).find();\n            var 候选 = [];\n            for (var i = 0; i < 全部.size(); i++) {\n                var w = 全部.get(i);\n                var b = w.bounds();\n                if (b.width() <= 0 || b.height() <= 0) continue;\n                if (b.centerX() < device.width * 0.82) continue;\n                if (Math.abs(b.centerY() - 框.centerY()) > 200) continue;\n                候选.push(w);\n            }\n            报告 += \"右侧节点 \" + 候选.length + \" 个\\n\";\n\n            for (var k = 0; k < 候选.length && !已发; k++) {\n                var bb = 候选[k].bounds();\n                候选[k].click();\n                sleep(1400);\n                if (清空了吗()) {\n                    已发 = true;\n                    报告 += \"节点点击命中: \" + bb.centerX() + \",\" + bb.centerY() + \"\\n\";\n                }\n            }\n\n            // 第二轮：网格试探\n            if (!已发) {\n                var xs = [device.width - 120, device.width - 100, device.width - 80,\n                          device.width - 140, device.width - 60];\n                var ys = [框.centerY() - 80, 框.centerY() - 40, 框.centerY(),\n                          框.centerY() + 40, 框.centerY() + 80, 框.centerY() + 120];\n                for (var a = 0; a < ys.length && !已发; a++) {\n                    for (var c = 0; c < xs.length && !已发; c++) {\n                        click(xs[c], ys[a]);\n                        sleep(1100);\n                        if (清空了吗()) {\n                            已发 = true;\n                            报告 += \"网格命中: \" + xs[c] + \",\" + ys[a] + \"\\n\";\n                        }\n                    }\n                }\n            }\n\n            if (!已发) 报告 += \"两轮都没命中\\n\";\n            sleep(1200);\n            setClip(报告);\n            toastLog(已发 ? \"发出去了\" : \"还是没发出去\");\n        }\n    }\n}\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
