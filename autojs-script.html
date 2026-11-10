@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 4 步 剪贴板版</title>
+<title>手机自动投递 · 第 5 步 扫详情页</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--soft:#eef3fe;}
@@ -37,14 +37,14 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 4 步</h1>
-<div class="sub">扫描结果直接进剪贴板，不用找文件。</div>
+<h1>手机自动投递 · 第 5 步</h1>
+<div class="sub">扫岗位详情页，找「立即沟通」。</div>
 
 <div class="card">
-<div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本自动进剪贴板</b></p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 右下「文件」新建 <b>4.js</b> → 长按粘贴 → 保存</div></div>
-<div class="step"><div class="n">3</div><p>点运行，脚本会自己打开 BOSS，等它弹「已复制到剪贴板」</div></div>
-<div class="step"><div class="n">4</div><p>切回豆包，<b>长按输入框点粘贴</b>，把内容发我</div></div>
+<div class="step"><div class="n">1</div><p>点下面按钮，<b>脚本进剪贴板</b></p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>5.js</b>，粘贴，保存</p></div>
+<div class="step"><div class="n">3</div><p><b>先去 BOSS</b>：搜一个岗位词，点进任意一个岗位，停在能看到<b>「立即沟通」</b>的那一屏</p></div>
+<div class="step"><div class="n">4</div><p>按 Home 退出到桌面，再回 AutoJs6 运行 5.js；跑完切回豆包粘贴发我</p></div>
 </div>
 
 <button class="btn" id="cp">复制脚本到剪贴板</button>
@@ -53,54 +53,45 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文（按钮失灵时手动复制）</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 4 步：扫 BOSS 并把结果塞进剪贴板
- * 只读不点。跑完直接切到豆包粘贴就行。
+ * 手机自动投递 · 第 5 步：扫岗位详情页
+ * 用法：先在 BOSS 里点进一个岗位、停在能看到「立即沟通」的界面，
+ *      然后按 Home 退出到桌面，再来运行本脚本。脚本会把 BOSS 拉回那一页并扫描。
  */
 auto.waitFor();
-sleep(1000);
+sleep(800);
 
-var 目标 = "";
-if (launchApp("BOSS直聘")) {
-    目标 = "BOSS直聘";
-} else if (launchApp("猎聘")) {
-    目标 = "猎聘";
+var ok = launchApp("BOSS直聘");
+toastLog("拉起 BOSS: " + ok);
+sleep(6000);
+
+var 包 = currentPackage();
+toastLog("当前前台: " + 包);
+
+var 全部 = classNameMatches(/.+/).find();
+var 行 = [];
+for (var i = 0; i &lt; 全部.size(); i++) {
+    var w = 全部.get(i);
+    var 文 = (w.text() || "").trim();
+    var 述 = (w.desc() || "").trim();
+    if (!文 &amp;&amp; !述) continue;
+    var b = w.bounds();
+    行.push(w.className().replace("android.widget.", "").replace("android.view.", "") +
+        " | " + 文 + " | " + 述 + " | " +
+        b.left + "," + b.top + " " + b.width() + "x" + b.height());
 }
-toastLog("打开结果: " + (目标 || "两个都没打开"));
 
-if (目标) {
-    sleep(8000);
-    var 包 = currentPackage();
-    var 全部 = classNameMatches(/.+/).find();
-    var 行 = [];
-    for (var i = 0; i &lt; 全部.size(); i++) {
-        var w = 全部.get(i);
-        var 文 = (w.text() || "").trim();
-        var 述 = (w.desc() || "").trim();
-        if (!文 &amp;&amp; !述) continue;
-        var b = w.bounds();
-        行.push(w.className().replace("android.widget.", "").replace("android.view.", "") +
-            " | " + 文 + " | " + 述 + " | " +
-            b.left + "," + b.top + " " + b.width() + "x" + b.height());
-    }
+var 内容 = "包名: " + 包 + "\n节点总数: " + 全部.size() +
+    "\n含文字: " + 行.length + "\n----\n" + 行.join("\n");
 
-    var 内容 = "包名: " + 包 + "\n节点总数: " + 全部.size() +
-        "\n含文字: " + 行.length + "\n----\n" + 行.join("\n");
-
-    setClip(内容);
-    toastLog("已复制到剪贴板 " + 行.length + " 条");
-
-    try {
-        files.write("/sdcard/Download/boss_scan.txt", 内容);
-    } catch (e) {
-    }
-}
+setClip(内容);
+toastLog("已复制到剪贴板 " + 行.length + " 条");
 </pre>
 </div>
 
-<div class="foot">注意：第 3 步复制脚本会先占一次剪贴板，第 4 步脚本会重新写入，别搞混顺序</div>
+<div class="foot">顺序很重要：先把 BOSS 停在详情页，再跑脚本</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 4 步：扫 BOSS 并把结果塞进剪贴板\n * 只读不点。跑完直接切到豆包粘贴就行。\n */\nauto.waitFor();\nsleep(1000);\n\nvar 目标 = \"\";\nif (launchApp(\"BOSS直聘\")) {\n    目标 = \"BOSS直聘\";\n} else if (launchApp(\"猎聘\")) {\n    目标 = \"猎聘\";\n}\ntoastLog(\"打开结果: \" + (目标 || \"两个都没打开\"));\n\nif (目标) {\n    sleep(8000);\n    var 包 = currentPackage();\n    var 全部 = classNameMatches(/.+/).find();\n    var 行 = [];\n    for (var i = 0; i < 全部.size(); i++) {\n        var w = 全部.get(i);\n        var 文 = (w.text() || \"\").trim();\n        var 述 = (w.desc() || \"\").trim();\n        if (!文 && !述) continue;\n        var b = w.bounds();\n        行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n            \" | \" + 文 + \" | \" + 述 + \" | \" +\n            b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n    }\n\n    var 内容 = \"包名: \" + 包 + \"\\n节点总数: \" + 全部.size() +\n        \"\\n含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n\n    setClip(内容);\n    toastLog(\"已复制到剪贴板 \" + 行.length + \" 条\");\n\n    try {\n        files.write(\"/sdcard/Download/boss_scan.txt\", 内容);\n    } catch (e) {\n    }\n}\n";
+var CODE = "/**\n * 手机自动投递 · 第 5 步：扫岗位详情页\n * 用法：先在 BOSS 里点进一个岗位、停在能看到「立即沟通」的界面，\n *      然后按 Home 退出到桌面，再来运行本脚本。脚本会把 BOSS 拉回那一页并扫描。\n */\nauto.waitFor();\nsleep(800);\n\nvar ok = launchApp(\"BOSS直聘\");\ntoastLog(\"拉起 BOSS: \" + ok);\nsleep(6000);\n\nvar 包 = currentPackage();\ntoastLog(\"当前前台: \" + 包);\n\nvar 全部 = classNameMatches(/.+/).find();\nvar 行 = [];\nfor (var i = 0; i < 全部.size(); i++) {\n    var w = 全部.get(i);\n    var 文 = (w.text() || \"\").trim();\n    var 述 = (w.desc() || \"\").trim();\n    if (!文 && !述) continue;\n    var b = w.bounds();\n    行.push(w.className().replace(\"android.widget.\", \"\").replace(\"android.view.\", \"\") +\n        \" | \" + 文 + \" | \" + 述 + \" | \" +\n        b.left + \",\" + b.top + \" \" + b.width() + \"x\" + b.height());\n}\n\nvar 内容 = \"包名: \" + 包 + \"\\n节点总数: \" + 全部.size() +\n    \"\\n含文字: \" + 行.length + \"\\n----\\n\" + 行.join(\"\\n\");\n\nsetClip(内容);\ntoastLog(\"已复制到剪贴板 \" + 行.length + \" 条\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点下面「全选」手动复制';
