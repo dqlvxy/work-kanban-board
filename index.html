@@ -435,6 +435,13 @@
     main{max-width:560px;margin:0 auto}
     .hbar,.statusbar{max-width:560px;margin-left:auto;margin-right:auto}
   }
+
+  /* ===== 一键投递：三按钮行 ===== */
+  .actrow{grid-template-columns:1fr 1fr 1fr}
+  .actrow .toggle{width:100%;min-width:0;justify-content:center;overflow:hidden;
+    font-family:inherit;font-size:11.5px;font-weight:700;color:var(--muted);
+    background:var(--soft2);border:1px solid var(--line);border-radius:999px;
+    padding:8px 0;margin-top:0;text-align:center;display:flex;align-items:center;gap:3px}
 </style>
 </head>
 <body>
@@ -866,9 +873,11 @@ function renderJobs(city, filter){
       '<div class="score"><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
       '<div class="actrow">' +
-        '<button class="toggle" onclick="toggleWhy(this)">为什么匹配 ↓</button>' +
+        '<button class="msbtn" onclick="applyJob(' + j.id + ')">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 12.5 5 5L20 6.5"/><path d="M4 5v8a2 2 0 0 0 2 2h4"/><path d="M13 9l7 3-7 3z"/></svg>一键投</button>' +
         '<button class="msbtn" onclick="openMsg(' + j.id + ')">' +
           '<svg viewBox="0 0 24 24"><path d="M20.5 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.2-.65L4.5 20l1.4-4.1A7.5 7.5 0 1 1 20.5 11.5Z"/><path d="M9 11h6M9 14h4"/></svg>话术</button>' +
+        '<button class="toggle" onclick="toggleWhy(this)">匹配度 ↓</button>' +
       '</div>' +
       '<div class="why">' + j.why + '</div>' +
     '</div>';
@@ -876,7 +885,9 @@ function renderJobs(city, filter){
 }
 
 function toggleWhy(btn){
-  var w = btn.nextElementSibling;
+  var card = btn.closest ? btn.closest('.job') : null;
+  var w = card ? card.querySelector('.why') : btn.nextElementSibling;
+  if (!w) return;
   w.classList.toggle('on');
   btn.textContent = w.classList.contains('on') ? '收起 ↑' : '为什么匹配 ↓';
 }
@@ -1012,6 +1023,19 @@ function applyOne(e, id){
     if (ok){ markOne(id); toast('话术已复制 · 已记为已投，去沟通页粘贴发送'); }
     else { toast('复制失败，请在弹层里长按话术手动复制'); }
   });
+}
+
+function applyJob(id){
+  var m = MSGS[id];
+  if (!m){ toast('这家没有定制话术，先点「话术」看看'); return; }
+  var url = LINKS[id] || 'https://www.zhipin.com/';
+  var win = window.open(url, '_blank');
+  copyText(m.m, function(ok){
+    markOne(id);
+    if (ok) toast('话术已复制 · 在岗位页粘贴发送');
+    else toast('复制失败了，点「话术」进去长按复制');
+  });
+  if (win && win.focus) { try{ win.focus(); }catch(_){} }
 }
 
 /* ================= 打卡 ================= */
