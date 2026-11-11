@@ -25,10 +25,18 @@ SOURCES = [
     ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixiegongchengshi/", "utf-8"),
     ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjigongchengshi/", "utf-8"),
     ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixiezhizao/", "utf-8"),
-    ("前程无忧", "xa", "https://mgongchengshi.51job.com/xian/jixiegcs/", "gbk"),
-    ("前程无忧", "sz", "https://mgongchengshi.51job.com/shenzhen/jixiegcs/", "gbk"),
-    ("前程无忧", "ak", "https://mgongchengshi.51job.com/ankang/jixiegcs/", "gbk"),
 ]
+
+# 前程无忧：每座城顺着翻页往后拉（第 1 页不带参数，第 2 页起加 ?page=N）
+# 只扩这一个源：实测唯一稳定返回 200 的站，猎聘本机 IP 会撞验证码。
+PH_JOBS = [("xian", "xa"), ("shenzhen", "sz"), ("ankang", "ak")]
+PH_PAGES = 6
+for _c, _code in PH_JOBS:
+    for _pg in range(1, PH_PAGES + 1):
+        _u = "https://mgongchengshi.51job.com/%s/jixiegcs/" % _c
+        if _pg > 1:
+            _u += "?page=%d" % _pg
+        SOURCES.append(("前程无忧", _code, _u, "gbk"))
 
 # ===== BOSS 直聘：普通来源之一，不置顶、不按时间下架 =====
 # 机房 IP 直连 BOSS 会被风控（wapi/joblist.json 返回 code=37「环境存在异常」），
