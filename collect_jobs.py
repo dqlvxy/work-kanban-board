@@ -11,9 +11,18 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 CST = datetime.timezone(datetime.timedelta(hours=8))
 
 SOURCES = [
-    # (来源名, 城市码, url, 编码)
     ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjixieyanfasheji112/", "utf-8"),
+    ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjixiesheji/", "utf-8"),
+    ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjiegousheji/", "utf-8"),
+    ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjixiegongchengshi/", "utf-8"),
+    ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjigongchengshi/", "utf-8"),
+    ("猎聘", "xa", "https://www.liepin.com/city-xian/zpjixiezhizao/", "utf-8"),
     ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixieyanfasheji112/", "utf-8"),
+    ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixiesheji/", "utf-8"),
+    ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjiegousheji/", "utf-8"),
+    ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixiegongchengshi/", "utf-8"),
+    ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjigongchengshi/", "utf-8"),
+    ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixiezhizao/", "utf-8"),
     ("前程无忧", "xa", "https://mgongchengshi.51job.com/xian/jixiegcs/", "gbk"),
     ("前程无忧", "sz", "https://mgongchengshi.51job.com/shenzhen/jixiegcs/", "gbk"),
     ("前程无忧", "ak", "https://mgongchengshi.51job.com/ankang/jixiegcs/", "gbk"),
@@ -244,7 +253,7 @@ def main():
     per_city, kept = {}, []
     for j in jobs:
         n = per_city.get(j["city"], 0)
-        if n >= 20:
+        if n >= 25:
             continue
         per_city[j["city"]] = n + 1
         kept.append(j)
