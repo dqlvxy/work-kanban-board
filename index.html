@@ -2354,7 +2354,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111x';
+var BUILD = '20261111y';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2430,11 +2430,8 @@ function 催云端(){
     /* Worker 未配 CORS 头：no-cors 只发请求、不读响应，避免控制台报错 */
     var opts = { mode: 'no-cors', cache: 'no-store' };
     if (ctl) opts.signal = ctl.signal;
+    /* Worker 已由手机豆包 12:54 判定不可达：保留静默触发，不显示误导提示 */
     fetch(POKE + '?t=' + Date.now(), opts)
-      .then(function(){
-        var st = document.getElementById('stText');
-        if (st) st.textContent = '已催云端采集，约 1 分钟出新岗位';
-      })
       .catch(function(){})
       .then(function(){ if (tm) clearTimeout(tm); });
   }catch(e){}
