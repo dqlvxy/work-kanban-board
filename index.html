@@ -93,11 +93,16 @@
   @keyframes rot{to{transform:rotate(360deg)}}
 
   /* 状态条 */
-  .statusbar{
+  .statusbar{position:sticky;top:var(--hbH,56px);z-index:55;
     margin:0 12px 8px;border-radius:13px;padding:8px 12px;display:flex;align-items:center;gap:8px;
     background:var(--card);border:1px solid var(--line);font-size:11.5px;color:var(--muted);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--shadow)
   }
+  /* 城市页顶部冻结区：统计 + 筛选随滚动钉住 */
+  .dock{position:sticky;top:calc(var(--hbH,56px) + var(--sbH,44px));z-index:54;
+    background:var(--bg);padding-bottom:2px;
+    box-shadow:0 10px 14px -12px rgba(16,24,40,.30)}
+
   .statusbar .st-dot{width:7px;height:7px;border-radius:50%;background:var(--green);
     box-shadow:0 0 8px var(--green);flex:none}
   .statusbar .st-dot.busy{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 1s infinite}
@@ -326,6 +331,9 @@
   .msbtn.del{background:none;color:#c0392b;border:1px solid rgba(192,57,43,.35);box-shadow:none}
   .job.done{border-color:rgba(79,143,31,.35)}
   .doneflag{font-style:normal;font-weight:700;color:var(--green)}
+  .reflag{display:inline-flex;align-items:center;gap:3px;font-style:normal;font-weight:700;
+    color:#8a6d1f;background:rgba(234,179,8,.18);border:1px solid rgba(234,179,8,.45);
+    border-radius:6px;padding:1px 6px;font-size:10.5px}
 
   /* 进度条 · 已投页共用 */
   .prog{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -607,7 +615,7 @@
 
   <!-- ========== 2 西安 ========== -->
   <section class="page" id="p-xa">
-    <div class="stats">
+    <div class="dock"><div class="stats">
       <div class="stat a"><div class="v">10<small>家</small></div><div class="k">在招岗位</div></div>
       <div class="stat b"><div class="v">30<small>K</small></div><div class="k">最高月薪</div></div>
       <div class="stat"><div class="v">2<small>家</small></div><div class="k">高匹配 ≥80</div></div>
@@ -619,13 +627,13 @@
       <button class="chip" data-f="core">核心对口 3</button>
       <button class="chip" data-f="near">相近可投 4</button>
       <button class="chip" data-f="risk">有硬门槛 3</button>
-    </div>
+    </div></div>
     <div class="joblist" data-city="xa"></div>
   </section>
 
   <!-- ========== 3 深圳 ========== -->
   <section class="page" id="p-sz">
-    <div class="stats">
+    <div class="dock"><div class="stats">
       <div class="stat a"><div class="v">9<small>家</small></div><div class="k">在招岗位</div></div>
       <div class="stat b"><div class="v">35<small>K</small></div><div class="k">最高月薪</div></div>
       <div class="stat"><div class="v">6<small>家</small></div><div class="k">高匹配 ≥80</div></div>
@@ -636,14 +644,14 @@
       <button class="chip" data-f="high">高匹配 6</button>
       <button class="chip" data-f="core">测试治具 6</button>
       <button class="chip" data-f="near">非标自动化 3</button>
-    </div>
+    </div></div>
     <div class="joblist" data-city="sz"></div>
   </section>
 
   <!-- ========== 4 安康 ========== -->
   <section class="page" id="p-ak">
-    <div class="stats">
-      <div class="stat a"><div class="v">1<small>家</small></div><div class="k">值得投</div></div>
+    <div class="dock"><div class="stats">
+      <div class="stat a"><div class="v">1<small>家</small></div></div><div class="k">值得投</div></div>
       <div class="stat b"><div class="v">12<small>K</small></div><div class="k">预估上限</div></div>
       <div class="stat"><div class="v">0<small>家</small></div><div class="k">明标 10K+</div></div>
     </div>
@@ -1593,11 +1601,22 @@ function restOf(j){
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-var CITY_LIMIT = 100;   /* 每城最多展示 100 条，与采集器 PER_CITY 对齐 */
+var CITY_LIMIT = 100;              /* 每城最多展示 100 条 */
+var AP_HIDE_MS = 3 * 24 * 3600 * 1000;  /* 已投后先隐 3 天，够 3 天才允许重新出现并标注 */
 function byCity(city){
-  var ap = getAp();
-  var hd = getHd();
-  return DATA.jobs.filter(function(j){ return j.city === city && !ap[j.id] && !hd[jobKey(j)]; })
+  var hd = getHd(), now = Date.now();
+  return DATA.jobs.map(function(j){
+    /* 已投且不足 3 天：隐身；够 3 天：放回来并打「此前投过」标记 */
+    var st = apStateOf(j);
+    if (st){
+      var old = (now - (st.at || 0)) >= AP_HIDE_MS;
+      if (!old) return null;
+      var c = {}; for (var k in j) c[k] = j[k];
+      c.reAP = 1; c.apAt = st.at;
+      return c;
+    }
+    return j;
+  }).filter(function(j){ return j && j.city === city && !hd[jobKey(j)]; })
     .sort(function(a, b){
       var ra = (a.src === 'BOSS直聘') ? 0 : 1;
       var rb = (b.src === 'BOSS直聘') ? 0 : 1;
@@ -1628,8 +1647,9 @@ function renderJobs(city, filter){
     var cls = j.cls === 'g' ? 'g' : (j.cls === 'a' ? 'a' : '');
     var restVal = restOf(j);
     var fillc = j.score >= 88 ? '' : (j.score >= 78 ? 'b' : 'a');
+    var dup = [j.area, j.exp, j.edu].filter(Boolean);   /* 区域/经验/学历已单独展示，不再重复成标签 */
     var chips = (j.chips||[]).filter(function(c){
-      /* 学历已单独成标签，去掉重复项 */
+      if (dup.indexOf(String(c).trim()) >= 0) return false;
       if (j.eduOk && (c === '大专可投' || c === '学历不限')) return false;
       if (!j.eduOk && c === '卡本科') return false;
       return true;
@@ -1654,6 +1674,7 @@ function renderJobs(city, filter){
         (j.src ? '<span class="srcbadge">' + esc(j.src) + '</span>' : '') +
         (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
         (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
+        (j.reAP ? '<i class="reflag">此前投过 · 3天后再放回</i>' : '') +
       '</div>' +
       '<div class="score"><b class="scl">匹配度</b><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
@@ -1663,7 +1684,7 @@ function renderJobs(city, filter){
         '<button class="msbtn" onclick="openMsg(' + j.id + ')">' +
           '<svg viewBox="0 0 24 24"><path d="M20.5 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.2-.65L4.5 20l1.4-4.1A7.5 7.5 0 1 1 20.5 11.5Z"/><path d="M9 11h6M9 14h4"/></svg>话术</button>' +
         '<button class="toggle" onclick="toggleWhy(this)">匹配度 ↓</button>' +
-        '<button class="apchk4" onclick="markAp(' + j.id + ')" title="投过就勾上，归档到已投页，不占名额"><i></i>已投</button>' +
+        '<button class="apchk4" onclick="markAp(' + j.id + ')" title="点一下记成已投，归档到已投页，不占名额">已投</button>' +
       '</div>' +
       '<div class="why">' + (j.why || '').replace(/岗位要求\s*里/g, '岗位要求里').replace(/岗位要求/g, '岗位要求') + '</div>' +
     '</div>';
@@ -1813,6 +1834,16 @@ var TALK = [
   {re:/工艺|制图|BOM|文档|标准化/i, w:'出图与BOM文档',   e:'SolidWorks出图、BOM和装配说明书都能扛'},
   {re:/航空|军工|兵器|装备|专用设备/i, w:'专用装备结构', e:'做过专用设备的整机结构'}
 ];
+/* 话术清洗：不主动强调学历，大专不是卖点 */
+function 去学历语(s){
+  return String(s||'')
+    .replace(/[，,。；;、]?\s*(我的)?学历(是|为)?\s*(大专|专科|本科|硕士)[，,。；;、]*/g,'')
+    .replace(/[，,。；;、]?\s*(我|本人)(是|为)?\s*(大专|专科)(学历|毕业)?[，,。；;、]*/g,'')
+    .replace(/^[，,。；;、\s]+/,'')
+    .replace(/[，,。；;、]\s*([。！])/g,'$1')
+    .trim();
+}
+
 function 生成话术(j){
   if (!j) return '';
   if (j.msg) return j.msg;
@@ -1833,10 +1864,10 @@ function 生成话术(j){
 }
 function getMsg(id){
   var j = jobById(id);
-  if (j.msg) return j.msg;
+  if (j.msg) return 去学历语(j.msg);
   var m = MSGS[id];
-  if (m && m.m) return m.m;
-  return 生成话术(j);
+  if (m && m.m) return 去学历语(m.m);
+  return 去学历语(生成话术(j));
 }
 function payload(id){
   var j = (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
@@ -1935,6 +1966,15 @@ var HKEY = 'du_hidden_v1';
 function getHd(){ try{ return JSON.parse(localStorage.getItem(HKEY) || '{}'); }catch(e){ return {}; } }
 function setHd(o){ try{ localStorage.setItem(HKEY, JSON.stringify(o)); }catch(e){} }
 function jobKey(j){ return (j.co || '') + '|' + (j.role || '') + '|' + (j.city || ''); }
+/* 按稳定键找已投记录（id 会随采集重排，不能拿 id 当主键） */
+function apStateOf(j){
+  var ap = getAp(), k = jobKey(j), id;
+  for (id in ap){
+    var r = ap[id];
+    if (r && r.job && jobKey(r.job) === k) return { id: id, at: r.at || 0 };
+  }
+  return null;
+}
 function delAp(id){
   if (!confirm('彻底删掉这条？删了连同城列表也不会再出现。')) return;
   var ap = getAp(), rec = ap[id], hd = getHd();
@@ -1972,7 +2012,9 @@ function renderAp(){
   host.innerHTML = arr.map(function(x){
     var j = x.job;
     var fillc = (j.score || 0) >= 88 ? '' : ((j.score || 0) >= 78 ? 'b' : 'a');
+    var dupA = [j.area, j.exp, j.edu].filter(Boolean);
     var chips = (j.chips || []).filter(function(c){
+      if (dupA.indexOf(String(c).trim()) >= 0) return false;
       if (j.eduOk && (c === '大专可投' || c === '学历不限')) return false;
       if (!j.eduOk && c === '卡本科') return false;
       return true;
@@ -2389,7 +2431,8 @@ function 刷新数据(){
   if (st) st.textContent = '正在读取最新数据…';
 
   setTimeout(function(){
-    loadData();
+    量顶();
+loadData();
     renderJobs('xa'); renderJobs('sz'); renderJobs('ak');
     renderAp();
     var now = new Date();
@@ -2449,6 +2492,13 @@ document.getElementById('msgMask').addEventListener('click', function(e){
 var PERIOD = 10 * 60 * 1000;
 var nextAt = Date.now() + PERIOD;
 
+function 量顶(){
+  var hb=document.querySelector('.hbar'), sb=document.querySelector('.statusbar');
+  document.documentElement.style.setProperty('--hbH',(hb?hb.offsetHeight:56)+'px');
+  document.documentElement.style.setProperty('--sbH',(sb?sb.offsetHeight:44)+'px');
+}
+window.addEventListener('resize',量顶); window.addEventListener('orientationchange',量顶);
+
 function tick(){
   var el = document.getElementById('cd');
   if (!el) return;
@@ -2471,7 +2521,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112h';
+var BUILD = '20261112i';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2675,6 +2725,22 @@ function 拉最新数据(){
   xhr.onerror = function(){ 拉Boss(); };
   try{ xhr.send(); }catch(e){}
 }
+/* 筛选胶囊计数全按真实数据算，不再写死 */
+function renderChips(city){
+  var box=document.querySelector('.chips[data-city="'+city+'"]');
+  if(!box) return;
+  var list=byCity(city);
+  box.querySelectorAll('.chip').forEach(function(b){
+    if(!b.dataset.label) b.dataset.label=(b.textContent||'').replace(/\s*\d+\s*$/,'').trim();
+    var f=b.dataset.f, n=0;
+    if(f==='all') n=list.length;
+    else if(f==='boss') n=list.filter(function(j){return j.src==='BOSS直聘';}).length;
+    else if(f==='high') n=list.filter(function(j){return (j.score||0)>=80;}).length;
+    else n=list.filter(function(j){return j.g===f;}).length;
+    b.textContent=b.dataset.label+' '+n;
+  });
+}
+
 function 统计刷新(){
   try{
     CITY_ORDER.forEach(function(c){
@@ -2682,8 +2748,7 @@ function 统计刷新(){
       var elN = document.getElementById('c-' + c + '-n'); if (elN) elN.textContent = list.length;
       var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
       var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
-      var box = document.querySelector('.chips[data-city="' + c + '"]');
-      if (box){ var bn = box.querySelector('.bn'); if (bn) bn.textContent = list.filter(function(j){ return j.src === 'BOSS直聘'; }).length; }
+      renderChips(c);
     });
     var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
   }catch(e){}
