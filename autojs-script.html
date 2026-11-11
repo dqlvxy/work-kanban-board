@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 26 步 定位加号与纸飞机</title>
+<title>手机自动投递 · 第 27 步 校验在聊天页</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,15 +39,15 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 26 步</h1>
-<div class="sub">两种状态各列一份节点清单。</div>
+<h1>手机自动投递 · 第 27 步</h1>
+<div class="sub">不在聊天页就直接停手。</div>
 
-<div class="warn">v22 那次 @1062,2286 确实点开了面板，说明节点点击对加号是有效的，是我 v24 扫错了位置。这版把「空框」和「填好字」两种状态的右侧节点全列出来，一眼看清加号跑哪去了。</div>
+<div class="warn">上一版跑的时候你停在简历页，脚本按同一套条件扫右侧，点到了右上角分享键，才弹出在线简历预览。这版先量输入框位置，不在屏幕下部就立刻停，绝不乱点。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>26.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>进孙先生聊天页，输入框清空</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>27.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p><b>先手动进到孙先生聊天页</b>，输入框清空</p></div>
 <div class="step"><div class="n">4</div><p>运行，把剪贴板发我</p></div>
 </div>
 
@@ -57,9 +57,9 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 26 步：把加号在「空框」和「填好字」两种状态下的节点位置都列出来
- * 依据：v22 在 @1062,2286 84x84 上节点 click 成功弹出了「图片/语音/语音通话」面板，
- * 说明节点点击对加号有效；v24 扫到的是 1413 那个位置，点错了。
+ * 手机自动投递 · 第 27 步：先校验在聊天页，再列空框/填字两态节点
+ * v26 教训：脚本跑时人停在简历页，输入框 y=1353，聊天页应在 y≈2255，
+ * 按同一套条件扫右侧节点，点到了右上角分享键，弹出在线简历预览。
  */
 
 var PKG = "com.hpbr.bosszhipin";
@@ -74,26 +74,36 @@ function 高(b) { return b.bottom - b.top; }
 function 心X(b) { return (b.left + b.right) / 2; }
 function 心Y(b) { return (b.top + b.bottom) / 2; }
 
-launchApp("BOSS直聘");
-sleep(4200);
 报告 += "包名: " + currentPackage() + "  屏幕 " + device.width + "x" + device.height + "\n";
 
-var 输入 = className("android.widget.EditText").findOne(6000);
-if (!输入) { setClip(报告 + "没找到输入框，先进孙先生聊天页"); toastLog("没输入框"); exit(); }
+var 输入 = className("android.widget.EditText").findOne(5000);
+if (!输入) {
+    setClip(报告 + "\n没有输入框 —— 请先进到孙先生聊天页再跑");
+    toastLog("不在聊天页");
+    exit();
+}
 var ib = 输入.bounds();
 报告 += "输入框: " + ib.left + "," + ib.top + " " + 宽(ib) + "x" + 高(ib) + "\n";
+
+// 聊天页判据：输入框在屏幕下部（y 起点 &gt; 70% 屏高）
+if (ib.top &lt; device.height * 0.70) {
+    setClip(报告 + "\n输入框 top=" + ib.top + "，不到屏高 70%（" + Math.round(device.height * 0.7) + "）\n" +
+        "当前页不是孙先生聊天页，脚本已停手，免得乱点。\n请手动进到聊天页再跑。");
+    toastLog("不在聊天页，已停手");
+    exit();
+}
 
 function 面板开了() { return textContains("语音通话").findOnce(900) != null; }
 function 发出去了() { return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2000); }
 
-// 先把右侧所有小方块列出来
+// 放宽条件：右侧区域所有可点小方块
 function 右侧候选() {
     var arr = [];
     packageName(PKG).clickable(true).find().forEach(function (n) {
         var b = n.bounds();
         var w = 宽(b), h = 高(b);
-        if (w &lt;= 0 || h &lt;= 0) return;
-        if (心X(b) &gt; device.width * 0.85 &amp;&amp; w &lt; 280 &amp;&amp; h &lt; 280) arr.push(n);
+        if (w &lt;= 0 || h &lt;= 0 || w &gt; 320 || h &gt; 320) return;
+        if (心X(b) &gt; device.width * 0.60 &amp;&amp; 心Y(b) &gt; device.height * 0.42) arr.push(n);
     });
     return arr;
 }
@@ -102,33 +112,38 @@ function 列清单(标签) {
     var arr = 右侧候选(), out = [];
     arr.forEach(function (n) {
         var b = n.bounds();
-        out.push((n.text() || n.desc() || "无字") + "@" + 心X(b) + "," + 心Y(b) + " " + 宽(b) + "x" + 高(b));
+        out.push("[" + (n.text() || n.desc() || "无字") + "@" + 心X(b) + "," + 心Y(b) + " " + 宽(b) + "x" + 高(b) + "]");
     });
-    报告 += "\n" + 标签 + "：右侧候选 " + arr.length + " 个\n" + out.join("  ") + "\n";
+    报告 += "\n" + 标签 + "：" + arr.length + " 个\n" + out.join("  ") + "\n";
     return arr;
 }
 
-// 空框状态清单
 var 空框 = 列清单("空框状态");
 报告 += "空框时面板: " + 面板开了() + "\n";
 
-// 挑最靠右那个点一下，看能不能弹面板
-var 最右 = null;
-空框.forEach(function (n) { if (!最右 || 心X(n.bounds()) &gt; 心X(最右.bounds())) 最右 = n; });
-if (最右) {
-    var rb = 最右.bounds();
-    报告 += "试最右 @ " + 心X(rb) + "," + 心Y(rb) + " → ";
-    最右.click();
-    sleep(1300);
-    var 开 = 面板开了();
-    报告 += "面板 " + 开 + "\n";
-    if (开) {
-        // 收掉面板
-        var now = 右侧候选(), mr = null;
-        now.forEach(function (n) { if (!mr || 心X(n.bounds()) &gt; 心X(mr.bounds())) mr = n; });
-        if (mr) { mr.click(); sleep(1300); }
-        报告 += "收面板后: " + 面板开了() + "\n";
-    }
+// 逐个试空框态的候选，找哪个能弹出面板（找加号真身）
+var 命中 = null;
+for (var i = 0; i &lt; 空框.length; i++) {
+    var n = 空框[i], b = n.bounds();
+    if (心Y(b) &lt; device.height * 0.6) continue;   // 上部的不试，省得点出别的页
+    if (心Y(b) &lt; ib.top - 120) continue;          // 输入框上方太远的也不试
+    报告 += "试 @" + 心X(b) + "," + 心Y(b) + " → ";
+    n.click();
+    sleep(1200);
+    if (面板开了()) { 报告 += "命中！\n"; 命中 = n; break; }
+    报告 += "无反应\n";
+}
+
+if (命中) {
+    var hb = 命中.bounds();
+    报告 += "加号真身: " + 心X(hb) + "," + 心Y(hb) + " " + 宽(hb) + "x" + 高(hb) + "\n";
+    // 收面板
+    var arr2 = 右侧候选(), mr = null;
+    arr2.forEach(function (n) { if (!mr || 心X(n.bounds()) &gt; 心X(mr.bounds())) mr = n; });
+    if (mr) { mr.click(); sleep(1200); }
+    报告 += "收面板后: " + 面板开了() + "\n";
+} else {
+    报告 += "空框态没试出加号\n";
 }
 
 // 填话术
@@ -136,25 +151,29 @@ if (最右) {
 sleep(900);
 try { 输入.setText(话术); } catch (e) { 报告 += "setText 异常: " + e + "\n"; }
 sleep(2400);
-var 新框 = 输入.bounds();
-报告 += "填字后输入框: " + 新框.left + "," + 新框.top + " " + 宽(新框) + "x" + 高(新框) + "\n";
-
-// 填字后清单
-var 填后 = 列清单("填字后状态");
+var nb = 输入.bounds();
+报告 += "\n填字后输入框: " + nb.left + "," + nb.top + " " + 宽(nb) + "x" + 高(nb) + "（相对空框位移 " + (nb.top - ib.top) + "）\n";
+列清单("填字后状态");
 
 var 已发 = false;
-for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
-    var arr = 右侧候选();
-    var mr = null;
-    arr.forEach(function (n) { if (!mr || 心X(n.bounds()) &gt; 心X(mr.bounds())) mr = n; });
-    if (!mr) { 报告 += "第" + r + "次无候选\n"; break; }
-    var b2 = mr.bounds();
-    报告 += "第" + r + "次点最右 @" + 心X(b2) + "," + 心Y(b2) + " → ";
-    mr.click();
-    sleep(2100);
-    已发 = 发出去了();
-    报告 += "发出 " + 已发 + "\n";
-    if (!已发 &amp;&amp; 面板开了()) { 报告 += "  （面板开出来了）\n"; }
+if (命中) {
+    var 原Y = 心Y(命中.bounds());
+    for (var r = 1; r &lt;= 3 &amp;&amp; !已发; r++) {
+        var arr3 = 右侧候选(), 目标 = null, 最小差 = 99999;
+        arr3.forEach(function (n) {
+            var b = n.bounds();
+            var d = Math.abs(心Y(b) - 原Y);
+            if (d &lt; 最小差) { 最小差 = d; 目标 = n; }
+        });
+        if (!目标) { 报告 += "第" + r + "次无候选\n"; break; }
+        var tb = 目标.bounds();
+        报告 += "第" + r + "次点 @" + 心X(tb) + "," + 心Y(tb) + "（与加号位差 " + 最小差 + "）→ ";
+        目标.click();
+        sleep(2100);
+        已发 = 发出去了();
+        报告 += "发出 " + 已发 + "\n";
+        if (!已发 &amp;&amp; 面板开了()) 报告 += "  （又把面板点开了）\n";
+    }
 }
 
 sleep(800);
@@ -163,10 +182,10 @@ toastLog(已发 ? "发出去了" : "没发出去");
 </pre>
 </div>
 
-<div class="foot">清单里带坐标，我照着定位</div>
+<div class="foot">这版会挨个试空框态的候选，找出哪个是加号</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 26 步：把加号在「空框」和「填好字」两种状态下的节点位置都列出来\n * 依据：v22 在 @1062,2286 84x84 上节点 click 成功弹出了「图片/语音/语音通话」面板，\n * 说明节点点击对加号有效；v24 扫到的是 1413 那个位置，点错了。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\nlaunchApp(\"BOSS直聘\");\nsleep(4200);\n报告 += \"包名: \" + currentPackage() + \"  屏幕 \" + device.width + \"x\" + device.height + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(6000);\nif (!输入) { setClip(报告 + \"没找到输入框，先进孙先生聊天页\"); toastLog(\"没输入框\"); exit(); }\nvar ib = 输入.bounds();\n报告 += \"输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\n// 先把右侧所有小方块列出来\nfunction 右侧候选() {\n    var arr = [];\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w <= 0 || h <= 0) return;\n        if (心X(b) > device.width * 0.85 && w < 280 && h < 280) arr.push(n);\n    });\n    return arr;\n}\n\nfunction 列清单(标签) {\n    var arr = 右侧候选(), out = [];\n    arr.forEach(function (n) {\n        var b = n.bounds();\n        out.push((n.text() || n.desc() || \"无字\") + \"@\" + 心X(b) + \",\" + 心Y(b) + \" \" + 宽(b) + \"x\" + 高(b));\n    });\n    报告 += \"\\n\" + 标签 + \"：右侧候选 \" + arr.length + \" 个\\n\" + out.join(\"  \") + \"\\n\";\n    return arr;\n}\n\n// 空框状态清单\nvar 空框 = 列清单(\"空框状态\");\n报告 += \"空框时面板: \" + 面板开了() + \"\\n\";\n\n// 挑最靠右那个点一下，看能不能弹面板\nvar 最右 = null;\n空框.forEach(function (n) { if (!最右 || 心X(n.bounds()) > 心X(最右.bounds())) 最右 = n; });\nif (最右) {\n    var rb = 最右.bounds();\n    报告 += \"试最右 @ \" + 心X(rb) + \",\" + 心Y(rb) + \" → \";\n    最右.click();\n    sleep(1300);\n    var 开 = 面板开了();\n    报告 += \"面板 \" + 开 + \"\\n\";\n    if (开) {\n        // 收掉面板\n        var now = 右侧候选(), mr = null;\n        now.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n        if (mr) { mr.click(); sleep(1300); }\n        报告 += \"收面板后: \" + 面板开了() + \"\\n\";\n    }\n}\n\n// 填话术\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2400);\nvar 新框 = 输入.bounds();\n报告 += \"填字后输入框: \" + 新框.left + \",\" + 新框.top + \" \" + 宽(新框) + \"x\" + 高(新框) + \"\\n\";\n\n// 填字后清单\nvar 填后 = 列清单(\"填字后状态\");\n\nvar 已发 = false;\nfor (var r = 1; r <= 3 && !已发; r++) {\n    var arr = 右侧候选();\n    var mr = null;\n    arr.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n    if (!mr) { 报告 += \"第\" + r + \"次无候选\\n\"; break; }\n    var b2 = mr.bounds();\n    报告 += \"第\" + r + \"次点最右 @\" + 心X(b2) + \",\" + 心Y(b2) + \" → \";\n    mr.click();\n    sleep(2100);\n    已发 = 发出去了();\n    报告 += \"发出 \" + 已发 + \"\\n\";\n    if (!已发 && 面板开了()) { 报告 += \"  （面板开出来了）\\n\"; }\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 27 步：先校验在聊天页，再列空框/填字两态节点\n * v26 教训：脚本跑时人停在简历页，输入框 y=1353，聊天页应在 y≈2255，\n * 按同一套条件扫右侧节点，点到了右上角分享键，弹出在线简历预览。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(800);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\n报告 += \"包名: \" + currentPackage() + \"  屏幕 \" + device.width + \"x\" + device.height + \"\\n\";\n\nvar 输入 = className(\"android.widget.EditText\").findOne(5000);\nif (!输入) {\n    setClip(报告 + \"\\n没有输入框 —— 请先进到孙先生聊天页再跑\");\n    toastLog(\"不在聊天页\");\n    exit();\n}\nvar ib = 输入.bounds();\n报告 += \"输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\n// 聊天页判据：输入框在屏幕下部（y 起点 > 70% 屏高）\nif (ib.top < device.height * 0.70) {\n    setClip(报告 + \"\\n输入框 top=\" + ib.top + \"，不到屏高 70%（\" + Math.round(device.height * 0.7) + \"）\\n\" +\n        \"当前页不是孙先生聊天页，脚本已停手，免得乱点。\\n请手动进到聊天页再跑。\");\n    toastLog(\"不在聊天页，已停手\");\n    exit();\n}\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\n// 放宽条件：右侧区域所有可点小方块\nfunction 右侧候选() {\n    var arr = [];\n    packageName(PKG).clickable(true).find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w <= 0 || h <= 0 || w > 320 || h > 320) return;\n        if (心X(b) > device.width * 0.60 && 心Y(b) > device.height * 0.42) arr.push(n);\n    });\n    return arr;\n}\n\nfunction 列清单(标签) {\n    var arr = 右侧候选(), out = [];\n    arr.forEach(function (n) {\n        var b = n.bounds();\n        out.push(\"[\" + (n.text() || n.desc() || \"无字\") + \"@\" + 心X(b) + \",\" + 心Y(b) + \" \" + 宽(b) + \"x\" + 高(b) + \"]\");\n    });\n    报告 += \"\\n\" + 标签 + \"：\" + arr.length + \" 个\\n\" + out.join(\"  \") + \"\\n\";\n    return arr;\n}\n\nvar 空框 = 列清单(\"空框状态\");\n报告 += \"空框时面板: \" + 面板开了() + \"\\n\";\n\n// 逐个试空框态的候选，找哪个能弹出面板（找加号真身）\nvar 命中 = null;\nfor (var i = 0; i < 空框.length; i++) {\n    var n = 空框[i], b = n.bounds();\n    if (心Y(b) < device.height * 0.6) continue;   // 上部的不试，省得点出别的页\n    if (心Y(b) < ib.top - 120) continue;          // 输入框上方太远的也不试\n    报告 += \"试 @\" + 心X(b) + \",\" + 心Y(b) + \" → \";\n    n.click();\n    sleep(1200);\n    if (面板开了()) { 报告 += \"命中！\\n\"; 命中 = n; break; }\n    报告 += \"无反应\\n\";\n}\n\nif (命中) {\n    var hb = 命中.bounds();\n    报告 += \"加号真身: \" + 心X(hb) + \",\" + 心Y(hb) + \" \" + 宽(hb) + \"x\" + 高(hb) + \"\\n\";\n    // 收面板\n    var arr2 = 右侧候选(), mr = null;\n    arr2.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n    if (mr) { mr.click(); sleep(1200); }\n    报告 += \"收面板后: \" + 面板开了() + \"\\n\";\n} else {\n    报告 += \"空框态没试出加号\\n\";\n}\n\n// 填话术\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2400);\nvar nb = 输入.bounds();\n报告 += \"\\n填字后输入框: \" + nb.left + \",\" + nb.top + \" \" + 宽(nb) + \"x\" + 高(nb) + \"（相对空框位移 \" + (nb.top - ib.top) + \"）\\n\";\n列清单(\"填字后状态\");\n\nvar 已发 = false;\nif (命中) {\n    var 原Y = 心Y(命中.bounds());\n    for (var r = 1; r <= 3 && !已发; r++) {\n        var arr3 = 右侧候选(), 目标 = null, 最小差 = 99999;\n        arr3.forEach(function (n) {\n            var b = n.bounds();\n            var d = Math.abs(心Y(b) - 原Y);\n            if (d < 最小差) { 最小差 = d; 目标 = n; }\n        });\n        if (!目标) { 报告 += \"第\" + r + \"次无候选\\n\"; break; }\n        var tb = 目标.bounds();\n        报告 += \"第\" + r + \"次点 @\" + 心X(tb) + \",\" + 心Y(tb) + \"（与加号位差 \" + 最小差 + \"）→ \";\n        目标.click();\n        sleep(2100);\n        已发 = 发出去了();\n        报告 += \"发出 \" + 已发 + \"\\n\";\n        if (!已发 && 面板开了()) 报告 += \"  （又把面板点开了）\\n\";\n    }\n}\n\nsleep(800);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
