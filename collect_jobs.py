@@ -104,7 +104,7 @@ def load_boss(addAt):
             src="BOSS直聘", srcUrl=link, link=link, boss=True, coTag="",
             pay=j.get("pay") or "面议", payNote=j.get("payNote") or "",
             edu=j.get("edu") or "未标注", eduOk=j.get("eduOk", True), score=sc,
-            g=j.get("g") or ("core" if sc >= 78 else "near"), cls=j.get("cls") or "g",
+            g=j.get("g") or ("core" if sc >= 80 else ("near" if sc >= 65 else "low")), cls=j.get("cls") or "g",
             chips=j.get("chips") or (j.get("tags") or [])[:2],
             why=j.get("why") or "BOSS直聘在招，岗位与你的非标自动化/治具设计主线相关，点开原站看详情。",
             msg=j.get("msg") or "", postAt=j.get("postAt") or "",
@@ -151,13 +151,13 @@ PROFILE = {
 
 # 命中即加分的能力簇：(权重, [关键词], 对应简历事实)
 SKILL_CLUSTERS = [
-    (22, ["非标自动化", "非标设备", "非标设计", "非标准设备", "非标机械"], "10 年非标治具与非标自动化设备开发"),
+    (24, ["非标自动化", "非标设备", "非标设计", "非标准设备", "非标机械", "非标"], "10 年非标治具与非标自动化设备开发"),
     (20, ["工装夹具", "治具", "夹具", "工装"], "手机/手表/耳机 3C 类非标测试治具与工装夹具设计"),
     (20, ["测试治具", "测试设备", "测试方案", "ICT", "FCT", "功能测试", "在线测试"], "精通 ICT/FCT 测试方案与整机测试设备设计"),
     (14, ["FPC", "连接器", "Pogo", "探针", "pogo pin"], "FPC 连接器测试治具、下探针 Pogo Pin 模组设计"),
     (16, ["气动", "气缸", "伺服", "步进电机", "直线导轨", "滚珠丝杆", "电机选型", "丝杆"], "气动回路与气缸/伺服/导轨/丝杆标准件选型"),
     (18, ["SolidWorks", "solidworks", "三维建模", "工程图", "BOM", "3D建模"], "SolidWorks 三维建模、工程图出图与 BOM 输出"),
-    (16, ["整机", "整机结构", "整机设计", "结构方案"], "多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装）"),
+    (20, ["整机", "整机结构", "整机设计", "结构方案", "结构设计", "机械结构", "结构工程师", "机械设计", "机构设计"], "多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装）"),
     (14, ["上下料", "移栽", "码垛", "机械手", "机器人", "转盘", "输送线", "回流线"], "双车床机器人上下料、保压盒码垛与回流线机构设计"),
     (12, ["3C", "消费电子", "手机", "智能手表", "耳机", "PCBA", "组装线"], "服务华为/OPPO/小米/比亚迪/伟创力等 3C 头部客户"),
     (12, ["CNC", "机加工", "钣金", "注塑", "加工工艺", "表面处理"], "零件加工工艺、钣金与公差控制经验"),
@@ -329,7 +329,7 @@ def judge(job_role, edu, pay, city, raw_text=""):
     """返回 (分数, 是否学历可投, 命中的能力簇说明)"""
     text = (job_role + " " + (raw_text or "")).lower()
     hits = []
-    score = 38
+    score = 46
     for w, kws, fact in SKILL_CLUSTERS:
         if any(k.lower() in text for k in kws):
             score += w
@@ -533,7 +533,7 @@ def main():
             id=0, city=r["city"], co=r["co"] or "（用人单位未展示）", coTag="",
             role=r["role"], area=r["area"], exp=r["exp"], edu=r["edu"] or "未标注",
             eduOk=eduOk, pay=r["pay"] or "面议", payNote="", score=sc,
-            g="core" if sc >= 78 else "near", cls="g", chips=chips, why=why,
+            g=("core" if sc >= 80 else ("near" if sc >= 65 else "low")), cls="g", chips=chips, why=why,
             msg=build_msg(r["role"], r["co"], r["city"], hits, r.get("raw", "")),
             src=r["src"], srcUrl=r["link"], link=r["link"], boss=False,
             postAt="", addAt=addAt, lastSeen=addAt,
@@ -592,6 +592,10 @@ def main():
         j["isNew"] = is_fresh(j, now)
         # 话术统一按简历口径重生：旧数据里"学历是大专"这类自曝短板的一律清掉
         j["msg"] = build_msg(j.get("role", ""), j.get("co", ""), j.get("city", ""), [], "")
+        # 旧岗按当前口径重算分数与分组，别让上一版的低分一直挂在那儿
+        _sc, _ok, _hits = judge(j.get("role", ""), j.get("edu", ""), j.get("pay", ""), j.get("city", ""), "")
+        j["score"] = _sc
+        j["g"] = "core" if _sc >= 80 else ("near" if _sc >= 65 else "low")
         # 老数据的匹配理由里带"学历「大专」…""这类评述，整段剔掉，别在老岗位上来回提学历
         if j.get("why"):
             j["why"] = "；".join([x for x in str(j["why"]).split("；")
