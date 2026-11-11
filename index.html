@@ -188,7 +188,7 @@
   .track{flex:1;height:5px;border-radius:3px;background:var(--track);overflow:hidden}
   .fill{height:100%;border-radius:3px;background:var(--green);transition:width .5s ease}
   .fill.b{background:var(--blue)} .fill.a{background:var(--amber)}
-  .score span{font-size:11px;font-weight:700;color:var(--muted);width:34px;text-align:right}
+  .score span{font-size:11px;font-weight:700;color:var(--muted);width:auto;min-width:30px;text-align:right}
   .score .scl{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;letter-spacing:.5px}
 
   .toggle{width:100%;margin-top:9px;background:none;border:0;border-top:1px dashed var(--line);
@@ -304,7 +304,11 @@
     background:var(--blue-soft);border:1px solid var(--track)}
 
   /* 已投复选框 */
-  .ckslot{display:flex;align-items:center;gap:10px;margin-top:9px}
+  .ckslot{display:none}                     /* 已投勾选挪到匹配度行尾，旧块隐藏 */
+  .apchk.sm{height:26px;padding:0 9px;gap:5px;font-size:11px;border-radius:8px;margin-left:2px}
+  .apchk.sm i{width:12px;height:12px;border-radius:3px}
+  .apchk.sm.on i::after{left:3px;top:0;width:4px;height:7px;border-width:0 1.5px 1.5px 0}
+  #cklist .actrow{grid-template-columns:1fr 1fr}
   .apchk{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:10px;
     font-family:inherit;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;
     background:var(--card);border:1px solid var(--line);transition:.15s;flex:none}
@@ -1578,7 +1582,8 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
 var CITY_LIMIT = 100;   /* 每城最多展示 100 条，与采集器 PER_CITY 对齐 */
 function byCity(city){
   var ap = getAp();
-  return DATA.jobs.filter(function(j){ return j.city === city && !ap[j.id]; })
+  var hd = getHd();
+  return DATA.jobs.filter(function(j){ return j.city === city && !ap[j.id] && !hd[jobKey(j)]; })
     .sort(function(a, b){
       var ra = (a.src === 'BOSS直聘') ? 0 : 1;
       var rb = (b.src === 'BOSS直聘') ? 0 : 1;
@@ -1637,11 +1642,8 @@ function renderJobs(city, filter){
         (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
       '</div>' +
       '<div class="score"><b class="scl">匹配度</b><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
-        '<span>' + j.score + '%</span></div>' +
-      '<div class="ckslot">' +
-        '<button class="apchk" onclick="markAp(' + j.id + ')" title="点一下标记已投，归档到已投页，不占名额"><i></i>已投</button>' +
-        '<span class="cksum">投过就勾上，腾名额</span>' +
-      '</div>' +
+        '<span>' + j.score + '%</span>' +
+        '<button class="apchk sm" onclick="markAp(' + j.id + ')" title="投过就勾上，归档到已投页，不占名额"><i></i>已投</button></div>' +
       '<div class="actrow">' +
         '<button class="msbtn" onclick="applyJob(' + j.id + ')">' +
           '<svg viewBox="0 0 24 24"><path d="M4 12.5 5 5L20 6.5"/><path d="M4 5v8a2 2 0 0 0 2 2h4"/><path d="M13 9l7 3-7 3z"/></svg>一键投</button>' +
@@ -1914,6 +1916,26 @@ function unmarkAp(id){
   if (navigator.vibrate) navigator.vibrate(14);
 }
 
+/* 彻底删除：从已投档案抹掉，并记进隐藏名单，列表也不再出现 */
+var HKEY = 'du_hidden_v1';
+function getHd(){ try{ return JSON.parse(localStorage.getItem(HKEY) || '{}'); }catch(e){ return {}; } }
+function setHd(o){ try{ localStorage.setItem(HKEY, JSON.stringify(o)); }catch(e){} }
+function jobKey(j){ return (j.co || '') + '|' + (j.role || '') + '|' + (j.city || ''); }
+function delAp(id){
+  if (!confirm('彻底删掉这条？删了连同城列表也不会再出现。')) return;
+  var ap = getAp(), rec = ap[id], hd = getHd();
+  var j = (rec && rec.job) || jobById(id);
+  delete ap[id]; setAp(ap);
+  var t = getT(); delete t[id]; setT(t);
+  if (j) hd[jobKey(j)] = 1;   /* 按 公司|岗位|城市 记，采集后 id 重排也不会错杀 */
+  setHd(hd);
+  if (rec && rec.job && rec.job.city) renderJobs(rec.job.city);
+  renderAp();
+  if (window.统计刷新) 统计刷新();
+  toast('已删除，这条不再出现');
+  if (navigator.vibrate) navigator.vibrate(14);
+}
+
 /* 已投页：详细卡（公司/岗位/薪资/区域/经验/学历/亮点/匹配度/投递时间/入口/话术/删除） */
 function renderAp(){
   var ap = getAp();
@@ -1965,17 +1987,13 @@ function renderAp(){
       '</div>' +
       '<div class="score"><b class="scl">匹配度</b>' +
         '<div class="track"><div class="fill ' + fillc + '" style="width:' + (j.score || 0) + '%"></div></div>' +
-        '<span>' + (j.score || 0) + '%</span></div>' +
-      '<div class="ckslot">' +
-        '<button class="apchk on" onclick="unmarkAp(' + j.id + ')" title="点一下把这条从已投里撤掉"><i></i>已投</button>' +
-        '<span class="cksum">归档时间 ' + timeTag(x.at) + '</span>' +
-      '</div>' +
+        '<span>' + (j.score || 0) + '%</span>' +
+        '<button class="apchk sm on" onclick="unmarkAp(' + j.id + ')" title="点一下撤回已投，岗位回原城市列表"><i></i>已投</button></div>' +
       '<div class="actrow">' +
-        '<button class="msbtn" onclick="applyJob(' + j.id + ')">' +
-          '<svg viewBox="0 0 24 24"><path d="M4 12.5 5 5L20 6.5"/><path d="M4 5v8a2 2 0 0 0 2 2h4"/><path d="M13 9l7 3-7 3z"/></svg>一键投</button>' +
-        '<button class="msbtn" onclick="copyTalk(this,' + j.id + ')">' +
-          '<svg viewBox="0 0 24 24"><path d="M20.5 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.2-.65L4.5 20l1.4-4.1A7.5 7.5 0 1 1 20.5 11.5Z"/><path d="M9 11h6M9 14h4"/></svg>话术</button>' +
-        '<button class="msbtn del" onclick="unmarkAp(' + j.id + ')">删除</button>' +
+        '<button class="msbtn" onclick="unmarkAp(' + j.id + ')">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 12.5 5 5L20 6.5"/><path d="M4 5v8a2 2 0 0 0 2 2h4"/><path d="M13 9l7 3-7 3z"/></svg>还原</button>' +
+        '<button class="msbtn del" onclick="delAp(' + j.id + ')">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M7 7l1 13h8l1-13"/></svg>删除</button>' +
       '</div>' +
       ((j.why || '') ? '<div class="why">' + j.why + '</div>' : '') +
       '</div>';
@@ -2440,7 +2458,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112b';
+var BUILD = '20261112c';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
