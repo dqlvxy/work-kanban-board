@@ -98,6 +98,9 @@
     background:var(--card);border:1px solid var(--line);font-size:11.5px;color:var(--muted);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.12),var(--shadow)
   }
+  /* 状态条上方补一块底色，挡住从标题栏渐变缝里穿出来的正文 */
+  .statusbar::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px;
+    background:var(--bg);pointer-events:none}
   /* 城市页顶部冻结区：统计 + 筛选随滚动钉住 */
   .dock{position:sticky;top:calc(var(--hbH,56px) + var(--sbH,44px));z-index:54;
     background:var(--bg);padding-bottom:2px;
@@ -2690,7 +2693,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112o';
+var BUILD = '20261112p';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
