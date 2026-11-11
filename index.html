@@ -504,7 +504,7 @@
 <div class="statusbar" id="statusbar">
   <span class="st-dot" id="stDot"></span>
   <span id="stText">数据快照已载入</span>
-  <span class="sp">更新于 <b id="upd">--:--</b> · <b id="cd">15:00</b></span>
+  <span class="sp">更新于 <b id="upd">--:--</b> · <b id="cd">10:00</b></span>
 </div>
 
 <main>
@@ -2251,7 +2251,7 @@ document.getElementById('msgMask').addEventListener('click', function(e){
 });
 
 /* ================= 10 分钟自动刷新 ================= */
-var PERIOD = 15 * 60 * 1000;
+var PERIOD = 10 * 60 * 1000;
 var nextAt = Date.now() + PERIOD;
 
 function tick(){
@@ -2275,6 +2275,9 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 loadData();
+/* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
+__上次更新时间 = DATA.updated;
+拉最新数据();
 
 /* 主题：默认跟随系统，记住上次选择 */
 var 存的主题 = null;
