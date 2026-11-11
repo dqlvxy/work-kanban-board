@@ -577,6 +577,7 @@
     </div>
     <div class="chips" data-city="xa">
       <button class="chip on" data-f="all">全部 10</button>
+      <button class="chip" data-f="boss">BOSS直聘 <span class="bn">0</span></button>
       <button class="chip" data-f="high">高匹配 2</button>
       <button class="chip" data-f="core">核心对口 3</button>
       <button class="chip" data-f="near">相近可投 4</button>
@@ -594,6 +595,7 @@
     </div>
     <div class="chips" data-city="sz">
       <button class="chip on" data-f="all">全部 9</button>
+      <button class="chip" data-f="boss">BOSS直聘 <span class="bn">0</span></button>
       <button class="chip" data-f="high">高匹配 6</button>
       <button class="chip" data-f="core">测试治具 6</button>
       <button class="chip" data-f="near">非标自动化 3</button>
@@ -1558,7 +1560,12 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
 
 function byCity(city){
   return DATA.jobs.filter(function(j){ return j.city === city; })
-    .sort(function(a, b){ return (b.score || 0) - (a.score || 0); });
+    .sort(function(a, b){
+      var ra = (a.src === 'BOSS直聘') ? 0 : 1;
+      var rb = (b.src === 'BOSS直聘') ? 0 : 1;
+      if (ra !== rb) return ra - rb;               /* BOSS 岗位优先 */
+      return (b.score || 0) - (a.score || 0);      /* 同来源内按匹配度从高到低 */
+    });
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
@@ -1571,6 +1578,7 @@ function renderJobs(city, filter){
   var list = byCity(city).filter(function(j){
     if (filter === 'all') return true;
     if (filter === 'high') return j.score >= 80;
+    if (filter === 'boss') return j.src === 'BOSS直聘';
     return j.g === filter;
   });
   if (!list.length){
@@ -2297,7 +2305,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111o';
+var BUILD = '20261111p';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2447,6 +2455,8 @@ function 统计刷新(){
       var elN = document.getElementById('c-' + c + '-n'); if (elN) elN.textContent = list.length;
       var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
       var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
+      var box = document.querySelector('.chips[data-city="' + c + '"]');
+      if (box){ var bn = box.querySelector('.bn'); if (bn) bn.textContent = list.filter(function(j){ return j.src === 'BOSS直聘'; }).length; }
     });
     var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
   }catch(e){}
