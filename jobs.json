@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11 19:17",
+  "updated": "2026-11-11 19:23",
   "round": 0,
   "bossCount": 50,
   "newCount": 103,
@@ -7,7 +7,7 @@
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 50,
-  "evicted": 122,
+  "evicted": 111,
   "jobs": [
     {
       "id": 1,
@@ -160,7 +160,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 14:43",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -320,7 +320,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 18:59",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -508,11 +508,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174193805.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 16:01",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -700,8 +700,8 @@
       "link": "https://www.liepin.com/job/1985020215.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -732,8 +732,8 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -764,8 +764,8 @@
       "link": "https://www.liepin.com/job/1986248617.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -796,8 +796,8 @@
       "link": "https://www.liepin.com/job/1986448143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -832,7 +832,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 17:42",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -860,11 +860,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174193366.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 17:36",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -1084,8 +1084,8 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -1114,11 +1114,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-lhq/174187526.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 19:11",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -1144,11 +1144,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-gmq/174182869.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 19:11",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -1174,11 +1174,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174192935.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 19:11",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -1204,8 +1204,8 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174197196.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:17",
-      "lastSeen": "2026-11-11 19:17",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 18:59",
       "isNew": true,
       "stale": false,
@@ -1354,11 +1354,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-lhq/174196813.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 18:11",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -1388,7 +1388,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 18:00",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1418,7 +1418,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 18:00",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1448,7 +1448,7 @@
       "lastSeen": "2026-11-11 19:17",
       "firstSeen": "2026-11-11 18:00",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1504,11 +1504,11 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174196142.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 19:11",
-      "lastSeen": "2026-11-11 19:11",
+      "addAt": "2026-11-11 19:23",
+      "lastSeen": "2026-11-11 19:23",
       "firstSeen": "2026-11-11 17:42",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
