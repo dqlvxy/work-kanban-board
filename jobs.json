@@ -1,13 +1,13 @@
 {
-  "updated": "2026-11-12 03:18",
+  "updated": "2026-11-12 03:26",
   "round": 0,
   "bossCount": 120,
   "newCount": 243,
-  "snapshotCount": 91,
+  "snapshotCount": 92,
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 120,
-  "evicted": 70,
+  "evicted": 67,
   "jobs": [
     {
       "id": 1,
@@ -316,8 +316,8 @@
       "link": "https://www.liepin.com/job/1985020215.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -348,8 +348,8 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -380,8 +380,8 @@
       "link": "https://www.liepin.com/job/1986248617.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -412,8 +412,8 @@
       "link": "https://www.liepin.com/job/1986448143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -508,8 +508,8 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2428,8 +2428,8 @@
       "link": "https://www.liepin.com/job/1985580753.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -2518,8 +2518,8 @@
       "link": "https://www.liepin.com/job/1970253279.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:12",
       "isNew": true,
       "stale": false,
@@ -2548,8 +2548,8 @@
       "link": "https://www.liepin.com/job/1959020189.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:12",
       "isNew": true,
       "stale": false,
@@ -2578,8 +2578,8 @@
       "link": "https://www.liepin.com/job/1984814185.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2608,8 +2608,8 @@
       "link": "https://www.liepin.com/job/1985688513.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2638,8 +2638,8 @@
       "link": "https://www.liepin.com/job/1985739863.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2668,8 +2668,8 @@
       "link": "https://www.liepin.com/job/1985074245.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2698,8 +2698,8 @@
       "link": "https://www.liepin.com/job/1984245375.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2728,8 +2728,8 @@
       "link": "https://www.liepin.com/job/1984244847.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2758,8 +2758,8 @@
       "link": "https://www.liepin.com/job/1984073815.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2788,8 +2788,8 @@
       "link": "https://www.liepin.com/job/1955684091.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2818,8 +2818,8 @@
       "link": "https://www.liepin.com/job/1965256397.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2848,8 +2848,8 @@
       "link": "https://www.liepin.com/job/1975921871.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2878,8 +2878,8 @@
       "link": "https://www.liepin.com/job/1985797303.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2908,8 +2908,8 @@
       "link": "https://www.liepin.com/job/1985610395.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2938,8 +2938,8 @@
       "link": "https://www.liepin.com/job/1986399045.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2968,8 +2968,8 @@
       "link": "https://www.liepin.com/job/1986463573.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -2998,8 +2998,8 @@
       "link": "https://www.liepin.com/job/1984319439.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -3298,8 +3298,8 @@
       "link": "https://www.liepin.com/job/1983094955.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3328,8 +3328,8 @@
       "link": "https://www.liepin.com/job/1986389661.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3358,8 +3358,8 @@
       "link": "https://www.liepin.com/job/1984914809.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3388,8 +3388,8 @@
       "link": "https://www.liepin.com/job/1982454619.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3418,8 +3418,8 @@
       "link": "https://www.liepin.com/job/1985688507.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3448,8 +3448,8 @@
       "link": "https://www.liepin.com/job/1985705607.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3478,8 +3478,8 @@
       "link": "https://www.liepin.com/job/1973626977.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3508,8 +3508,8 @@
       "link": "https://www.liepin.com/job/1986104253.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3538,8 +3538,8 @@
       "link": "https://www.liepin.com/job/1986448471.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3568,8 +3568,8 @@
       "link": "https://www.liepin.com/job/1981250231.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3598,8 +3598,8 @@
       "link": "https://www.liepin.com/job/1986038029.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3628,8 +3628,8 @@
       "link": "https://www.liepin.com/job/1947893261.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3658,8 +3658,8 @@
       "link": "https://www.liepin.com/job/1986002533.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3688,8 +3688,8 @@
       "link": "https://www.liepin.com/job/1981693017.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -3718,8 +3718,8 @@
       "link": "https://www.liepin.com/job/1986448233.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-12 03:18",
-      "lastSeen": "2026-11-12 03:18",
+      "addAt": "2026-11-12 03:26",
+      "lastSeen": "2026-11-12 03:26",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -4984,6 +4984,51 @@
     },
     {
       "city": "xa",
+      "co": "陕西三禾仓储设备",
+      "coTag": "",
+      "role": "机械设计工程师",
+      "area": "西安未央区辛家庙",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": true,
+      "pay": "12-17K",
+      "payNote": "",
+      "score": 79,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "3-5年",
+        "本科"
+      ],
+      "why": "岗位里的气动/伺服/导轨丝杆标准件选型、整机结构设计与加工工艺，你都实打实做过，属于主线直接对口；学历标「本科」，只是明面要求，用 16 年经验和作品集开路；在西安，正是简历写的期望城市；岗位亮点：立体停车库方案设计与结构规划，实现货物升降平移，精通传动液压电控；数据来自 BOSS直聘收录快照（2026-11-11），投递前点开原站核对是否仍在招。",
+      "msg": "您好，陕西三禾仓储设备的「机械设计工程师」，立体停车库方案设计与结构规划，实现货物升降平移。我做 16 年非标机械设计，10 年 3C 测试治具 / ICT / FCT 工装夹具（华为 / OPPO / 小米 / 比亚迪），SolidWorks 出图、BOM、装配调试独立闭环，正对我的气动伺服选型主线。岗位写本科，我学历大专，想用经验补，人在西安，想先发简历和作品集，方便约个时间聊？",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E9%99%95%E8%A5%BF%E4%B8%89%E7%A6%BE%E4%BB%93%E5%82%A8%E8%AE%BE%E5%A4%87&city=101110100",
+      "link": "https://www.zhipin.com/web/geek/jobs?query=%E9%99%95%E8%A5%BF%E4%B8%89%E7%A6%BE%E4%BB%93%E5%82%A8%E8%AE%BE%E5%A4%87&city=101110100",
+      "boss": true,
+      "postAt": "",
+      "addAt": "2026-11-11 14:01",
+      "firstSeen": "2026-11-11 14:01",
+      "lastSeen": "2026-11-11 14:01",
+      "isNew": true,
+      "stale": false,
+      "tags": [
+        "气动/伺服/导轨丝杆标准件选型",
+        "整机结构设计与加工工艺"
+      ],
+      "行业": "—",
+      "岗位亮点": "立体停车库方案设计与结构规划，实现货物升降平移，精通传动液压电控",
+      "来源页": "机械传动结构",
+      "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E9%99%95%E8%A5%BF%E4%B8%89%E7%A6%BE%E4%BB%93%E5%82%A8%E8%AE%BE%E5%A4%87&city=101110100",
+      "数据时间": "2026-11-11",
+      "快照": true,
+      "公司名未显示": false,
+      "质量分": 40,
+      "id": 152,
+      "在榜天数": 0
+    },
+    {
+      "city": "xa",
       "co": "威尔量仪",
       "coTag": "",
       "role": "非标自动化机械设计工程师",
@@ -5025,7 +5070,7 @@
       "质量分": 40,
       "isNew": true,
       "stale": true,
-      "id": 152,
+      "id": 153,
       "在榜天数": 0
     },
     {
@@ -5066,7 +5111,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 153,
+      "id": 154,
       "在榜天数": 0
     },
     {
@@ -5108,7 +5153,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 154,
+      "id": 155,
       "在榜天数": 0
     },
     {
@@ -5153,7 +5198,7 @@
       "质量分": 42,
       "isNew": true,
       "stale": true,
-      "id": 155,
+      "id": 156,
       "在榜天数": 0
     },
     {
@@ -5198,7 +5243,7 @@
       "质量分": 42,
       "isNew": true,
       "stale": true,
-      "id": 156,
+      "id": 157,
       "在榜天数": 0
     },
     {
@@ -5243,7 +5288,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 36,
-      "id": 157,
+      "id": 158,
       "在榜天数": 0
     },
     {
@@ -5289,7 +5334,7 @@
       "质量分": 36,
       "isNew": true,
       "stale": true,
-      "id": 158,
+      "id": 159,
       "在榜天数": 0
     },
     {
@@ -5335,7 +5380,7 @@
       "质量分": 36,
       "isNew": true,
       "stale": true,
-      "id": 159,
+      "id": 160,
       "在榜天数": 0
     },
     {
@@ -5381,7 +5426,7 @@
       "质量分": 36,
       "isNew": true,
       "stale": false,
-      "id": 160,
+      "id": 161,
       "在榜天数": 0
     },
     {
@@ -5427,7 +5472,7 @@
       "质量分": 36,
       "isNew": true,
       "stale": true,
-      "id": 161,
+      "id": 162,
       "在榜天数": 0
     },
     {
@@ -5472,7 +5517,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 162,
+      "id": 163,
       "在榜天数": 0
     },
     {
@@ -5517,7 +5562,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 163,
+      "id": 164,
       "在榜天数": 0
     },
     {
@@ -5562,7 +5607,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 164,
+      "id": 165,
       "在榜天数": 0
     },
     {
@@ -5608,7 +5653,7 @@
       "质量分": 34,
       "isNew": true,
       "stale": true,
-      "id": 165,
+      "id": 166,
       "在榜天数": 0
     },
     {
@@ -5654,7 +5699,7 @@
       "质量分": 30,
       "isNew": true,
       "stale": true,
-      "id": 166,
+      "id": 167,
       "在榜天数": 0
     },
     {
@@ -5700,7 +5745,7 @@
       "质量分": 34,
       "isNew": true,
       "stale": true,
-      "id": 167,
+      "id": 168,
       "在榜天数": 0
     },
     {
@@ -5745,7 +5790,7 @@
       "质量分": 28,
       "isNew": true,
       "stale": true,
-      "id": 168,
+      "id": 169,
       "在榜天数": 0
     },
     {
@@ -5791,7 +5836,7 @@
       "质量分": 28,
       "isNew": true,
       "stale": true,
-      "id": 169,
+      "id": 170,
       "在榜天数": 0
     },
     {
@@ -5832,7 +5877,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 170,
+      "id": 171,
       "在榜天数": 0
     },
     {
@@ -5876,7 +5921,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 36,
-      "id": 171,
+      "id": 172,
       "在榜天数": 0
     },
     {
@@ -5922,7 +5967,7 @@
       "质量分": 32,
       "isNew": true,
       "stale": true,
-      "id": 172,
+      "id": 173,
       "在榜天数": 0
     },
     {
@@ -5966,7 +6011,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 173,
+      "id": 174,
       "在榜天数": 0
     },
     {
@@ -6010,7 +6055,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 174,
+      "id": 175,
       "在榜天数": 0
     },
     {
@@ -6054,7 +6099,7 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 34,
-      "id": 175,
+      "id": 176,
       "在榜天数": 0
     },
     {
@@ -6100,7 +6145,7 @@
       "质量分": 30,
       "isNew": true,
       "stale": true,
-      "id": 176,
+      "id": 177,
       "在榜天数": 0
     },
     {
@@ -6146,7 +6191,7 @@
       "质量分": 30,
       "isNew": true,
       "stale": true,
-      "id": 177,
+      "id": 178,
       "在榜天数": 0
     },
     {
@@ -6191,7 +6236,7 @@
       "质量分": 34,
       "isNew": true,
       "stale": true,
-      "id": 178,
+      "id": 179,
       "在榜天数": 0
     },
     {
@@ -6237,7 +6282,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 179,
+      "id": 180,
       "在榜天数": 0
     },
     {
@@ -6283,7 +6328,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 180,
+      "id": 181,
       "在榜天数": 0
     },
     {
@@ -6328,7 +6373,7 @@
       "质量分": 34,
       "isNew": true,
       "stale": true,
-      "id": 181,
+      "id": 182,
       "在榜天数": 0
     },
     {
@@ -6374,7 +6419,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 182,
+      "id": 183,
       "在榜天数": 0
     },
     {
@@ -6414,7 +6459,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 183,
+      "id": 184,
       "在榜天数": 0
     },
     {
@@ -6459,7 +6504,7 @@
       "质量分": 28,
       "isNew": true,
       "stale": true,
-      "id": 184,
+      "id": 185,
       "在榜天数": 0
     },
     {
@@ -6505,7 +6550,7 @@
       "质量分": 28,
       "isNew": true,
       "stale": true,
-      "id": 185,
+      "id": 186,
       "在榜天数": 0
     },
     {
@@ -6550,7 +6595,7 @@
       "质量分": 32,
       "isNew": true,
       "stale": true,
-      "id": 186,
+      "id": 187,
       "在榜天数": 0
     },
     {
@@ -6596,7 +6641,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 187,
+      "id": 188,
       "在榜天数": 0
     },
     {
@@ -6642,7 +6687,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 188,
+      "id": 189,
       "在榜天数": 0
     },
     {
@@ -6686,7 +6731,7 @@
       "质量分": 34,
       "isNew": true,
       "stale": true,
-      "id": 189,
+      "id": 190,
       "在榜天数": 0
     },
     {
@@ -6732,7 +6777,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 190,
+      "id": 191,
       "在榜天数": 0
     },
     {
@@ -6778,7 +6823,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 191,
+      "id": 192,
       "在榜天数": 0
     },
     {
@@ -6823,7 +6868,7 @@
       "质量分": 28,
       "isNew": true,
       "stale": true,
-      "id": 192,
+      "id": 193,
       "在榜天数": 0
     },
     {
@@ -6863,7 +6908,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 193,
+      "id": 194,
       "在榜天数": 0
     },
     {
@@ -6907,7 +6952,7 @@
       "质量分": 32,
       "isNew": true,
       "stale": true,
-      "id": 194,
+      "id": 195,
       "在榜天数": 0
     },
     {
@@ -6952,7 +6997,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 195,
+      "id": 196,
       "在榜天数": 0
     },
     {
@@ -6997,7 +7042,7 @@
       "质量分": 26,
       "isNew": true,
       "stale": true,
-      "id": 196,
+      "id": 197,
       "在榜天数": 0
     },
     {
@@ -7038,7 +7083,7 @@
       "stale": true,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 197,
+      "id": 198,
       "在榜天数": 0
     },
     {
@@ -7078,7 +7123,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 198,
+      "id": 199,
       "在榜天数": 0
     },
     {
@@ -7118,7 +7163,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 199,
+      "id": 200,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E7%84%8A%E7%A7%91%E6%96%AF%E6%99%BA%E8%83%BD&city=101110100",
       "来源页": "机械设计工程师",
@@ -7163,7 +7208,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 200,
+      "id": 201,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://m.zhipin.com/job_detail/c0ef0bda472ff71b0nd809i4GVtS.html",
       "来源页": "岗位直链",
@@ -7208,7 +7253,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 201,
+      "id": 202,
       "在榜天数": 0
     },
     {
@@ -7251,7 +7296,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 202,
+      "id": 203,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E7%8E%AF%E6%B5%B7%E6%9C%BA%E5%99%A8%E4%BA%BA&city=101110100",
       "来源页": "机械设计工程师",
@@ -7295,7 +7340,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 203,
+      "id": 204,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E4%BD%B3%E5%B8%AE%E6%89%8B&city=101110100",
       "来源页": "机械传动结构",
@@ -7340,7 +7385,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 204,
+      "id": 205,
       "在榜天数": 0
     },
     {
@@ -7379,7 +7424,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 205,
+      "id": 206,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%88%9C%E5%85%83%E7%A7%91%E6%8A%80&city=101110100",
       "来源页": "机械传动结构",
@@ -7426,7 +7471,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 206,
+      "id": 207,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%B1%89%E6%B2%A3%E7%B2%BE%E6%9C%BA&city=101110100",
       "来源页": "工装设计工程师",
@@ -7471,7 +7516,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 207,
+      "id": 208,
       "在榜天数": 0
     },
     {
@@ -7517,7 +7562,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 208,
+      "id": 209,
       "在榜天数": 0
     },
     {
@@ -7556,7 +7601,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 209,
+      "id": 210,
       "在榜天数": 0
     },
     {
@@ -7601,7 +7646,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 210,
+      "id": 211,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E6%98%86%E7%9F%B3%E8%83%BD%E6%BA%90&city=101110100",
       "来源页": "机械设计工程师",
@@ -7647,7 +7692,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 211,
+      "id": 212,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%88%9C%E5%85%83%E7%A7%91%E6%8A%80&city=101110100",
       "来源页": "工装设计工程师",
@@ -7692,7 +7737,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 212,
+      "id": 213,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%8B%8F%E5%B7%9E%E6%93%8E%E5%B2%B3%E9%97%AE%E5%A4%A9%E7%A7%91%E6%8A%80&city=101110100",
       "来源页": "机械传动结构",
@@ -7736,7 +7781,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 213,
+      "id": 214,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%90%BD%E6%97%A5%E9%A3%9E%E8%BD%A6&city=101110100",
       "来源页": "工装设计工程师",
@@ -7781,7 +7826,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 214,
+      "id": 215,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E5%8D%9A%E7%A0%94%E5%BE%AE%E7%BA%B3&city=101110100",
       "来源页": "机械传动结构",
@@ -7826,7 +7871,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 215,
+      "id": 216,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E5%8D%9A%E7%A0%94%E5%BE%AE%E7%BA%B3&city=101110100",
       "来源页": "工装设计工程师",
@@ -7875,7 +7920,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 216,
+      "id": 217,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%B4%9B%E7%A7%91&city=101110100",
       "来源页": "机械设计工程师",
@@ -7920,7 +7965,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 217,
+      "id": 218,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%BD%A9%E7%94%B0%E7%A7%91%E6%8A%80&city=101110100",
       "来源页": "机械传动结构",
@@ -7970,7 +8015,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 218,
+      "id": 219,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E9%9B%B6%E5%88%B0%E5%A3%B9%E8%87%AA%E5%8A%A8%E5%8C%96%E7%A7%91%E6%8A%80&city=101110100",
       "来源页": "机械设计工程师",
@@ -8015,7 +8060,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 219,
+      "id": 220,
       "在榜天数": 0
     },
     {
@@ -8052,7 +8097,7 @@
       "msg": "",
       "dataAt": "2026-11-11",
       "_srcPages": "机械传动结构工程师、机械结构设计",
-      "id": 220,
+      "id": 221,
       "stale": false,
       "在榜天数": 0,
       "isNew": true,
@@ -8099,7 +8144,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 221,
+      "id": 222,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=Vertiv&city=101110100",
       "来源页": "机械传动结构",
@@ -8145,7 +8190,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 222,
+      "id": 223,
       "在榜天数": 0
     },
     {
@@ -8189,7 +8234,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 223,
+      "id": 224,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E5%B8%95%E5%90%89%E7%89%B9&city=101110100",
       "来源页": "机械设计工程师",
@@ -8234,7 +8279,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 224,
+      "id": 225,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E6%88%B4%E4%BC%AF%E7%89%B9&city=101110100",
       "来源页": "机械传动结构",
@@ -8280,7 +8325,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 225,
+      "id": 226,
       "在榜天数": 0
     },
     {
@@ -8321,7 +8366,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 226,
+      "id": 227,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E7%89%B9%E9%BE%99%E6%99%BA%E8%83%BD&city=101110100",
       "来源页": "机械传动结构",
@@ -8365,7 +8410,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 227,
+      "id": 228,
       "在榜天数": 0
     },
     {
@@ -8404,7 +8449,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 228,
+      "id": 229,
       "在榜天数": 0
     },
     {
@@ -8444,7 +8489,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 229,
+      "id": 230,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%8B%93%E6%99%AE%E7%94%B5%E6%B0%94&city=101110100",
       "来源页": "机械传动结构",
@@ -8489,7 +8534,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 230,
+      "id": 231,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%B4%9B%E7%A7%91&city=101110100",
       "来源页": "机械结构设计",
@@ -8533,7 +8578,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 231,
+      "id": 232,
       "在榜天数": 0
     },
     {
@@ -8573,7 +8618,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 232,
+      "id": 233,
       "在榜天数": 0
     },
     {
@@ -8613,7 +8658,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 233,
+      "id": 234,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%B5%9B%E5%8D%9A%E6%A0%BC%E6%9C%BA%E5%99%A8%E4%BA%BA&city=101110100",
       "来源页": "机械传动结构",
@@ -8657,7 +8702,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 234,
+      "id": 235,
       "在榜天数": 0
     },
     {
@@ -8696,7 +8741,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 235,
+      "id": 236,
       "在榜天数": 0
     },
     {
@@ -8737,7 +8782,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 236,
+      "id": 237,
       "在榜天数": 0
     },
     {
@@ -8781,7 +8826,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 237,
+      "id": 238,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E5%90%8C%E5%8A%9B%E9%87%8D%E5%B7%A5&city=101110100",
       "来源页": "机械设计工程师",
@@ -8830,7 +8875,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 238,
+      "id": 239,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E6%98%A5%E6%99%96%E9%9B%86%E5%9B%A2&city=101110100",
       "来源页": "机械设计工程师",
@@ -8875,7 +8920,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 239,
+      "id": 240,
       "在榜天数": 0
     },
     {
@@ -8919,7 +8964,7 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 240,
+      "id": 241,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E6%B2%B3%E5%8D%97%E7%A5%BA%E6%99%BA&city=101110100",
       "来源页": "机械设计工程师",
@@ -8964,7 +9009,7 @@
       "boss": true,
       "isNew": true,
       "stale": true,
-      "id": 241,
+      "id": 242,
       "在榜天数": 0
     },
     {
@@ -9007,57 +9052,13 @@
       "boss": true,
       "isNew": true,
       "stale": false,
-      "id": 242,
+      "id": 243,
       "在榜天数": 0,
       "Boss直聘投递入口": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%8B%93%E6%99%AE%E7%94%B5%E6%B0%94&city=101110100",
       "来源页": "机械设计工程师",
       "数据时间": "2026-11-11",
       "快照": true,
       "公司名未显示": false
-    },
-    {
-      "city": "xa",
-      "co": "西安汉沣精机",
-      "coTag": "",
-      "role": "机械设计工程师",
-      "area": "西安雁塔区高新路",
-      "exp": "5-10年",
-      "edu": "本科",
-      "eduOk": false,
-      "pay": "10-15K",
-      "payNote": "·13薪",
-      "score": 40,
-      "g": "core",
-      "cls": "g",
-      "chips": [
-        "5-10年",
-        "本科",
-        "铁路",
-        "船舶",
-        "航空",
-        "航天制造"
-      ],
-      "why": "按方案需求完成各类部件零件的设计、选型与规范出图",
-      "src": "BOSS直聘",
-      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%B1%89%E6%B2%A3%E7%B2%BE%E6%9C%BA&city=101110100",
-      "link": "https://www.zhipin.com/web/geek/jobs?query=%E8%A5%BF%E5%AE%89%E6%B1%89%E6%B2%A3%E7%B2%BE%E6%9C%BA&city=101110100",
-      "postAt": "待同步",
-      "addAt": "2026-11-11 13:05",
-      "firstSeen": "2026-11-11 13:05",
-      "lastSeen": "2026-11-11 13:05",
-      "tags": [
-        "铁路",
-        "5-10年",
-        "本科"
-      ],
-      "msg": "",
-      "dataAt": "2026-11-11",
-      "_srcPages": "机械设计工程师、机械结构设计、机械设计讲师",
-      "boss": true,
-      "isNew": true,
-      "stale": true,
-      "id": 243,
-      "在榜天数": 0
     }
   ]
 }
