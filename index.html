@@ -436,6 +436,10 @@
   }
   .bnav-it.jelly{animation:果冻 .52s cubic-bezier(.34,1.56,.64,1);will-change:transform;z-index:2}
 
+  .restrow{display:flex;align-items:center;gap:8px;margin:8px 0 2px}
+  .restb{border:1px dashed var(--line);background:transparent;color:var(--muted);font-size:12px;padding:6px 10px;border-radius:8px;min-height:34px}
+  .restb.on{border:1px solid #2e9e5b;background:rgba(46,158,91,.12);color:#1f8b50;font-weight:700}
+  .resttip{font-size:11px;color:var(--muted)}
   @media (prefers-reduced-motion:reduce){
     .bnav-cap,.bnav-cap.跳{transition:none;animation:none}
     .bnav-it svg{transition:none}
@@ -514,14 +518,14 @@
     <div class="stats">
       <div class="stat a"><div class="v" id="h1n">20<small>家</small></div><div class="k">三城总计</div></div>
       <div class="stat b"><div class="v" id="h2n">35<small>K</small></div><div class="k">最高月薪</div></div>
-      <div class="stat"><div class="v" id="h3n">9<small>家</small></div><div class="k">大专可投</div></div>
+      <div class="stat"><div class="v" id="h3n">9<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
 
     <div class="city" onclick="go('p-xa')">
       <div class="lb">西安</div>
       <div class="bd">
         <div class="n">西安 <i>离家近</i></div>
-        <div class="d"><span id="c-xa-n">10</span> 家家 · 大专可投 <span id="c-xa-e">2</span> 家 · 岗位最全但卡学历最狠</div>
+        <div class="d"><span id="c-xa-n">10</span> 家 · 高匹配 <span id="c-xa-e">2</span> 家 · 机械岗全放行，学历只标不卡</div>
       </div>
       <div class="rt"><b id="c-xa-p">30K</b><span>薪资上限</span></div>
       <div class="go">›</div>
@@ -531,7 +535,7 @@
       <div class="lb">深圳</div>
       <div class="bd">
         <div class="n">深圳 <i>老本行 金矿</i></div>
-        <div class="d"><span id="c-sz-n">9</span> 家 · 大专可投 <span id="c-sz-e">6</span> 家 · 测试治具岗位密集，最对口</div>
+        <div class="d"><span id="c-sz-n">9</span> 家 · 高匹配 <span id="c-sz-e">6</span> 家 · 测试治具岗密集，最对口</div>
       </div>
       <div class="rt"><b id="c-sz-p">35K</b><span>薪资上限</span></div>
       <div class="go">›</div>
@@ -549,17 +553,17 @@
 
     <div class="info" style="margin-top:14px">
       <h3>怎么打这三座城</h3>
-      <p><b>深圳是你的金矿，不是退路。</b>你 10 年的 ICT／FCT 测试治具、FPC 连接器治具经验，在深圳是密集在招的硬需求：光我抓到的治具岗就有 9 家在招，其中 <b>6 家明写大专可投</b>，薪资上限 35K。西安的岗位更多是"非标自动化"泛岗，卡本科的比例高得多。</p>
-      <p><b>西安适合长期落点。</b>离家近、生活成本低，汉沣精机、永邦两家大专可投，是能拿到的保底 offer。</p>
-      <p><b>安康只有一家能谈。</b>轩意光电方向对口、只要求高中，但薪资天花板低。策略是拿外地 offer 抬价再谈。</p>
+      <p><b>深圳是你的金矿，不是退路。</b>你 10 年的 ICT／FCT 测试治具、FPC 连接器治具经验，在深圳是密集在招的硬需求，薪资上限能到 35K。西安更多是"非标自动化"泛岗，薪资中位低一档但离家近。</p>
+      <p><b>西安适合长期落点。</b>离家近、生活成本低，石油装备、风机、医疗器械类非标岗持续在招，整机方案和工装夹具经验能直接对上。</p>
+      <p><b>安康岗位少。</b>方向对口的零星，薪资天花板低，策略是拿外地 offer 抬价再谈。</p>
     </div>
 
     <div class="info">
       <h3>投递顺序（按这个打）</h3>
-      <p><b>第一波 · 深圳治具 4 家</b>：欣同达 18-25K、深极测 15-25K、嘉欣钰 16-21K、长盈精密 13-20K。全部大专可投、全部测试治具方向，命中率最高、薪资最高，先打这批。</p>
-      <p><b>第二波 · 西安保底 2 家</b>：汉沣精机 10-15K、永邦 6-12K。大专明确可投，拿下其中一个当保底。</p>
-      <p><b>第三波 · 高薪冲刺</b>：共进电子 18-35K、达四海 16-30K、中诺通讯 15-25K、比亚迪 15-30K。卡本科，靠 18 年经验硬顶。</p>
-      <p><b>第四波 · 收尾</b>：安康轩意、利和兴（技术完全对口但薪资低，可作谈判筹码）。</p>
+      <p><b>第一波 · 深圳测试治具</b>：优先投「测试治具／FCT／FPC 连接器」相关岗，这是你最硬的一块，命中率最高。</p>
+      <p><b>第二波 · 西安非标自动化</b>：工装夹具、整机结构、非标设备设计，离家近，当保底。</p>
+      <p><b>第三波 · 高薪冲刺</b>：薪资上限 25K 以上的，学历写本科也照投，用 16 年经验和作品集硬顶。</p>
+      <p><b>第四波 · 收尾</b>：技术对口但薪资低的，留着当谈判筹码。</p>
     </div>
   </section>
 
@@ -568,11 +572,11 @@
     <div class="stats">
       <div class="stat a"><div class="v">10<small>家</small></div><div class="k">在招岗位</div></div>
       <div class="stat b"><div class="v">30<small>K</small></div><div class="k">最高月薪</div></div>
-      <div class="stat"><div class="v">2<small>家</small></div><div class="k">大专可投</div></div>
+      <div class="stat"><div class="v">2<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="xa">
       <button class="chip on" data-f="all">全部 10</button>
-      <button class="chip" data-f="edu">大专可投 2</button>
+      <button class="chip" data-f="high">高匹配 2</button>
       <button class="chip" data-f="core">核心对口 3</button>
       <button class="chip" data-f="near">相近可投 4</button>
       <button class="chip" data-f="risk">有硬门槛 3</button>
@@ -585,11 +589,11 @@
     <div class="stats">
       <div class="stat a"><div class="v">9<small>家</small></div><div class="k">在招岗位</div></div>
       <div class="stat b"><div class="v">35<small>K</small></div><div class="k">最高月薪</div></div>
-      <div class="stat"><div class="v">6<small>家</small></div><div class="k">大专可投</div></div>
+      <div class="stat"><div class="v">6<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="sz">
       <button class="chip on" data-f="all">全部 9</button>
-      <button class="chip" data-f="edu">大专可投 6</button>
+      <button class="chip" data-f="high">高匹配 6</button>
       <button class="chip" data-f="core">测试治具 6</button>
       <button class="chip" data-f="near">非标自动化 3</button>
     </div>
@@ -1534,6 +1538,23 @@ function loadData(){
   }catch(e){ console.warn('数据解析失败', e); }
 }
 
+var RKEY = 'du_rest_v1';
+function restMap(){ try{ return JSON.parse(localStorage.getItem(RKEY) || '{}'); }catch(e){ return {}; } }
+function restKey(j){ return (j.co || '') + '|' + (j.role || ''); }
+function restOf(j){ return restMap()[restKey(j)] || ''; }
+function markRest(el){
+  var k = el.getAttribute('data-k'); var m = restMap();
+  var seq = ['', '双休', '双休·9:00', '双休·8:30', '单休', '大小周'];
+  var cur = m[k] || '';
+  var i = seq.indexOf(cur); var nx = seq[(i + 1) % seq.length];
+  if (nx) m[k] = nx; else delete m[k];
+  try{ localStorage.setItem(RKEY, JSON.stringify(m)); }catch(e){}
+  el.textContent = nx || '作息待确认';
+  if (nx) el.classList.add('on'); else el.classList.remove('on');
+  var tip = el.parentNode.querySelector('.resttip');
+  if (tip) tip.textContent = nx ? '（你自己标的）' : '招聘页没写双休／上班时间，点一下自己标';
+}
+
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
@@ -1550,7 +1571,7 @@ function renderJobs(city, filter){
   if (!host) return;
   var list = byCity(city).filter(function(j){
     if (filter === 'all') return true;
-    if (filter === 'edu') return j.eduOk === true;
+    if (filter === 'high') return j.score >= 80;
     return j.g === filter;
   });
   if (!list.length){
@@ -1559,6 +1580,7 @@ function renderJobs(city, filter){
   }
   host.innerHTML = list.map(function(j){
     var cls = j.cls === 'g' ? 'g' : (j.cls === 'a' ? 'a' : '');
+    var restVal = restOf(j);
     var fillc = j.score >= 88 ? '' : (j.score >= 78 ? 'b' : 'a');
     var chips = (j.chips||[]).filter(function(c){
       /* 学历已单独成标签，去掉重复项 */
@@ -1580,7 +1602,8 @@ function renderJobs(city, filter){
         '<div class="pay"><b>' + esc(j.pay) + '</b>' + (j.payNote ? '<i>' + esc(j.payNote) + '</i>' : '') + '</div>' +
       '</div>' +
       '<div class="meta"><span class="m b">' + esc(j.area) + '</span><span class="m">' + esc(j.exp) + '</span>' +
-        '<span class="m ' + (j.eduOk ? 'g' : 'a') + '">' + esc(j.edu) + (j.eduOk ? '｜可投' : '｜卡本科') + '</span>' + chips + '</div>' +
+        '<span class="m">' + esc(j.edu) + '</span>' + chips + '</div>' +
+      '<div class="restrow"><button class="restb' + (restVal ? ' on' : '') + '" data-k="' + esc(restKey(j)) + '" onclick="markRest(this)">' + esc(restVal || '作息待确认') + '</button><span class="resttip">' + (restVal ? '（你自己标的）' : '招聘页没写双休／上班时间，点一下自己标') + '</span></div>' +
       '<div class="srcrow">' +
         (j.src ? '<span class="srcbadge">' + esc(j.src) + '</span>' : '') +
         (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
@@ -2344,7 +2367,7 @@ CITY_ORDER.forEach(function(c){
   var elN = document.getElementById('c-' + c + '-n');
   if (elN) elN.textContent = list.length;
   var elE = document.getElementById('c-' + c + '-e');
-  if (elE) elE.textContent = list.filter(function(j){ return j.eduOk; }).length;
+  if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
   var elP = document.getElementById('c-' + c + '-p');
   if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
 });
@@ -2382,7 +2405,7 @@ function 统计刷新(){
     CITY_ORDER.forEach(function(c){
       var list = byCity(c);
       var elN = document.getElementById('c-' + c + '-n'); if (elN) elN.textContent = list.length;
-      var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.eduOk; }).length;
+      var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
       var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
     });
     var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
