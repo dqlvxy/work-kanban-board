@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<link rel="manifest" href="manifest.json?v=1">
+<link rel="manifest" href="manifest.json?v=2">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -774,7 +774,7 @@
     <div class="inst"><span class="n">2</span><div><b>iPhone Safari</b><span>打开上面的网址 → 底部「分享」→「添加到主屏幕」</span></div></div>
     <div class="inst"><span class="n">3</span><div><b>装好后</b><span>图标名「工作看板」，打开就是当日岗位、评分和定制话术</span></div></div>
     <div class="inst"><span class="n">4</span><div><b>想离线用</b><span>点下面「存离线副本」→ 整份看板源码进剪贴板，粘成 .html 存手机上，双击即可无网打开</span></div></div>
-    <button class="installbtn" onclick="copyInst(true)">一键装到手机桌面</button>
+    <button class="installbtn" id="instGo" onclick="一键安装()">一键装到手机桌面</button>
     <button class="offlinebtn" onclick="closeInst();下载到桌面();">存离线副本</button>
     <div class="gd-tip" id="instTip" style="text-align:center">点「一键装到手机桌面」会把网址复制好</div>
   </div>
@@ -1471,6 +1471,38 @@ function 下载到桌面(){
   }
 }
 
+/* ⑤ 一键安装（捕获浏览器原生安装事件，装完就是无顶栏的独立 App） */
+var __installEvt = null;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  __installEvt = e;
+  var b = document.getElementById('instGo');
+  if (b){ b.textContent = '一键装到手机桌面'; b.style.opacity = '1'; }
+});
+window.addEventListener('appinstalled', function(){
+  __installEvt = null;
+  toast('已装到桌面，去桌面点图标打开就是全屏');
+  var tip = document.getElementById('instTip');
+  if (tip) tip.textContent = '装好了 · 以后从桌面图标打开，没有地址栏';
+});
+function 一键安装(){
+  if (__installEvt){
+    __installEvt.prompt();
+    __installEvt.userChoice.then(function(r){
+      var tip = document.getElementById('instTip');
+      if (r && r.outcome === 'accepted'){
+        if (tip) tip.textContent = '安装中… 桌面会出现「工作看板」图标';
+      } else {
+        copyInst();
+      }
+    });
+    __installEvt = null;
+    return;
+  }
+  // 浏览器不给安装口子（自带浏览器/已安装过），退回复制网址 + 指引
+  copyInst(true);
+}
+
 /* ⑤ 装到桌面后独立启动 + 离线可用 */
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', function(){
@@ -1487,6 +1519,9 @@ var INST_URL = 'https://dqlvxy.github.io/work-kanban-board/';
 function openInst(){
   var u = document.getElementById('instUrl');
   if (u) u.textContent = INST_URL;
+  var tip = document.getElementById('instTip');
+  if (tip && document.documentElement.getAttribute('data-standalone') === '1')
+    tip.textContent = '当前已经是独立全屏模式，就在桌面图标里';
   document.getElementById('instMask').classList.add('on');
   document.body.style.overflow = 'hidden';
 }
