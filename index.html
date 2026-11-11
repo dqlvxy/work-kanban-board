@@ -1760,11 +1760,36 @@ var curGdId = null;
 function jobById(id){
   return (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
 }
-/* 每家岗位一句极简话术，不依赖预置库 */
+/* 每家岗位单独定制话术：按岗位真实要求匹配简历里的对应项目 */
+var TALK = [
+  {re:/ICT|FCT|测试|检测|探针|Pogo|FPC|连接器|电流/i, w:'测试治具与检测设备', e:'做过ICT／FCT测试方案和FPC／Pogo探针治具'},
+  {re:/治具|夹具|工装/i,            w:'非标治具与工装',   e:'10年非标治具设计，服务过华为、OPPO、小米'},
+  {re:/3C|消费电子|手机|PCBA|电子|智能硬件/i, w:'3C消费电子精密结构', e:'做过手机保压拆解回流线和PCBA电流测试整机'},
+  {re:/机床|CNC|车床|数控|加工中心/i, w:'机床上下料自动化', e:'做过双车床机器人上下料整机'},
+  {re:/机器人|机械手|码垛|移栽|上下料|转盘|回流线/i, w:'机器人上下料与码垛', e:'双夹爪摆臂、三轴龙门码垛都做过整机'},
+  {re:/非标|自动化|整线|产线|集成|设备/i, w:'非标自动化整机', e:'从整机方案、样机调试做到量产'},
+  {re:/结构|机架|龙门|钣金|传动|标准件|选型/i, w:'整机结构与机架龙门', e:'整机结构设计、标准件选型与出图都熟'},
+  {re:/医疗|器械/i,                w:'医疗器械精密机构', e:'精密机构设计加量产落地经验'},
+  {re:/工艺|制图|BOM|文档|标准化/i, w:'出图与BOM文档',   e:'SolidWorks出图、BOM和装配说明书都能扛'},
+  {re:/航空|军工|兵器|装备|专用设备/i, w:'专用装备结构', e:'做过专用设备的整机结构'}
+];
 function 生成话术(j){
-  if (j && j.msg) return j.msg;
-  var r = (j.role || '机械工程师').replace(/[（(].*?[）)]/g, '').slice(0, 14);
-  return '您好，16年非标自动化机械设计经验，做过ICT／FCT测试治具和整机方案，想应聘「' + r + '」，简历可发您看下。';
+  if (!j) return '';
+  if (j.msg) return j.msg;
+  var role = (j.role || '机械工程师').replace(/\s+/g, ' ').trim();
+  if (role.length > 18) role = role.slice(0, 18);
+  var blob = role + ' ' + (j.why || '') + ' ' + ((j.tags || []).join(' ')) + ' ' + (j.co || '') + ' ' + (j.area || '');
+  var hit = null, i;
+  for (i = 0; i < TALK.length; i++){
+    if (TALK[i].re.test(blob)){ hit = TALK[i]; break; }
+  }
+  var 侧重 = hit ? hit.w : '机械结构设计';
+  var 证据 = hit ? hit.e : '10年非标治具与整机设计';
+  var co = (j.co || '').replace(/股份有限公司|有限责任公司|有限公司/g, '').trim();
+  if (/未展示|未填写|未知/.test(co)) co = '';
+  if (co.length > 9) co = co.slice(0, 9);
+  var 头 = co ? co + '的「' + role + '」' : '贵司「' + role + '」';
+  return '您好，' + 头 + '要' + 侧重 + '，我16年非标自动化，' + 证据 + '，简历发您？';
 }
 function getMsg(id){
   var j = jobById(id);
@@ -2318,7 +2343,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111q';
+var BUILD = '20261111r';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
