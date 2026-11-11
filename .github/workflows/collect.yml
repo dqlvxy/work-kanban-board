@@ -2,27 +2,43 @@ name: 采集岗位数据
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: collect-jobs
+  cancel-in-progress: false
+
 jobs:
   collect:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
-      - name: 抓取岗位
-        run: python3 collect_jobs.py
-      - name: 提交数据
+        with:
+          fetch-depth: 0
+
+      - name: 连续采集（每轮约 5 分钟，跑满 5 小时）
         run: |
           git config user.name "job-collector"
           git config user.email "124942026@qq.com"
-          git add jobs.json
-          if git diff --staged --quiet; then
-            echo "本轮无变化"
-          else
-            git commit -m "chore: 采集岗位 $(date -u '+%H:%M') UTC"
-            git push
-          fi
+          for i in $(seq 1 55); do
+            echo "===== 第 $i 轮 $(date -u '+%H:%M:%S') UTC ====="
+            python3 collect_jobs.py || echo "本轮抓取失败，继续下一轮"
+            git add jobs.json
+            if git diff --staged --quiet; then
+              echo "本轮无变化"
+            else
+              git commit -m "chore: 采集岗位 $(date -u '+%H:%M') UTC"
+              git push origin main || {
+                echo "推送被拒，rebase 后重试"
+                git pull --rebase -X ours origin main || true
+                git push origin main || echo "本轮推送失败，下轮再试"
+              }
+            fi
+            if [ "$i" -lt 55 ]; then sleep 300; fi
+          done
+          echo "本轮 5 小时窗口结束，等下一次 cron 接续"
