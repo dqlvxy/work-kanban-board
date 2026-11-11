@@ -1642,15 +1642,15 @@ function toggleWhy(btn){
 var curMsgId = null;
 
 function openMsg(id){
-  var m = MSGS[id];
-  if (!m) return;
+  var j = jobById(id);
+  if (!j.role) return;
+  var m = MSGS[id] || {};
   curMsgId = id;
-  var j = DATA.jobs.filter(function(x){ return x.id == id; })[0] || {};
-  document.getElementById('msCo').textContent = m.t;
+  document.getElementById('msCo').textContent = m.t || j.co || '';
   document.getElementById('msRole').textContent = (j.area ? j.area + ' · ' : '') +
     (j.exp ? j.exp + ' · ' : '') + (j.edu || '');
-  document.getElementById('msPay').textContent = m.p;
-  document.getElementById('msBody').innerHTML = '<p>' + esc(m.m) + '</p>';
+  document.getElementById('msPay').textContent = m.p || j.pay || '';
+  document.getElementById('msBody').innerHTML = '<p>' + esc(getMsg(id)) + '</p>';
   var link = document.getElementById('msLink');
   var 链 = 岗位链接(id); if (链){ link.href = 链; link.style.display = ''; }
   else { link.style.display = 'none'; }
@@ -1694,7 +1694,7 @@ function toggleMsg(b){
 }
 
 function copyM(btn, id){
-  var txt = MSGS[id].m;
+  var txt = getMsg(id);
   var ta = document.createElement('textarea');
   ta.value = txt; ta.style.position = 'fixed'; ta.style.left = '-9999px';
   document.body.appendChild(ta); ta.select();
@@ -1757,10 +1757,25 @@ function copyText(txt, cb){
   cb(ok);
 }
 var curGdId = null;
+function jobById(id){
+  return (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
+}
+/* 每家岗位一句极简话术，不依赖预置库 */
+function 生成话术(j){
+  if (j && j.msg) return j.msg;
+  var r = (j.role || '机械工程师').replace(/[（(].*?[）)]/g, '').slice(0, 14);
+  return '您好，16年非标自动化机械设计经验，做过ICT／FCT测试治具和整机方案，想应聘「' + r + '」，简历可发您看下。';
+}
+function getMsg(id){
+  var j = jobById(id);
+  if (j.msg) return j.msg;
+  var m = MSGS[id];
+  if (m && m.m) return m.m;
+  return 生成话术(j);
+}
 function payload(id){
   var j = (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
-  var m = MSGS[id] || {};
-  return 'CO:' + (j.co || '') + '\nROLE:' + (j.role || '') + '\nMSG:' + (m.m || '');
+  return 'CO:' + (j.co || '') + '\nROLE:' + (j.role || '') + '\nMSG:' + getMsg(id);
 }
 function markOne(id){
   var st = getCk(); st[id] = true; setCk(st);
@@ -1769,8 +1784,7 @@ function markOne(id){
   if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
 }
 function applyOne(e, id){
-  var m = MSGS[id];
-  if (!m) return;
+  if (!jobById(id).role) return;
   copyText(payload(id), function(ok){
     if (ok){ markOne(id); toast('公司+话术已复制 · 已记为已投，去 BOSS 跑脚本'); }
     else { toast('复制失败，请在弹层里长按话术手动复制'); }
@@ -1796,8 +1810,7 @@ function closeGuide(){
   document.body.style.overflow = '';
 }
 function applyJob(id){
-  var m = MSGS[id];
-  if (!m){ toast('这家没有定制话术，先点「话术」看看'); return; }
+  if (!jobById(id).role) return;
   var j = DATA.jobs.filter(function(x){ return x.id == id; })[0] || {};
   document.getElementById('gdCo').textContent = j.co || '';
   document.getElementById('gdRole').textContent = (j.role || '') +
@@ -2305,7 +2318,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111p';
+var BUILD = '20261111q';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2400,6 +2413,7 @@ function 合并Boss(d){
     if (!j.chips) j.chips = (j.tags||[]).slice(0,2);
     if (!j.payNote) j.payNote = '';
     if (!j.addAt) j.addAt = d.updated || '';
+    if (!j.msg) j.msg = 生成话术(j);
     if (!j.why) j.why = 'BOSS直聘在招，' + (j.tags && j.tags.length ? '标签：' + j.tags.join('、') + '。' : '') + '匹配度按岗位名称粗算，点开原站看详情。';
     items.push(j); added++;
   });
