@@ -1551,18 +1551,6 @@ function restOf(j){
   if (t.indexOf('9:00') >= 0) return '双休·9:00';
   return '';
 }
-function markRest(el){
-  var k = el.getAttribute('data-k'); var m = restMap();
-  var seq = ['', '双休', '双休·9:00', '双休·8:30', '单休', '大小周'];
-  var cur = m[k] || '';
-  var i = seq.indexOf(cur); var nx = seq[(i + 1) % seq.length];
-  if (nx) m[k] = nx; else delete m[k];
-  try{ localStorage.setItem(RKEY, JSON.stringify(m)); }catch(e){}
-  el.textContent = nx || '作息待确认';
-  if (nx) el.classList.add('on'); else el.classList.remove('on');
-  var tip = el.parentNode.querySelector('.resttip');
-  if (tip) tip.textContent = nx ? '（你自己标的）' : '招聘页没写双休／上班时间，点一下自己标';
-}
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -2307,7 +2295,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111l';
+var BUILD = '20261111m';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
