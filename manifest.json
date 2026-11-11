@@ -1,0 +1,22 @@
+{
+  "name": "杜全龙 · 工作看板",
+  "short_name": "工作看板",
+  "description": "深圳/西安机械结构工程师岗位看板，一键投递话术",
+  "id": "/work-kanban-board/",
+  "start_url": "./?hs=1",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#296ce2",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icon-mask-192.png","sizes":"192x192","type":"image/png","purpose":"maskable"},
+    {"src":"icon-mask-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
