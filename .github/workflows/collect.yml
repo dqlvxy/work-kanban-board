@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write      # 结束前用 GITHUB_TOKEN 触发下一次，形成连续采集
 
 concurrency:
   group: collect-jobs
@@ -25,7 +26,7 @@ jobs:
         run: |
           git config user.name "job-collector"
           git config user.email "124942026@qq.com"
-          for i in $(seq 1 55); do
+          for i in $(seq 1 62); do
             echo "===== 第 $i 轮 $(date -u '+%H:%M:%S') UTC ====="
             # 每轮先同步远端：5 小时窗口内 checkout 目录是快照，不加这步就看不到别端新灌的岗位池
             git pull --rebase --autostash origin main || echo "本轮同步远端失败，用当前工作区继续"
@@ -41,6 +42,14 @@ jobs:
                 git push origin main || echo "本轮推送失败，下轮再试"
               }
             fi
-            if [ "$i" -lt 55 ]; then sleep 300; fi
+            if [ "$i" -lt 62 ]; then sleep 300; fi
           done
-          echo "本轮 5 小时窗口结束，等下一次 cron 接续"
+          echo "本轮 5 小时窗口结束，触发下一次采集，接上不空档"
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "User-Agent: collect-bot" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Content-Type: application/json" \
+            -d '{"ref":"main"}' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/collect.yml/dispatches" \
+            && echo "下一次已排队" || echo "自触发失败，等 cron 兜底"
