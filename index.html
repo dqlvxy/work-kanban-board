@@ -1471,6 +1471,17 @@ function 下载到桌面(){
   }
 }
 
+/* ⑤ 装到桌面后独立启动 + 离线可用 */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js', {scope: './'}).catch(function(){});
+  });
+}
+(function(){
+  var 独立 = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  if (独立) document.documentElement.setAttribute('data-standalone','1');
+})();
+
 /* ④ 添加到手机桌面弹层 */
 var INST_URL = 'https://dqlvxy.github.io/work-kanban-board/';
 function openInst(){
