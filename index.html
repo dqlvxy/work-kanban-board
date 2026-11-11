@@ -1612,7 +1612,7 @@ function renderJobs(city, filter){
       '</div>' +
       '<div class="meta"><span class="m b">' + esc(j.area) + '</span><span class="m">' + esc(j.exp) + '</span>' +
         '<span class="m">' + esc(j.edu) + '</span>' + chips + '</div>' +
-      '<div class="restrow"><button class="restb' + (restVal ? ' on' : '') + '" data-k="' + esc(restKey(j)) + '" onclick="markRest(this)">' + esc(restVal || '作息待确认') + '</button><span class="resttip">' + (restVal ? '（你自己标的）' : '招聘页没写双休／上班时间，点一下自己标') + '</span></div>' +
+      (restVal ? '<div class="restrow"><span class="restb on">' + esc(restVal) + '</span></div>' : '') +
       '<div class="srcrow">' +
         (j.src ? '<span class="srcbadge">' + esc(j.src) + '</span>' : '') +
         (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
@@ -2307,7 +2307,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111k';
+var BUILD = '20261111l';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
