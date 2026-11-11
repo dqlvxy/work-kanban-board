@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 30 步 摊牌版</title>
+<title>手机自动投递 · 第 31 步 拉前台再倒库</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,15 +39,15 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 30 步</h1>
-<div class="sub">摊牌版：不再猜，直接把页面倒出来。</div>
+<h1>手机自动投递 · 第 31 步</h1>
+<div class="sub">先把 BOSS 拉到前台，再倒库试点。</div>
 
-<div class="warn">前面几版一直在猜页面，越猜越乱。这版不猜了：把消息列表这页能读到的节点全倒出来，再直接点第三个会话行，看看到底点不点得动。这一轮要么拿到突破，要么拿到「这页读不到、也点不动」的确凿证据。</div>
+<div class="warn">上一版扫到的 21 条全是 AutoJs6 自己的控制台日志——脚本没拉起 BOSS，App 在后台呢。这版开头就强制把 BOSS 拉到前台并校验包名，只读 BOSS 自己的节点。</div>
 
 <div class="card">
-<div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</div></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>30.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>停在消息列表那页运行</p></div>
+<div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>31.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>运行（在哪页都行）</p></div>
 <div class="step"><div class="n">4</div><p>把剪贴板发我</p></div>
 </div>
 
@@ -57,24 +57,39 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 30 步：摊牌版
- * 不做任何页面判断，把当前页读得到的东西全倒出来，再直接试试点第 3 个会话行。
+ * 手机自动投递 · 第 31 步：先把 BOSS 拉到前台，再倒库 + 试点会话行
+ * v30 教训：脚本没 launchApp，AutoJs6 自己在前台，扫到的 21 条全是控制台日志。
  */
 
 var PKG = "com.hpbr.bosszhipin";
 
 auto.waitFor();
 sleep(600);
-var 报告 = "前台 " + currentPackage() + "  屏 " + device.width + "x" + device.height + "\n";
+var 报告 = "";
 
 function 宽(b) { return b.right - b.left; }
 function 高(b) { return b.bottom - b.top; }
 function 心X(b) { return (b.left + b.right) / 2; }
 function 心Y(b) { return (b.top + b.bottom) / 2; }
 
-// ———— 1. 全量倒库：所有带文字/描述/可点的节点 ————
+// 把 BOSS 拉到前台，拉两次确保成功
+launchApp("BOSS直聘");
+sleep(4500);
+if (currentPackage() != PKG) {
+    launchApp("BOSS直聘");
+    sleep(4000);
+}
+报告 += "前台 " + currentPackage() + "  屏 " + device.width + "x" + device.height + "\n";
+if (currentPackage() != PKG) {
+    setClip(报告 + "\nBOSS 没被拉到前台，脚本停手");
+    toastLog("BOSS 没到前台");
+    exit();
+}
+sleep(1200);
+
+// ———— 1. 只读 BOSS 自己的节点 ————
 var 项 = [];
-classNameMatches(/.+/).find().forEach(function (n) {
+packageName(PKG).classNameMatches(/.+/).find().forEach(function (n) {
     if (项.length &gt; 2600) return;
     try {
         var t = n.text() || "", d = n.desc() || "", cl = n.clickable();
@@ -86,8 +101,8 @@ classNameMatches(/.+/).find().forEach(function (n) {
     } catch (e) { }
 });
 项.sort(function (a, b) { return a.y - b.y; });
-报告 += "\n节点共 " + 项.length + " 条（按 y 排序，最多列 60）\n";
-for (var i = 0; i &lt; 项.length &amp;&amp; i &lt; 60; i++) 报告 += 项[i].s + "\n";
+报告 += "\n节点共 " + 项.length + " 条（前 50）\n";
+for (var i = 0; i &lt; 项.length &amp;&amp; i &lt; 50; i++) 报告 += 项[i].s + "\n";
 
 // ———— 2. 会话行候选 ————
 var 行 = [];
@@ -100,38 +115,38 @@ packageName(PKG).clickable(true).find().forEach(function (n) {
 报告 += "\n会话行候选 " + 行.length + " 个\n";
 行.forEach(function (n, k) {
     var b = n.bounds();
-    报告 += "  第" + (k + 1) + "行 @" + Math.round(心X(b)) + "," + Math.round(心Y(b)) + " " + 宽(b) + "x" + 高(b) + "\n";
+    报告 += "  第" + (k + 1) + "行 @" + Math.round(心X(b)) + "," + Math.round(心Y(b)) + " " + 宽(b) + "x" + 高(b) +
+        " 文=" + (n.text() || "-") + " 描=" + (n.desc() || "-") + "\n";
 });
 
-// ———— 3. 直接点第 3 行（孙先生那栏） ————
+// ———— 3. 点第 3 行 ————
 var 进 = false;
 if (行.length &gt;= 3) {
-    报告 += "点第 3 行…";
+    报告 += "\n点第 3 行…";
     行[2].click();
-    sleep(2800);
+    sleep(2900);
     var e = className("android.widget.EditText").findOnce();
     进 = e != null &amp;&amp; e.bounds().top &gt; device.height * 0.70;
-    报告 += " 前台 " + currentPackage() + " 输入框 " + (e ? (e.bounds().top + "") : "无") + " 算进聊天页 " + 进 + "\n";
+    报告 += " 前台 " + currentPackage() + " 输入框y=" + (e ? e.bounds().top : "无") + " 进聊天页 " + 进 + "\n";
 } else if (行.length &gt; 0) {
-    报告 += "只有 " + 行.length + " 行，点第 1 行试试…";
+    报告 += "\n会话行不够 3 个，点第 1 行试试…";
     行[0].click();
-    sleep(2800);
-    var e2 = className("android.widget.EditText").findOnce();
-    报告 += " 前台 " + currentPackage() + " 有输入框 " + (e2 != null) + "\n";
+    sleep(2900);
+    报告 += " 前台 " + currentPackage() + "\n";
 } else {
-    报告 += "一个可点会话行都没读到 —— 这页的可点容器不暴露给无障碍\n";
+    报告 += "\n没读到会话行\n";
 }
 
-sleep(600);
+sleep(500);
 setClip(报告);
 toastLog("已复制");
 </pre>
 </div>
 
-<div class="foot">这一轮看真相</div>
+<div class="foot">这回数据才算数</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 30 步：摊牌版\n * 不做任何页面判断，把当前页读得到的东西全倒出来，再直接试试点第 3 个会话行。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\n\nauto.waitFor();\nsleep(600);\nvar 报告 = \"前台 \" + currentPackage() + \"  屏 \" + device.width + \"x\" + device.height + \"\\n\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\n// ———— 1. 全量倒库：所有带文字/描述/可点的节点 ————\nvar 项 = [];\nclassNameMatches(/.+/).find().forEach(function (n) {\n    if (项.length > 2600) return;\n    try {\n        var t = n.text() || \"\", d = n.desc() || \"\", cl = n.clickable();\n        if (!t && !d && !cl) return;\n        var b = n.bounds();\n        项.push({ y: 心Y(b), s: (cl ? \"[可点]\" : \"\") + (n.className() || \"?\") +\n            \" 文=\" + (t || \"-\") + \" 描=\" + (d || \"-\") +\n            \" @\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) });\n    } catch (e) { }\n});\n项.sort(function (a, b) { return a.y - b.y; });\n报告 += \"\\n节点共 \" + 项.length + \" 条（按 y 排序，最多列 60）\\n\";\nfor (var i = 0; i < 项.length && i < 60; i++) 报告 += 项[i].s + \"\\n\";\n\n// ———— 2. 会话行候选 ————\nvar 行 = [];\npackageName(PKG).clickable(true).find().forEach(function (n) {\n    var b = n.bounds();\n    var w = 宽(b), h = 高(b);\n    if (w > 500 && h > 60 && h < 420) 行.push(n);\n});\n行.sort(function (a, b) { return 心Y(a.bounds()) - 心Y(b.bounds()); });\n报告 += \"\\n会话行候选 \" + 行.length + \" 个\\n\";\n行.forEach(function (n, k) {\n    var b = n.bounds();\n    报告 += \"  第\" + (k + 1) + \"行 @\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) + \"\\n\";\n});\n\n// ———— 3. 直接点第 3 行（孙先生那栏） ————\nvar 进 = false;\nif (行.length >= 3) {\n    报告 += \"点第 3 行…\";\n    行[2].click();\n    sleep(2800);\n    var e = className(\"android.widget.EditText\").findOnce();\n    进 = e != null && e.bounds().top > device.height * 0.70;\n    报告 += \" 前台 \" + currentPackage() + \" 输入框 \" + (e ? (e.bounds().top + \"\") : \"无\") + \" 算进聊天页 \" + 进 + \"\\n\";\n} else if (行.length > 0) {\n    报告 += \"只有 \" + 行.length + \" 行，点第 1 行试试…\";\n    行[0].click();\n    sleep(2800);\n    var e2 = className(\"android.widget.EditText\").findOnce();\n    报告 += \" 前台 \" + currentPackage() + \" 有输入框 \" + (e2 != null) + \"\\n\";\n} else {\n    报告 += \"一个可点会话行都没读到 —— 这页的可点容器不暴露给无障碍\\n\";\n}\n\nsleep(600);\nsetClip(报告);\ntoastLog(\"已复制\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 31 步：先把 BOSS 拉到前台，再倒库 + 试点会话行\n * v30 教训：脚本没 launchApp，AutoJs6 自己在前台，扫到的 21 条全是控制台日志。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\n\nauto.waitFor();\nsleep(600);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\n\n// 把 BOSS 拉到前台，拉两次确保成功\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\nif (currentPackage() != PKG) {\n    launchApp(\"BOSS直聘\");\n    sleep(4000);\n}\n报告 += \"前台 \" + currentPackage() + \"  屏 \" + device.width + \"x\" + device.height + \"\\n\";\nif (currentPackage() != PKG) {\n    setClip(报告 + \"\\nBOSS 没被拉到前台，脚本停手\");\n    toastLog(\"BOSS 没到前台\");\n    exit();\n}\nsleep(1200);\n\n// ———— 1. 只读 BOSS 自己的节点 ————\nvar 项 = [];\npackageName(PKG).classNameMatches(/.+/).find().forEach(function (n) {\n    if (项.length > 2600) return;\n    try {\n        var t = n.text() || \"\", d = n.desc() || \"\", cl = n.clickable();\n        if (!t && !d && !cl) return;\n        var b = n.bounds();\n        项.push({ y: 心Y(b), s: (cl ? \"[可点]\" : \"\") + (n.className() || \"?\") +\n            \" 文=\" + (t || \"-\") + \" 描=\" + (d || \"-\") +\n            \" @\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) });\n    } catch (e) { }\n});\n项.sort(function (a, b) { return a.y - b.y; });\n报告 += \"\\n节点共 \" + 项.length + \" 条（前 50）\\n\";\nfor (var i = 0; i < 项.length && i < 50; i++) 报告 += 项[i].s + \"\\n\";\n\n// ———— 2. 会话行候选 ————\nvar 行 = [];\npackageName(PKG).clickable(true).find().forEach(function (n) {\n    var b = n.bounds();\n    var w = 宽(b), h = 高(b);\n    if (w > 500 && h > 60 && h < 420) 行.push(n);\n});\n行.sort(function (a, b) { return 心Y(a.bounds()) - 心Y(b.bounds()); });\n报告 += \"\\n会话行候选 \" + 行.length + \" 个\\n\";\n行.forEach(function (n, k) {\n    var b = n.bounds();\n    报告 += \"  第\" + (k + 1) + \"行 @\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) +\n        \" 文=\" + (n.text() || \"-\") + \" 描=\" + (n.desc() || \"-\") + \"\\n\";\n});\n\n// ———— 3. 点第 3 行 ————\nvar 进 = false;\nif (行.length >= 3) {\n    报告 += \"\\n点第 3 行…\";\n    行[2].click();\n    sleep(2900);\n    var e = className(\"android.widget.EditText\").findOnce();\n    进 = e != null && e.bounds().top > device.height * 0.70;\n    报告 += \" 前台 \" + currentPackage() + \" 输入框y=\" + (e ? e.bounds().top : \"无\") + \" 进聊天页 \" + 进 + \"\\n\";\n} else if (行.length > 0) {\n    报告 += \"\\n会话行不够 3 个，点第 1 行试试…\";\n    行[0].click();\n    sleep(2900);\n    报告 += \" 前台 \" + currentPackage() + \"\\n\";\n} else {\n    报告 += \"\\n没读到会话行\\n\";\n}\n\nsleep(500);\nsetClip(报告);\ntoastLog(\"已复制\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
