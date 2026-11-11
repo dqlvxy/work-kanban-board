@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>手机自动投递 · 第 32 步 逐行找孙先生</title>
+<title>手机自动投递 · 第 33 步 滚屏找孙先生</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--line:#e4e8ef;--txt:#141a24;--desc:#4a5464;
 --muted:#8590a2;--blue:#2f6df6;--green:#0f9d58;--warn:#b45309;--soft:#eef3fe;--warnbg:#fff7ed;}
@@ -39,15 +39,15 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 </style>
 </head>
 <body>
-<h1>手机自动投递 · 第 32 步</h1>
-<div class="sub">逐行点开，认名字找孙先生。</div>
+<h1>手机自动投递 · 第 33 步</h1>
+<div class="sub">滚一屏读一屏，读到孙先生再点。</div>
 
-<div class="warn">这一页的会话行已经读到了（1152 宽的 ViewGroup，一行接一行），但名字读不到。这版就一行一行点开，进聊天页看顶部是谁，是孙先生就继续干活，不是就退回来点下一行，最多试 10 行。</div>
+<div class="warn">按你说的来：不逐行点进去再退出。滚动用节点的无障碍滚动动作（不是坐标滑动，那个被鸿蒙拦了）。每滚一屏读一次，读到「孙先生」三个字就点它所在那一行，最多滚 8 屏。顺带把每屏读到的文字条数报回来。</div>
 
 <div class="card">
 <div class="step"><div class="n">1</div><p>点按钮，脚本进剪贴板</p></div>
-<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>32.js</b>，粘贴保存</p></div>
-<div class="step"><div class="n">3</div><p>直接运行，别管当前在哪页</p></div>
+<div class="step"><div class="n">2</div><p>AutoJs6 新建 <b>33.js</b>，粘贴保存</p></div>
+<div class="step"><div class="n">3</div><p>直接运行</p></div>
 <div class="step"><div class="n">4</div><p>把剪贴板发我</p></div>
 </div>
 
@@ -57,9 +57,9 @@ border-radius:999px;padding:5px 12px;font-family:inherit;flex:none;cursor:pointe
 <div class="card">
 <div class="hd"><span>脚本全文</span><button class="mini" id="sel">全选</button></div>
 <pre id="code">/**
- * 手机自动投递 · 第 32 步：逐行点开，看顶部名字是不是孙先生
- * v31 已读到消息列表：会话行是 android.view.ViewGroup 1152x228，@576,573 / 801 / 1029 / 1257 …
- * 除第一行有文字，其余行文字读不到，只能逐行点开用聊天页顶部名字判断。
+ * 手机自动投递 · 第 33 步：滚一屏读一屏，读到孙先生再点
+ * 用户口径：逐步往下滑、逐步识别，别每行点进去再退出，太费时间。
+ * 滚动用节点 scrollForward（无障碍动作），不用坐标 swipe（鸿蒙拦手势）。
  */
 
 var PKG = "com.hpbr.bosszhipin";
@@ -79,7 +79,7 @@ launchApp("BOSS直聘");
 sleep(4500);
 if (currentPackage() != PKG) { launchApp("BOSS直聘"); sleep(4000); }
 报告 += "前台 " + currentPackage() + "\n";
-if (currentPackage() != PKG) { setClip(报告 + "BOSS 没到前台，停手"); toastLog("停手"); exit(); }
+if (currentPackage() != PKG) { setClip(报告 + "BOSS 没到前台"); toastLog("停手"); exit(); }
 sleep(1000);
 
 function 在聊天页() {
@@ -87,74 +87,83 @@ function 在聊天页() {
     return e != null &amp;&amp; e.bounds().top &gt; 屏H() * 0.70;
 }
 
-// 聊天页顶部名字
-function 顶部称呼() {
-    var hit = null;
-    textContains("先生").find().forEach(function (n) {
-        if (心Y(n.bounds()) &lt; 屏H() * 0.20) hit = n;
-    });
-    if (!hit) {
-        textContains("女士").find().forEach(function (n) {
-            if (心Y(n.bounds()) &lt; 屏H() * 0.20) hit = n;
-        });
+// 滚一屏：优先找可滚动容器，用无障碍滚动动作
+function 滚动一屏() {
+    var s = classNameMatches(/.*/).scrollable(true).findOnce(1000);
+    if (!s) s = className("androidx.recyclerview.widget.RecyclerView").findOnce(800);
+    if (!s) s = className("android.widget.ListView").findOnce(600);
+    if (s) {
+        try { s.scrollForward(); return "节点滚动"; } catch (e) { }
+        try { s.scrollForward(); return "节点滚动2"; } catch (e2) { }
     }
-    return hit ? hit.text() : "";
+    // 退路：手势滑动（鸿蒙大概率拦，但试一次）
+    try {
+        var h = 屏H();
+        swipe(device.width / 2, h * 0.75, device.width / 2, h * 0.30, 400);
+        return "手势滑动";
+    } catch (e3) { }
+    return "";
 }
 
-// 会话行：宽度撑满、行高 140-300 的 ViewGroup
-function 会话行组() {
+// 当前屏读到的文字
+function 读文字() {
     var arr = [];
-    className("android.view.ViewGroup").find().forEach(function (n) {
-        var b = n.bounds();
-        var w = 宽(b), h = 高(b);
-        if (w &gt; 1000 &amp;&amp; h &gt; 140 &amp;&amp; h &lt; 320 &amp;&amp; 心Y(b) &gt; 屏H() * 0.18) arr.push(n);
+    className("android.widget.TextView").find().forEach(function (n) {
+        var t = n.text();
+        if (t) arr.push(t);
     });
-    arr.sort(function (a, b) { return 心Y(a.bounds()) - 心Y(b.bounds()); });
     return arr;
 }
 
-function 回列表() {
-    for (var k = 0; k &lt; 2; k++) {
-        back();
-        sleep(1500);
-        if (currentPackage() != PKG) { launchApp("BOSS直聘"); sleep(4000); }
-        if (!在聊天页()) return true;
-    }
-    return !在聊天页();
+// 找到孙先生所在的可点行容器
+function 孙先生所在行(节点) {
+    var y = 心Y(节点.bounds());
+    var 行 = null;
+    className("android.view.ViewGroup").find().forEach(function (n) {
+        var b = n.bounds();
+        if (宽(b) &gt; 1000 &amp;&amp; 高(b) &gt; 60 &amp;&amp; 高(b) &lt; 340 &amp;&amp; Math.abs(心Y(b) - y) &lt; 160) 行 = n;
+    });
+    return 行;
 }
 
-// ———— 找孙先生 ————
-var 找到 = 在聊天页() &amp;&amp; 顶部称呼().indexOf("孙") &gt;= 0;
-if (在聊天页() &amp;&amp; !找到) { 报告 += "当前在别人聊天页，退回列表\n"; 回列表(); }
+// ———— 滚屏找孙先生 ————
+var 找到 = 在聊天页();
+if (在聊天页()) 报告 += "已经在某个聊天页\n";
 
 if (!找到) {
-    var 行 = 会话行组();
-    报告 += "会话行 " + 行.length + " 个\n";
-    for (var i = 0; i &lt; 行.length &amp;&amp; i &lt; 10; i++) {
-        var b = 行[i].bounds();
-        报告 += "点第" + (i + 1) + "行 @" + Math.round(心Y(b)) + " → ";
-        行[i].click();
-        sleep(2700);
-        if (!在聊天页()) { 报告 += "没进聊天页\n"; continue; }
-        var 名 = 顶部称呼();
-        报告 += "进了，顶部=" + 名 + "\n";
-        if (名.indexOf("孙") &gt;= 0) { 找到 = true; 报告 += "  这就是孙先生\n"; break; }
-        报告 += "  不是，退回列表\n";
-        if (!回列表()) { 报告 += "  退不回列表，停手\n"; break; }
+    for (var k = 1; k &lt;= 8; k++) {
+        var 孙 = textContains("孙先生").findOnce(900);
+        var 字 = 读文字();
+        报告 += "第" + k + "屏：文字 " + 字.length + " 条" + (孙 ? "，读到孙先生 " + Math.round(心Y(孙.bounds())) : "，没孙先生") + "\n";
+        if (孙) {
+            var 行 = 孙先生所在行(孙);
+            报告 += "  点这一行…";
+            if (行 &amp;&amp; 行.clickable()) 行.click(); else if (行) 行.click(); else 孙.click();
+            sleep(2700);
+            if (在聊天页()) { 报告 += "进聊天页了\n"; 找到 = true; }
+            else 报告 += "没进去\n";
+            break;
+        }
+        var 方式 = 滚动一屏();
+        if (!方式) { 报告 += "  滚不动，停\n"; break; }
+        报告 += "  滚动方式: " + 方式 + "\n";
+        sleep(1700);
     }
 }
 
 if (!找到) {
-    setClip(报告 + "\n十行里没找到孙先生");
+    // 把最后读到的文字全带上，便于诊断
+    var 尾 = 读文字();
+    setClip(报告 + "\n最后屏文字: " + 尾.join(" / "));
     toastLog("没找到孙先生");
     exit();
 }
 
-// ———— 进到聊天页，开始干活 ————
+// ———— 干活 ————
 var 输入 = className("android.widget.EditText").findOne(4000);
-if (!输入) { setClip(报告 + "\n聊天页里没找到输入框"); toastLog("没输入框"); exit(); }
+if (!输入) { setClip(报告 + "\n聊天页没输入框"); toastLog("没输入框"); exit(); }
 var ib = 输入.bounds();
-报告 += "\n输入框: " + ib.left + "," + ib.top + " " + 宽(ib) + "x" + 高(ib) + "\n";
+报告 += "输入框: " + ib.left + "," + ib.top + " " + 宽(ib) + "x" + 高(ib) + "\n";
 
 function 面板开了() { return textContains("语音通话").findOnce(900) != null; }
 function 发出去了() { return !!textContains("杜全龙").className("android.widget.TextView").findOnce(2000); }
@@ -240,10 +249,10 @@ toastLog(已发 ? "发出去了" : "没发出去");
 </pre>
 </div>
 
-<div class="foot">最多试 10 行，每行点完都会报顶部名字</div>
+<div class="foot">每屏的文字条数会一起报回来</div>
 
 <script>
-var CODE = "/**\n * 手机自动投递 · 第 32 步：逐行点开，看顶部名字是不是孙先生\n * v31 已读到消息列表：会话行是 android.view.ViewGroup 1152x228，@576,573 / 801 / 1029 / 1257 …\n * 除第一行有文字，其余行文字读不到，只能逐行点开用聊天页顶部名字判断。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(600);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\nfunction 屏H() { return device.height; }\n\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\nif (currentPackage() != PKG) { launchApp(\"BOSS直聘\"); sleep(4000); }\n报告 += \"前台 \" + currentPackage() + \"\\n\";\nif (currentPackage() != PKG) { setClip(报告 + \"BOSS 没到前台，停手\"); toastLog(\"停手\"); exit(); }\nsleep(1000);\n\nfunction 在聊天页() {\n    var e = className(\"android.widget.EditText\").findOnce();\n    return e != null && e.bounds().top > 屏H() * 0.70;\n}\n\n// 聊天页顶部名字\nfunction 顶部称呼() {\n    var hit = null;\n    textContains(\"先生\").find().forEach(function (n) {\n        if (心Y(n.bounds()) < 屏H() * 0.20) hit = n;\n    });\n    if (!hit) {\n        textContains(\"女士\").find().forEach(function (n) {\n            if (心Y(n.bounds()) < 屏H() * 0.20) hit = n;\n        });\n    }\n    return hit ? hit.text() : \"\";\n}\n\n// 会话行：宽度撑满、行高 140-300 的 ViewGroup\nfunction 会话行组() {\n    var arr = [];\n    className(\"android.view.ViewGroup\").find().forEach(function (n) {\n        var b = n.bounds();\n        var w = 宽(b), h = 高(b);\n        if (w > 1000 && h > 140 && h < 320 && 心Y(b) > 屏H() * 0.18) arr.push(n);\n    });\n    arr.sort(function (a, b) { return 心Y(a.bounds()) - 心Y(b.bounds()); });\n    return arr;\n}\n\nfunction 回列表() {\n    for (var k = 0; k < 2; k++) {\n        back();\n        sleep(1500);\n        if (currentPackage() != PKG) { launchApp(\"BOSS直聘\"); sleep(4000); }\n        if (!在聊天页()) return true;\n    }\n    return !在聊天页();\n}\n\n// ———— 找孙先生 ————\nvar 找到 = 在聊天页() && 顶部称呼().indexOf(\"孙\") >= 0;\nif (在聊天页() && !找到) { 报告 += \"当前在别人聊天页，退回列表\\n\"; 回列表(); }\n\nif (!找到) {\n    var 行 = 会话行组();\n    报告 += \"会话行 \" + 行.length + \" 个\\n\";\n    for (var i = 0; i < 行.length && i < 10; i++) {\n        var b = 行[i].bounds();\n        报告 += \"点第\" + (i + 1) + \"行 @\" + Math.round(心Y(b)) + \" → \";\n        行[i].click();\n        sleep(2700);\n        if (!在聊天页()) { 报告 += \"没进聊天页\\n\"; continue; }\n        var 名 = 顶部称呼();\n        报告 += \"进了，顶部=\" + 名 + \"\\n\";\n        if (名.indexOf(\"孙\") >= 0) { 找到 = true; 报告 += \"  这就是孙先生\\n\"; break; }\n        报告 += \"  不是，退回列表\\n\";\n        if (!回列表()) { 报告 += \"  退不回列表，停手\\n\"; break; }\n    }\n}\n\nif (!找到) {\n    setClip(报告 + \"\\n十行里没找到孙先生\");\n    toastLog(\"没找到孙先生\");\n    exit();\n}\n\n// ———— 进到聊天页，开始干活 ————\nvar 输入 = className(\"android.widget.EditText\").findOne(4000);\nif (!输入) { setClip(报告 + \"\\n聊天页里没找到输入框\"); toastLog(\"没输入框\"); exit(); }\nvar ib = 输入.bounds();\n报告 += \"\\n输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\nfunction 右侧候选() {\n    var arr = [];\n    classNameMatches(/.*/).find().forEach(function (n) {\n        try {\n            var b = n.bounds();\n            var w = 宽(b), h = 高(b);\n            if (w <= 0 || h <= 0 || w > 320 || h > 320) return;\n            if (心X(b) > device.width * 0.60 && 心Y(b) > 屏H() * 0.42) arr.push(n);\n        } catch (e) { }\n    });\n    return arr;\n}\n\nfunction 列清单(标签) {\n    var arr = 右侧候选(), out = [];\n    arr.forEach(function (n) {\n        var b = n.bounds();\n        out.push(\"[\" + (n.text() || n.desc() || \"无字\") + \"@\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) + \"]\");\n    });\n    报告 += \"\\n\" + 标签 + \"：\" + arr.length + \" 个\\n\" + out.join(\"  \") + \"\\n\";\n    return arr;\n}\n\nvar 空框 = 列清单(\"空框状态\");\n报告 += \"空框时面板: \" + 面板开了() + \"\\n\";\n\nvar 命中 = null;\nfor (var j = 0; j < 空框.length; j++) {\n    var n2 = 空框[j], b2 = n2.bounds();\n    if (心Y(b2) < 屏H() * 0.60) continue;\n    if (心Y(b2) < ib.top - 160) continue;\n    报告 += \"试 @\" + Math.round(心X(b2)) + \",\" + Math.round(心Y(b2)) + \" → \";\n    n2.click();\n    sleep(1200);\n    if (面板开了()) { 报告 += \"命中，这就是加号\\n\"; 命中 = n2; break; }\n    报告 += \"无反应\\n\";\n}\n\nif (命中) {\n    var hb = 命中.bounds();\n    报告 += \"加号: \" + Math.round(心X(hb)) + \",\" + Math.round(心Y(hb)) + \"\\n\";\n    var a9 = 右侧候选(), mr = null;\n    a9.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n    if (mr) { mr.click(); sleep(1200); }\n    报告 += \"收面板后: \" + 面板开了() + \"\\n\";\n}\n\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2400);\nvar nb = 输入.bounds();\n报告 += \"\\n填字后输入框: \" + nb.left + \",\" + nb.top + \"（位移 \" + (nb.top - ib.top) + \"）\\n\";\n列清单(\"填字后状态\");\n\nvar 已发 = false;\nif (命中) {\n    var 原Y = 心Y(命中.bounds());\n    for (var r = 1; r <= 3 && !已发; r++) {\n        var a3 = 右侧候选(), 目标 = null, 最小差 = 99999;\n        a3.forEach(function (n) {\n            var b = n.bounds();\n            var d = Math.abs(心Y(b) - 原Y);\n            if (d < 最小差) { 最小差 = d; 目标 = n; }\n        });\n        if (!目标) { 报告 += \"第\" + r + \"次无候选\\n\"; break; }\n        var tb = 目标.bounds();\n        报告 += \"第\" + r + \"次点 @\" + Math.round(心X(tb)) + \",\" + Math.round(心Y(tb)) + \" → \";\n        目标.click();\n        sleep(2100);\n        已发 = 发出去了();\n        报告 += \"发出 \" + 已发 + \"\\n\";\n    }\n}\n\nsleep(600);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
+var CODE = "/**\n * 手机自动投递 · 第 33 步：滚一屏读一屏，读到孙先生再点\n * 用户口径：逐步往下滑、逐步识别，别每行点进去再退出，太费时间。\n * 滚动用节点 scrollForward（无障碍动作），不用坐标 swipe（鸿蒙拦手势）。\n */\n\nvar PKG = \"com.hpbr.bosszhipin\";\nvar 话术 = \"孙先生您好，我是杜全龙，18 年 ICT/FCT 测试治具与 FPC 连接器治具机械设计经验，熟练使用 SolidWorks，做过手机 FCT 测试设备、保压盒缓存机构、双车床机器人上下料等项目，服务过华为、OPPO、比亚迪、小米等客户。看到贵司招机械/结构工程师，5-10 年经验、大专，跟我的履历对得上。方便的话我把简历发您看下？\";\n\nauto.waitFor();\nsleep(600);\nvar 报告 = \"\";\n\nfunction 宽(b) { return b.right - b.left; }\nfunction 高(b) { return b.bottom - b.top; }\nfunction 心X(b) { return (b.left + b.right) / 2; }\nfunction 心Y(b) { return (b.top + b.bottom) / 2; }\nfunction 屏H() { return device.height; }\n\nlaunchApp(\"BOSS直聘\");\nsleep(4500);\nif (currentPackage() != PKG) { launchApp(\"BOSS直聘\"); sleep(4000); }\n报告 += \"前台 \" + currentPackage() + \"\\n\";\nif (currentPackage() != PKG) { setClip(报告 + \"BOSS 没到前台\"); toastLog(\"停手\"); exit(); }\nsleep(1000);\n\nfunction 在聊天页() {\n    var e = className(\"android.widget.EditText\").findOnce();\n    return e != null && e.bounds().top > 屏H() * 0.70;\n}\n\n// 滚一屏：优先找可滚动容器，用无障碍滚动动作\nfunction 滚动一屏() {\n    var s = classNameMatches(/.*/).scrollable(true).findOnce(1000);\n    if (!s) s = className(\"androidx.recyclerview.widget.RecyclerView\").findOnce(800);\n    if (!s) s = className(\"android.widget.ListView\").findOnce(600);\n    if (s) {\n        try { s.scrollForward(); return \"节点滚动\"; } catch (e) { }\n        try { s.scrollForward(); return \"节点滚动2\"; } catch (e2) { }\n    }\n    // 退路：手势滑动（鸿蒙大概率拦，但试一次）\n    try {\n        var h = 屏H();\n        swipe(device.width / 2, h * 0.75, device.width / 2, h * 0.30, 400);\n        return \"手势滑动\";\n    } catch (e3) { }\n    return \"\";\n}\n\n// 当前屏读到的文字\nfunction 读文字() {\n    var arr = [];\n    className(\"android.widget.TextView\").find().forEach(function (n) {\n        var t = n.text();\n        if (t) arr.push(t);\n    });\n    return arr;\n}\n\n// 找到孙先生所在的可点行容器\nfunction 孙先生所在行(节点) {\n    var y = 心Y(节点.bounds());\n    var 行 = null;\n    className(\"android.view.ViewGroup\").find().forEach(function (n) {\n        var b = n.bounds();\n        if (宽(b) > 1000 && 高(b) > 60 && 高(b) < 340 && Math.abs(心Y(b) - y) < 160) 行 = n;\n    });\n    return 行;\n}\n\n// ———— 滚屏找孙先生 ————\nvar 找到 = 在聊天页();\nif (在聊天页()) 报告 += \"已经在某个聊天页\\n\";\n\nif (!找到) {\n    for (var k = 1; k <= 8; k++) {\n        var 孙 = textContains(\"孙先生\").findOnce(900);\n        var 字 = 读文字();\n        报告 += \"第\" + k + \"屏：文字 \" + 字.length + \" 条\" + (孙 ? \"，读到孙先生 \" + Math.round(心Y(孙.bounds())) : \"，没孙先生\") + \"\\n\";\n        if (孙) {\n            var 行 = 孙先生所在行(孙);\n            报告 += \"  点这一行…\";\n            if (行 && 行.clickable()) 行.click(); else if (行) 行.click(); else 孙.click();\n            sleep(2700);\n            if (在聊天页()) { 报告 += \"进聊天页了\\n\"; 找到 = true; }\n            else 报告 += \"没进去\\n\";\n            break;\n        }\n        var 方式 = 滚动一屏();\n        if (!方式) { 报告 += \"  滚不动，停\\n\"; break; }\n        报告 += \"  滚动方式: \" + 方式 + \"\\n\";\n        sleep(1700);\n    }\n}\n\nif (!找到) {\n    // 把最后读到的文字全带上，便于诊断\n    var 尾 = 读文字();\n    setClip(报告 + \"\\n最后屏文字: \" + 尾.join(\" / \"));\n    toastLog(\"没找到孙先生\");\n    exit();\n}\n\n// ———— 干活 ————\nvar 输入 = className(\"android.widget.EditText\").findOne(4000);\nif (!输入) { setClip(报告 + \"\\n聊天页没输入框\"); toastLog(\"没输入框\"); exit(); }\nvar ib = 输入.bounds();\n报告 += \"输入框: \" + ib.left + \",\" + ib.top + \" \" + 宽(ib) + \"x\" + 高(ib) + \"\\n\";\n\nfunction 面板开了() { return textContains(\"语音通话\").findOnce(900) != null; }\nfunction 发出去了() { return !!textContains(\"杜全龙\").className(\"android.widget.TextView\").findOnce(2000); }\n\nfunction 右侧候选() {\n    var arr = [];\n    classNameMatches(/.*/).find().forEach(function (n) {\n        try {\n            var b = n.bounds();\n            var w = 宽(b), h = 高(b);\n            if (w <= 0 || h <= 0 || w > 320 || h > 320) return;\n            if (心X(b) > device.width * 0.60 && 心Y(b) > 屏H() * 0.42) arr.push(n);\n        } catch (e) { }\n    });\n    return arr;\n}\n\nfunction 列清单(标签) {\n    var arr = 右侧候选(), out = [];\n    arr.forEach(function (n) {\n        var b = n.bounds();\n        out.push(\"[\" + (n.text() || n.desc() || \"无字\") + \"@\" + Math.round(心X(b)) + \",\" + Math.round(心Y(b)) + \" \" + 宽(b) + \"x\" + 高(b) + \"]\");\n    });\n    报告 += \"\\n\" + 标签 + \"：\" + arr.length + \" 个\\n\" + out.join(\"  \") + \"\\n\";\n    return arr;\n}\n\nvar 空框 = 列清单(\"空框状态\");\n报告 += \"空框时面板: \" + 面板开了() + \"\\n\";\n\nvar 命中 = null;\nfor (var j = 0; j < 空框.length; j++) {\n    var n2 = 空框[j], b2 = n2.bounds();\n    if (心Y(b2) < 屏H() * 0.60) continue;\n    if (心Y(b2) < ib.top - 160) continue;\n    报告 += \"试 @\" + Math.round(心X(b2)) + \",\" + Math.round(心Y(b2)) + \" → \";\n    n2.click();\n    sleep(1200);\n    if (面板开了()) { 报告 += \"命中，这就是加号\\n\"; 命中 = n2; break; }\n    报告 += \"无反应\\n\";\n}\n\nif (命中) {\n    var hb = 命中.bounds();\n    报告 += \"加号: \" + Math.round(心X(hb)) + \",\" + Math.round(心Y(hb)) + \"\\n\";\n    var a9 = 右侧候选(), mr = null;\n    a9.forEach(function (n) { if (!mr || 心X(n.bounds()) > 心X(mr.bounds())) mr = n; });\n    if (mr) { mr.click(); sleep(1200); }\n    报告 += \"收面板后: \" + 面板开了() + \"\\n\";\n}\n\n输入.click();\nsleep(900);\ntry { 输入.setText(话术); } catch (e) { 报告 += \"setText 异常: \" + e + \"\\n\"; }\nsleep(2400);\nvar nb = 输入.bounds();\n报告 += \"\\n填字后输入框: \" + nb.left + \",\" + nb.top + \"（位移 \" + (nb.top - ib.top) + \"）\\n\";\n列清单(\"填字后状态\");\n\nvar 已发 = false;\nif (命中) {\n    var 原Y = 心Y(命中.bounds());\n    for (var r = 1; r <= 3 && !已发; r++) {\n        var a3 = 右侧候选(), 目标 = null, 最小差 = 99999;\n        a3.forEach(function (n) {\n            var b = n.bounds();\n            var d = Math.abs(心Y(b) - 原Y);\n            if (d < 最小差) { 最小差 = d; 目标 = n; }\n        });\n        if (!目标) { 报告 += \"第\" + r + \"次无候选\\n\"; break; }\n        var tb = 目标.bounds();\n        报告 += \"第\" + r + \"次点 @\" + Math.round(心X(tb)) + \",\" + Math.round(心Y(tb)) + \" → \";\n        目标.click();\n        sleep(2100);\n        已发 = 发出去了();\n        报告 += \"发出 \" + 已发 + \"\\n\";\n    }\n}\n\nsleep(600);\nsetClip(报告);\ntoastLog(已发 ? \"发出去了\" : \"没发出去\");\n";
 function done(ok){
   var tip=document.getElementById('tip');
   tip.textContent = ok ? '已复制，去 AutoJs6 粘贴' : '没复制上，点「全选」手动复制';
