@@ -676,12 +676,12 @@
       <div class="stat"><div class="v" id="s-xa-e">2<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="xa">
-      <button class="chip on" data-f="all">全部 10</button>
-      <button class="chip" data-f="boss">BOSS直聘 <span class="bn">0</span></button>
-      <button class="chip" data-f="high">高匹配 2</button>
-      <button class="chip" data-f="core">核心对口 3</button>
-      <button class="chip" data-f="near">相近可投 4</button>
-      <button class="chip" data-f="risk">有硬门槛 3</button>
+      <button class="chip on" data-f="all">全部</button>
+      <button class="chip" data-f="boss">BOSS直聘</button>
+      <button class="chip" data-f="high">高匹配</button>
+      <button class="chip" data-f="core">核心对口</button>
+      <button class="chip" data-f="near">相近可投</button>
+      <button class="chip" data-f="low">低匹配</button>
     </div></div>
     <div class="joblist" data-city="xa"></div>
   </section>
@@ -694,11 +694,12 @@
       <div class="stat"><div class="v" id="s-sz-e">6<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="sz">
-      <button class="chip on" data-f="all">全部 9</button>
-      <button class="chip" data-f="boss">BOSS直聘 <span class="bn">0</span></button>
-      <button class="chip" data-f="high">高匹配 6</button>
-      <button class="chip" data-f="core">测试治具 6</button>
-      <button class="chip" data-f="near">非标自动化 3</button>
+      <button class="chip on" data-f="all">全部</button>
+      <button class="chip" data-f="boss">BOSS直聘</button>
+      <button class="chip" data-f="high">高匹配</button>
+      <button class="chip" data-f="core">核心对口</button>
+      <button class="chip" data-f="near">相近可投</button>
+      <button class="chip" data-f="low">低匹配</button>
     </div></div>
     <div class="joblist" data-city="sz"></div>
   </section>
@@ -2693,7 +2694,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112r';
+var BUILD = '20261112s';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2921,9 +2922,11 @@ function renderChips(city){
     if(f==='all') n=list.length;
     else if(f==='boss') n=list.filter(function(j){return j.src==='BOSS直聘';}).length;
     else if(f==='high') n=list.filter(function(j){return (j.score||0)>=80;}).length;
+    else if(f==='low') n=list.filter(function(j){return (j.score||0)<65;}).length;
     else n=list.filter(function(j){return j.g===f;}).length;
     b.textContent=b.dataset.label+' '+n;
   });
+  if(!box.dataset.fixed){ box.scrollLeft=0; box.dataset.fixed='1'; }
 }
 
 /* 概览页柱状图：全部按真实数据算 */
