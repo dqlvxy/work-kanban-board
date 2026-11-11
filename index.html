@@ -189,6 +189,7 @@
   .fill{height:100%;border-radius:3px;background:var(--green);transition:width .5s ease}
   .fill.b{background:var(--blue)} .fill.a{background:var(--amber)}
   .score span{font-size:11px;font-weight:700;color:var(--muted);width:34px;text-align:right}
+  .score .scl{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;letter-spacing:.5px}
 
   .toggle{width:100%;margin-top:9px;background:none;border:0;border-top:1px dashed var(--line);
     padding:8px 0 0;font-family:inherit;font-size:11.5px;color:var(--blue);text-align:left;font-weight:500}
@@ -1556,7 +1557,8 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
 function byCity(city){
-  return DATA.jobs.filter(function(j){ return j.city === city; });
+  return DATA.jobs.filter(function(j){ return j.city === city; })
+    .sort(function(a, b){ return (b.score || 0) - (a.score || 0); });
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
@@ -1606,7 +1608,7 @@ function renderJobs(city, filter){
         (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
         (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
       '</div>' +
-      '<div class="score"><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
+      '<div class="score"><b class="scl">匹配度</b><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
       '<div class="actrow">' +
         '<button class="msbtn" onclick="applyJob(' + j.id + ')">' +
@@ -2295,7 +2297,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111m';
+var BUILD = '20261111n';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
