@@ -2274,6 +2274,29 @@ function hardRefresh(){
 }
 
 /* ================= 启动 ================= */
+/* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
+var BUILD = '20261111i';
+function 查版本(){
+  try{
+    var x = new XMLHttpRequest();
+    x.open('GET', 'build.txt?t=' + Date.now(), true);
+    x.timeout = 8000;
+    x.onload = function(){
+      if (x.status !== 200) return;
+      var v = (x.responseText || '').trim();
+      if (v && v !== BUILD){
+        var st = document.getElementById('stText');
+        if (st) st.textContent = '发现新版本，正在更新…';
+        location.replace(location.pathname + '?b=' + encodeURIComponent(v));
+      }
+    };
+    x.send();
+  }catch(e){}
+}
+setInterval(查版本, 5 * 60 * 1000);
+document.addEventListener('visibilitychange', function(){ if (!document.hidden) 查版本(); });
+查版本();
+
 loadData();
 /* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
 __上次更新时间 = DATA.updated;
