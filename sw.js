@@ -1,7 +1,14 @@
 /* 工作看板 · 离线缓存（网络优先，断网回退缓存） */
-var CACHE = 'wb-rt-v1';
+var CACHE = 'wb-rt-v2';
 self.addEventListener('install', function(e){ self.skipWaiting(); });
-self.addEventListener('activate', function(e){ e.waitUntil(self.clients.claim()); });
+self.addEventListener('activate', function(e){
+  e.waitUntil((async function(){
+    var names = await caches.keys();
+    await Promise.all(names.filter(function(n){ return n !== CACHE; })
+      .map(function(n){ return caches.delete(n); }));
+    await self.clients.claim();
+  })());
+});
 self.addEventListener('fetch', function(ev){
   if (ev.request.method !== 'GET') return;
   var url = ev.request.url;
