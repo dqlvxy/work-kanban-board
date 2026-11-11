@@ -479,6 +479,13 @@
   /* ===== 投递引导浮层 ===== */
   .gd-tip{font-size:12px;font-weight:700;color:var(--green);padding:9px 2px 0}
   .gd-steps{font-size:11.5px;line-height:1.85;color:var(--muted);padding:9px 2px 0}
+
+/* 来源与时间行 */
+.srcrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.srcbadge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:6px;background:rgba(41,108,226,.11);color:#296ce2;font-weight:600;font-size:11px;letter-spacing:.2px}
+.srcrow i{font-style:normal;opacity:.9}
+.srcrow i b{font-weight:600;color:var(--text)}
+
 </style>
 </head>
 <body>
@@ -497,7 +504,7 @@
 <div class="statusbar" id="statusbar">
   <span class="st-dot" id="stDot"></span>
   <span id="stText">数据快照已载入</span>
-  <span class="sp">更新于 <b id="upd">--:--</b> · <b id="cd">10:00</b></span>
+  <span class="sp">更新于 <b id="upd">--:--</b> · <b id="cd">1:00</b></span>
 </div>
 
 <main>
@@ -785,36 +792,531 @@
 <div id="toast"></div>
 
 <!-- ====== 数据区（每 10 分钟刷新时读这里） ====== -->
-<script id="jobdata" type="application/json">
-{
+<script id="jobdata" type="application/json">{
   "updated": "2026-11-10 14:54",
   "round": 0,
   "jobs": [
-    {"id":1,"city":"xa","co":"西安汉沣精机","coTag":"高新企业","role":"工装夹具工程师","area":"雁塔区电子城","exp":"5-10年","edu":"大专","eduOk":true,"pay":"10-15K","payNote":"13薪","score":92,"g":"core","cls":"g","chips":["大专可投","年限超额","西安保底"],"why":"JD 写大专即可、5-10 年，你 18 年远超要求。做精密机加工装夹具与刀具选型，你双车床上下料柔性单元的定位夹紧、气动回路经验直接能用。这家面试要谈 13K，别按 10K 开口。"},
-    {"id":2,"city":"xa","co":"西安永邦精密机械","coTag":"数控机床","role":"夹具工程师","area":"雁塔区科技西路","exp":"3-5年","edu":"大专","eduOk":true,"pay":"6-12K","payNote":"","score":76,"g":"near","cls":"g","chips":["大专可投","气动夹具对口","下限低必须谈"],"why":"数控车床与加工中心自动装夹工装，要熟悉液压气动系统。做过双车床柔性单元的人正好对口。下限只有 6K，但上限 12K，你 18 年经验直接报 11K 起。"},
-    {"id":3,"city":"xa","co":"中诺通讯","coTag":"上市 ODM","role":"工装夹具设计工程师","area":"雁塔区沣惠南路","exp":"3-5年","edu":"本科","eduOk":false,"pay":"15-25K","payNote":"15薪","score":95,"g":"core","cls":"","chips":["行业完全对口","薪资最高","卡本科照投"],"why":"西安最该投的一家。JD 写的是 MBB、CPE、手机类终端测试夹具，跟你做了十年的手机／手表／耳机测试治具是同一条产品线。FPC 连接器治具、测试点位、探针选型全在对方需求里，华为小米客户经验直接对上。"},
-    {"id":4,"city":"xa","co":"比亚迪","coTag":"上市公司","role":"机械工程师","area":"长安区郭杜／高新区","exp":"3-5年","edu":"本科","eduOk":false,"pay":"15-30K","payNote":"","score":88,"g":"core","cls":"","chips":["客户背景加持","大厂流程","卡本科"],"why":"非标设备新工艺研发、产线自动化改进、结构设计与选型，逐条对上你的日常。你服务过比亚迪，这是简历里现成的敲门砖，比任何自荐话术都管用。"},
-    {"id":5,"city":"xa","co":"威尔量仪","coTag":"仪器仪表","role":"非标自动化机械设计工程师","area":"西安","exp":"3-5年","edu":"本科","eduOk":false,"pay":"13-18K","payNote":"","score":83,"g":"near","cls":"b","chips":["全流程闭环","产线集成","卡本科"],"why":"产线研发设计、BOM 输出、装配调试技术支持，是一条完整的闭环岗。你方案→建模→出图→BOM→跟样调试→交付的全流程能力正好对齐。"},
-    {"id":6,"city":"xa","co":"科甬泰自动化","coTag":"自动化设备","role":"非标机械设计工程师","area":"雁塔区高新软件园","exp":"3-5年","edu":"本科","eduOk":false,"pay":"12-20K","payNote":"","score":82,"g":"near","cls":"b","chips":["要求极简","高新区","卡本科"],"why":"熟练 SolidWorks／ProE、非标自动化三年以上，等于照着你的简历写的。这类中小非标厂看作品不看学历，把三台整机项目拿出来讲就够。"},
-    {"id":7,"city":"xa","co":"舜元科技","coTag":"A轮 智能硬件","role":"机加工装夹具设计工程师","area":"未央区文景路","exp":"3-5年","edu":"本科","eduOk":false,"pay":"11-17K","payNote":"13薪","score":80,"g":"near","cls":"b","chips":["夹具主业","智能硬件","卡本科"],"why":"机加工非标工装夹具设计加客户对接、方案评审、帮项目解决组装调试问题。你的夹具设计加现场整改能力直接命中。"},
-    {"id":8,"city":"xa","co":"西安汉沣精密机械","coTag":"智能产线","role":"机械设计工程师","area":"鄠邑区沣京工业园","exp":"5年以上","edu":"本科","eduOk":false,"pay":"10-15K","payNote":"招2人","score":84,"g":"core","cls":"b","chips":["项目经验同构","智能产线","地点偏鄠邑"],"why":"智能柔性产线方案、非标单元模块详细设计、外购件选型、出图跟采购。8 年整机或非标经验即可，你的双车床上下料、屏幕保压回流线是同类项目。做实了是长期饭碗。"},
-    {"id":9,"city":"xa","co":"三一集团","coTag":"上市公司","role":"工装工程师","area":"长安区","exp":"3年以上","edu":"本科","eduOk":false,"pay":"15-25K","payNote":"13薪","score":72,"g":"risk","cls":"a","chips":["行业跨界","薪资高","卡本科"],"why":"钱给得痛快，但方向是焊接与装调全序工装，重工路子，跟你的 3C 精密小件治具隔一段。工装方法论相通，可以聊，但要接受行业切换的适应期。"},
-    {"id":10,"city":"xa","co":"捷科智能装备","coTag":"常驻西安","role":"机械设计工程师","area":"高新区","exp":"3年以上","edu":"本科","eduOk":false,"pay":"9-20K","payNote":"","score":55,"g":"risk","cls":"a","chips":["年龄硬卡30岁","半导体方向"],"why":"JD 明写年龄一般不超过 30 岁，你 38，简历筛选大概率过不去。除非能走内推，否则别浪费精力。"},
-
-    {"id":21,"city":"sz","co":"深圳市欣同达科技","coTag":"半导体测试座","role":"高级治具设计工程师","area":"龙华区大浪","exp":"5年以上","edu":"大专","eduOk":true,"pay":"18-25K","payNote":"招2人","score":96,"g":"core","cls":"g","chips":["大专可投","测试治具主业","深圳第一顺位"],"why":"深圳这批里最该投的一家：JD 写测试治具、测试座、测试夹具结构设计，5 年经验、大专即可。你做的是 FPC 连接器测试治具，BGA／QFN 测试座的结构逻辑（定位、压合、探针导向、防呆）跟你是同一套。18 年经验顶 5 年门槛，薪资 18-25K 可以直接谈上限。"},
-    {"id":22,"city":"sz","co":"深极测","coTag":"新能源测试","role":"治具机械工程师","area":"深圳","exp":"3-5年","edu":"大专","eduOk":true,"pay":"15-25K","payNote":"","score":94,"g":"core","cls":"g","chips":["大专可投","DFM报告","客户方案对接"],"why":"夹／治具机械结构方案设计、编 DFM 报告、跟客户讲方案推共识。这三件事是你做了十年的日常，不是新学的。测试治具设计经验明确要求，你有 10 年。大专可投，薪资 15-25K。"},
-    {"id":23,"city":"sz","co":"深圳市长盈精密","coTag":"上市 万人大厂","role":"治具设计工程师","area":"龙华区大浪","exp":"3-5年","edu":"大专","eduOk":true,"pay":"13-20K","payNote":"","score":91,"g":"core","cls":"g","chips":["上市公司","大专可投","芯片测试治具"],"why":"负责芯片测试治具方案制定与结构设计、前期可行性分析、3D 建模。万人大厂的平台和流程，对你后面跳槽是加分。芯片治具你没直接做过，但连接器治具的精度逻辑一致，面试时讲清迁移路径即可。"},
-    {"id":24,"city":"sz","co":"深圳市嘉欣钰电子","coTag":"仪器仪表","role":"治具设计工程师","area":"宝安区石岩","exp":"3-5年","edu":"学历不限","eduOk":true,"pay":"16-21K","payNote":"","score":90,"g":"core","cls":"g","chips":["学历不限","薪资上限高","纯治具设计"],"why":"学历完全不卡，只看能不能出方案和图纸。负责治具方案设计、3D／2D 出图、BOM 编制，这是你的标准交付物。薪资 16-21K，比西安同类高一大截。"},
-    {"id":25,"city":"sz","co":"明信测试","coTag":"电子硬件","role":"夹治具设计工程师","area":"龙华区观澜","exp":"3-5年","edu":"大专","eduOk":true,"pay":"11-20K","payNote":"","score":88,"g":"core","cls":"g","chips":["大专可投","手机夹具优先","CAD/ProE"],"why":"JD 写手机夹具设计经验优先——你服务过华为、OPPO、小米、华勤、龙旗的手机项目，这条线就是主场。薪资 11-20K 上限不错。"},
-    {"id":26,"city":"sz","co":"深圳市利和兴","coTag":"上市 治具设备","role":"夹具工程师","area":"龙华区清湖","exp":"3年以上","edu":"大专","eduOk":true,"pay":"8-15K","payNote":"","score":86,"g":"core","cls":"g","chips":["ICT治具直接命中","华为中兴优先","薪资偏低"],"why":"技术匹配度是深圳这批里最高的：JD 明写精通 ICT 测试治具设计、熟悉工装夹具工艺与气动、做过华为／中兴测试夹具优先，三条你全占。唯一问题是薪资 8-15K 偏低，建议当谈判筹码或备选，别当主力。"},
-    {"id":27,"city":"sz","co":"深圳市强瑞精密","coTag":"华为/vivo供应商","role":"夹具工程师","area":"龙华区","exp":"1-2年","edu":"学历不限","eduOk":true,"pay":"10-15K","payNote":"招10人","score":85,"g":"core","cls":"g","chips":["学历不限","招10人","探针射频针"],"why":"学历不限、招 10 人，是深圳最容易进的一家。3C 夹治具设计、手机夹具优先、单板测试与探针射频针选型，全是你的活。它是华为、vivo、BYD、富士康的供应商，这些客户你全服务过，知道他们的验收标准。薪资中等，适合快速拿 offer 保底。"},
-    {"id":28,"city":"sz","co":"共进电子","coTag":"上市 万人大厂","role":"非标自动化机械设计工程师","area":"龙华区龙华","exp":"5-10年","edu":"本科","eduOk":false,"pay":"18-35K","payNote":"13薪","score":89,"g":"near","cls":"","chips":["薪资天花板 35K","上市大厂","卡本科"],"why":"三城薪资上限最高的一家。非标自动化设备设计开发，要求独立完成项目从技术交流、方案检讨到 3D 设计与选型，跟你的整机项目经验完全对齐。卡本科，但 5-10 年经验你给到 18 年，用项目案例硬顶。"},
-    {"id":29,"city":"sz","co":"达四海","coTag":"自动化设备","role":"非标自动化机械设计工程师","area":"宝安区沙井","exp":"5-10年","edu":"大专","eduOk":true,"pay":"16-30K","payNote":"电机焊接设备","score":82,"g":"near","cls":"g","chips":["大专可投","薪资 16-30K","焊接是新方向"],"why":"大专可投的高薪岗，16-30K。方向是电机焊接设备，你没直接做过，但机构原理（定位夹紧、上下料、节拍、气动与伺服选型）是通的，双车床上下料柔性单元的机构复杂度比焊接线还高。值得一试。"},
-
-    {"id":11,"city":"ak","co":"陕西轩意光电","coTag":"安康 · 专精特新","role":"非标自动化设备机械设计","area":"安康汉滨区","exp":"5-8年","edu":"高中","eduOk":true,"pay":"面议","payNote":"估8-12K","score":90,"g":"core","cls":"g","chips":["学历零障碍","你是安康人","薪资必须谈"],"why":"安康唯一值得投的一家，JD 只要求高中。整体方案策划、独立机械结构设计、全程跟组装调试、编 BOM 与设备规格书，全是你的强项。你是安康本地人（高中在安康四中），稳定性这张牌要打出来。但薪资未公开，必须当面谈到 10K 以上才值。"}
+    {
+      "id": 1,
+      "city": "xa",
+      "co": "西安汉沣精机",
+      "coTag": "高新企业",
+      "role": "工装夹具工程师",
+      "area": "雁塔区电子城",
+      "exp": "5-10年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "10-15K",
+      "payNote": "13薪",
+      "score": 92,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "年限超额",
+        "西安保底"
+      ],
+      "why": "JD 写大专即可、5-10 年，你 18 年远超要求。做精密机加工装夹具与刀具选型，你双车床上下料柔性单元的定位夹紧、气动回路经验直接能用。这家面试要谈 13K，别按 10K 开口。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E5%B7%A5%E8%A3%85%E5%A4%B9%E5%85%B7&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 2,
+      "city": "xa",
+      "co": "西安永邦精密机械",
+      "coTag": "数控机床",
+      "role": "夹具工程师",
+      "area": "雁塔区科技西路",
+      "exp": "3-5年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "6-12K",
+      "payNote": "",
+      "score": 76,
+      "g": "near",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "气动夹具对口",
+        "下限低必须谈"
+      ],
+      "why": "数控车床与加工中心自动装夹工装，要熟悉液压气动系统。做过双车床柔性单元的人正好对口。下限只有 6K，但上限 12K，你 18 年经验直接报 11K 起。",
+      "src": "智联招聘",
+      "srcUrl": "https://www.zhaopin.com/jobdetail/CC460016316J90250178000.htm",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 3,
+      "city": "xa",
+      "co": "中诺通讯",
+      "coTag": "上市 ODM",
+      "role": "工装夹具设计工程师",
+      "area": "雁塔区沣惠南路",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "15-25K",
+      "payNote": "15薪",
+      "score": 95,
+      "g": "core",
+      "cls": "",
+      "chips": [
+        "行业完全对口",
+        "薪资最高",
+        "卡本科照投"
+      ],
+      "why": "西安最该投的一家。JD 写的是 MBB、CPE、手机类终端测试夹具，跟你做了十年的手机／手表／耳机测试治具是同一条产品线。FPC 连接器治具、测试点位、探针选型全在对方需求里，华为小米客户经验直接对上。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E5%B7%A5%E8%A3%85%E5%A4%B9%E5%85%B7&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 4,
+      "city": "xa",
+      "co": "比亚迪",
+      "coTag": "上市公司",
+      "role": "机械工程师",
+      "area": "长安区郭杜／高新区",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "15-30K",
+      "payNote": "",
+      "score": 88,
+      "g": "core",
+      "cls": "",
+      "chips": [
+        "客户背景加持",
+        "大厂流程",
+        "卡本科"
+      ],
+      "why": "非标设备新工艺研发、产线自动化改进、结构设计与选型，逐条对上你的日常。你服务过比亚迪，这是简历里现成的敲门砖，比任何自荐话术都管用。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E6%9C%BA%E6%A2%B0%E5%B7%A5%E7%A8%8B%E5%B8%88&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 5,
+      "city": "xa",
+      "co": "威尔量仪",
+      "coTag": "仪器仪表",
+      "role": "非标自动化机械设计工程师",
+      "area": "西安",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "13-18K",
+      "payNote": "",
+      "score": 83,
+      "g": "near",
+      "cls": "b",
+      "chips": [
+        "全流程闭环",
+        "产线集成",
+        "卡本科"
+      ],
+      "why": "产线研发设计、BOM 输出、装配调试技术支持，是一条完整的闭环岗。你方案→建模→出图→BOM→跟样调试→交付的全流程能力正好对齐。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 6,
+      "city": "xa",
+      "co": "科甬泰自动化",
+      "coTag": "自动化设备",
+      "role": "非标机械设计工程师",
+      "area": "雁塔区高新软件园",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "12-20K",
+      "payNote": "",
+      "score": 82,
+      "g": "near",
+      "cls": "b",
+      "chips": [
+        "要求极简",
+        "高新区",
+        "卡本科"
+      ],
+      "why": "熟练 SolidWorks／ProE、非标自动化三年以上，等于照着你的简历写的。这类中小非标厂看作品不看学历，把三台整机项目拿出来讲就够。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E6%9C%BA%E6%A2%B0%E8%AE%BE%E8%AE%A1&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 7,
+      "city": "xa",
+      "co": "舜元科技",
+      "coTag": "A轮 智能硬件",
+      "role": "机加工装夹具设计工程师",
+      "area": "未央区文景路",
+      "exp": "3-5年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "11-17K",
+      "payNote": "13薪",
+      "score": 80,
+      "g": "near",
+      "cls": "b",
+      "chips": [
+        "夹具主业",
+        "智能硬件",
+        "卡本科"
+      ],
+      "why": "机加工非标工装夹具设计加客户对接、方案评审、帮项目解决组装调试问题。你的夹具设计加现场整改能力直接命中。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E6%9C%BA%E5%8A%A0%E5%B7%A5%E8%A3%85&city=101110100",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 8,
+      "city": "xa",
+      "co": "西安汉沣精密机械",
+      "coTag": "智能产线",
+      "role": "机械设计工程师",
+      "area": "鄠邑区沣京工业园",
+      "exp": "5年以上",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "10-15K",
+      "payNote": "招2人",
+      "score": 84,
+      "g": "core",
+      "cls": "b",
+      "chips": [
+        "项目经验同构",
+        "智能产线",
+        "地点偏鄠邑"
+      ],
+      "why": "智能柔性产线方案、非标单元模块详细设计、外购件选型、出图跟采购。8 年整机或非标经验即可，你的双车床上下料、屏幕保压回流线是同类项目。做实了是长期饭碗。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://dq.xiaofangyc.com/Job_Detail.asp?Comid=HNZi5y24ytvnrm5162&Param=68868",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 9,
+      "city": "xa",
+      "co": "三一集团",
+      "coTag": "上市公司",
+      "role": "工装工程师",
+      "area": "长安区",
+      "exp": "3年以上",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "15-25K",
+      "payNote": "13薪",
+      "score": 72,
+      "g": "risk",
+      "cls": "a",
+      "chips": [
+        "行业跨界",
+        "薪资高",
+        "卡本科"
+      ],
+      "why": "钱给得痛快，但方向是焊接与装调全序工装，重工路子，跟你的 3C 精密小件治具隔一段。工装方法论相通，可以聊，但要接受行业切换的适应期。",
+      "src": "智联招聘",
+      "srcUrl": "https://m.zhaopin.com/jobs/CC134218700J40888268410.htm",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 10,
+      "city": "xa",
+      "co": "捷科智能装备",
+      "coTag": "常驻西安",
+      "role": "机械设计工程师",
+      "area": "高新区",
+      "exp": "3年以上",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "9-20K",
+      "payNote": "",
+      "score": 55,
+      "g": "risk",
+      "cls": "a",
+      "chips": [
+        "年龄硬卡30岁",
+        "半导体方向"
+      ],
+      "why": "JD 明写年龄一般不超过 30 岁，你 38，简历筛选大概率过不去。除非能走内推，否则别浪费精力。",
+      "src": "猎聘",
+      "srcUrl": "https://m.liepin.com/job/1985252527.shtml",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 21,
+      "city": "sz",
+      "co": "深圳市欣同达科技",
+      "coTag": "半导体测试座",
+      "role": "高级治具设计工程师",
+      "area": "龙华区大浪",
+      "exp": "5年以上",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "18-25K",
+      "payNote": "招2人",
+      "score": 96,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "测试治具主业",
+        "深圳第一顺位"
+      ],
+      "why": "深圳这批里最该投的一家：JD 写测试治具、测试座、测试夹具结构设计，5 年经验、大专即可。你做的是 FPC 连接器测试治具，BGA／QFN 测试座的结构逻辑（定位、压合、探针导向、防呆）跟你是同一套。18 年经验顶 5 年门槛，薪资 18-25K 可以直接谈上限。",
+      "src": "猎聘",
+      "srcUrl": "https://m.liepin.com/job/1986258753.shtml",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 22,
+      "city": "sz",
+      "co": "深极测",
+      "coTag": "新能源测试",
+      "role": "治具机械工程师",
+      "area": "深圳",
+      "exp": "3-5年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "15-25K",
+      "payNote": "",
+      "score": 94,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "DFM报告",
+        "客户方案对接"
+      ],
+      "why": "夹／治具机械结构方案设计、编 DFM 报告、跟客户讲方案推共识。这三件事是你做了十年的日常，不是新学的。测试治具设计经验明确要求，你有 10 年。大专可投，薪资 15-25K。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/8952b6a4efb8ec361Hdy39-_EA~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 23,
+      "city": "sz",
+      "co": "深圳市长盈精密",
+      "coTag": "上市 万人大厂",
+      "role": "治具设计工程师",
+      "area": "龙华区大浪",
+      "exp": "3-5年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "13-20K",
+      "payNote": "",
+      "score": 91,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "上市公司",
+        "大专可投",
+        "芯片测试治具"
+      ],
+      "why": "负责芯片测试治具方案制定与结构设计、前期可行性分析、3D 建模。万人大厂的平台和流程，对你后面跳槽是加分。芯片治具你没直接做过，但连接器治具的精度逻辑一致，面试时讲清迁移路径即可。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/39b10c2a0baa32ca03R50ti4GQ~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 24,
+      "city": "sz",
+      "co": "深圳市嘉欣钰电子",
+      "coTag": "仪器仪表",
+      "role": "治具设计工程师",
+      "area": "宝安区石岩",
+      "exp": "3-5年",
+      "edu": "学历不限",
+      "eduOk": true,
+      "pay": "16-21K",
+      "payNote": "",
+      "score": 90,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "学历不限",
+        "薪资上限高",
+        "纯治具设计"
+      ],
+      "why": "学历完全不卡，只看能不能出方案和图纸。负责治具方案设计、3D／2D 出图、BOM 编制，这是你的标准交付物。薪资 16-21K，比西安同类高一大截。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/39b10c2a0baa32ca03R50ti4GQ~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 25,
+      "city": "sz",
+      "co": "明信测试",
+      "coTag": "电子硬件",
+      "role": "夹治具设计工程师",
+      "area": "龙华区观澜",
+      "exp": "3-5年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "11-20K",
+      "payNote": "",
+      "score": 88,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "手机夹具优先",
+        "CAD/ProE"
+      ],
+      "why": "JD 写手机夹具设计经验优先——你服务过华为、OPPO、小米、华勤、龙旗的手机项目，这条线就是主场。薪资 11-20K 上限不错。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/8952b6a4efb8ec361Hdy39-_EA~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 26,
+      "city": "sz",
+      "co": "深圳市利和兴",
+      "coTag": "上市 治具设备",
+      "role": "夹具工程师",
+      "area": "龙华区清湖",
+      "exp": "3年以上",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "8-15K",
+      "payNote": "",
+      "score": 86,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "ICT治具直接命中",
+        "华为中兴优先",
+        "薪资偏低"
+      ],
+      "why": "技术匹配度是深圳这批里最高的：JD 明写精通 ICT 测试治具设计、熟悉工装夹具工艺与气动、做过华为／中兴测试夹具优先，三条你全占。唯一问题是薪资 8-15K 偏低，建议当谈判筹码或备选，别当主力。",
+      "src": "中国机械人才网",
+      "srcUrl": "https://cncjd.job1001.com/jobs/53311734.html",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 27,
+      "city": "sz",
+      "co": "深圳市强瑞精密",
+      "coTag": "华为/vivo供应商",
+      "role": "夹具工程师",
+      "area": "龙华区",
+      "exp": "1-2年",
+      "edu": "学历不限",
+      "eduOk": true,
+      "pay": "10-15K",
+      "payNote": "招10人",
+      "score": 85,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "学历不限",
+        "招10人",
+        "探针射频针"
+      ],
+      "why": "学历不限、招 10 人，是深圳最容易进的一家。3C 夹治具设计、手机夹具优先、单板测试与探针射频针选型，全是你的活。它是华为、vivo、BYD、富士康的供应商，这些客户你全服务过，知道他们的验收标准。薪资中等，适合快速拿 offer 保底。",
+      "src": "中国机械人才网",
+      "srcUrl": "https://7jd.job1001.com/jobs/53476222.html",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 28,
+      "city": "sz",
+      "co": "共进电子",
+      "coTag": "上市 万人大厂",
+      "role": "非标自动化机械设计工程师",
+      "area": "龙华区龙华",
+      "exp": "5-10年",
+      "edu": "本科",
+      "eduOk": false,
+      "pay": "18-35K",
+      "payNote": "13薪",
+      "score": 89,
+      "g": "near",
+      "cls": "",
+      "chips": [
+        "薪资天花板 35K",
+        "上市大厂",
+        "卡本科"
+      ],
+      "why": "三城薪资上限最高的一家。非标自动化设备设计开发，要求独立完成项目从技术交流、方案检讨到 3D 设计与选型，跟你的整机项目经验完全对齐。卡本科，但 5-10 年经验你给到 18 年，用项目案例硬顶。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/5f7069615ae718da1HR539q5EQ~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 29,
+      "city": "sz",
+      "co": "达四海",
+      "coTag": "自动化设备",
+      "role": "非标自动化机械设计工程师",
+      "area": "宝安区沙井",
+      "exp": "5-10年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "16-30K",
+      "payNote": "电机焊接设备",
+      "score": 82,
+      "g": "near",
+      "cls": "g",
+      "chips": [
+        "大专可投",
+        "薪资 16-30K",
+        "焊接是新方向"
+      ],
+      "why": "大专可投的高薪岗，16-30K。方向是电机焊接设备，你没直接做过，但机构原理（定位夹紧、上下料、节拍、气动与伺服选型）是通的，双车床上下料柔性单元的机构复杂度比焊接线还高。值得一试。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/zhaopin/14aa0d35c2c742940ndz2dW1EA~~/",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    },
+    {
+      "id": 11,
+      "city": "ak",
+      "co": "陕西轩意光电",
+      "coTag": "安康 · 专精特新",
+      "role": "非标自动化设备机械设计",
+      "area": "安康汉滨区",
+      "exp": "5-8年",
+      "edu": "高中",
+      "eduOk": true,
+      "pay": "面议",
+      "payNote": "估8-12K",
+      "score": 90,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "学历零障碍",
+        "你是安康人",
+        "薪资必须谈"
+      ],
+      "why": "安康唯一值得投的一家，JD 只要求高中。整体方案策划、独立机械结构设计、全程跟组装调试、编 BOM 与设备规格书，全是你的强项。你是安康本地人（高中在安康四中），稳定性这张牌要打出来。但薪资未公开，必须当面谈到 10K 以上才值。",
+      "src": "BOSS直聘",
+      "srcUrl": "https://www.zhipin.com/web/geek/jobs?query=%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96&city=101280300",
+      "addAt": "2026-11-10 14:54",
+      "postAt": ""
+    }
   ]
-}
-</script>
+}</script>
 
 <script>
 /* ================= 数据加载 ================= */
@@ -947,6 +1449,11 @@ function renderJobs(city, filter){
       '</div>' +
       '<div class="meta"><span class="m b">' + esc(j.area) + '</span><span class="m">' + esc(j.exp) + '</span>' +
         '<span class="m ' + (j.eduOk ? 'g' : 'a') + '">' + esc(j.edu) + (j.eduOk ? '｜可投' : '｜卡本科') + '</span>' + chips + '</div>' +
+      '<div class="srcrow">' +
+        (j.src ? '<span class="srcbadge">' + esc(j.src) + '</span>' : '') +
+        (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
+        (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
+      '</div>' +
       '<div class="score"><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
       '<div class="actrow">' +
@@ -1612,7 +2119,7 @@ document.getElementById('msgMask').addEventListener('click', function(e){
 });
 
 /* ================= 10 分钟自动刷新 ================= */
-var PERIOD = 10 * 60 * 1000;
+var PERIOD = 60 * 1000;
 var nextAt = Date.now() + PERIOD;
 
 function tick(){
@@ -1623,8 +2130,9 @@ function tick(){
   var m = Math.floor(left/60000), s = Math.floor(left%60000/1000);
   el.textContent = m + ':' + (s < 10 ? '0' + s : s);
   if (left <= 0){
-    el.textContent = '刷新中';
-    location.reload();
+    el.textContent = '同步中';
+    拉最新数据();
+    nextAt = Date.now() + PERIOD;
   }
 }
 
@@ -1684,6 +2192,46 @@ CITY_ORDER.forEach(function(c){
 });
 
 tick();
+
+/* ===== 每分钟向站点拉一次最新数据（jobs.json），有变化才重渲染 ===== */
+var __上次更新时间 = '';
+function 拉最新数据(){
+  var xhr = new XMLHttpRequest();
+  var url = 'jobs.json?t=' + Date.now();
+  xhr.open('GET', url, true);
+  xhr.timeout = 8000;
+  xhr.onload = function(){
+    if (xhr.status !== 200) return;
+    try{
+      var d = JSON.parse(xhr.responseText);
+      if (!d || !d.jobs || !d.jobs.length) return;
+      if (d.updated === __上次更新时间) return;
+      __上次更新时间 = d.updated;
+      DATA = d;
+      renderJobs('xa'); renderJobs('sz'); renderJobs('ak');
+      var u = document.getElementById('upd');
+      if (u) u.textContent = (d.updated || '').slice(11) || '--:--';
+      var st = document.getElementById('stText');
+      if (st) st.textContent = '数据快照已载入';
+      统计刷新();
+    }catch(e){}
+  };
+  xhr.onerror = function(){};
+  try{ xhr.send(); }catch(e){}
+}
+function 统计刷新(){
+  try{
+    CITY_ORDER.forEach(function(c){
+      var list = byCity(c);
+      var elN = document.getElementById('c-' + c + '-n'); if (elN) elN.textContent = list.length;
+      var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.eduOk; }).length;
+      var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
+    });
+    var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
+  }catch(e){}
+}
+setInterval(拉最新数据, PERIOD);
+
 setInterval(tick, 1000);
 
 /* 页面重新可见时校正倒计时（手机切后台会暂停计时器） */
