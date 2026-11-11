@@ -27,6 +27,8 @@ jobs:
           git config user.email "124942026@qq.com"
           for i in $(seq 1 55); do
             echo "===== 第 $i 轮 $(date -u '+%H:%M:%S') UTC ====="
+            # 每轮先同步远端：5 小时窗口内 checkout 目录是快照，不加这步就看不到别端新灌的岗位池
+            git pull --rebase --autostash origin main || echo "本轮同步远端失败，用当前工作区继续"
             python3 collect_jobs.py || echo "本轮抓取失败，继续下一轮"
             git add jobs.json seen-log.json boss-snapshot.json
             if git diff --staged --quiet; then
