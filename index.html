@@ -513,9 +513,10 @@
     background:transparent;position:relative;flex:none;transition:.15s}
   .apchk4:active{transform:scale(.94)}
   .actrow .toggle{width:100%;min-width:0;justify-content:center;overflow:hidden;letter-spacing:.3px;
-    font-family:inherit;font-size:11.5px;font-weight:700;color:var(--muted);
-    background:var(--soft2);border:1px solid var(--line);border-radius:999px;
-    padding:8px 0;margin-top:0;text-align:center;display:flex;align-items:center;gap:3px}
+    font-family:inherit;font-size:11.5px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,var(--blue),#5a3fd6);border:0;border-radius:999px;
+    box-shadow:0 3px 10px rgba(35,105,170,.32);
+    padding:0 0;margin-top:0;text-align:center;display:flex;align-items:center;gap:3px}
 
   /* ===== 投递引导浮层 ===== */
   .gd-tip{font-size:12px;font-weight:700;color:var(--green);padding:9px 2px 0}
@@ -2470,7 +2471,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112g';
+var BUILD = '20261112h';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
