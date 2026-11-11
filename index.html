@@ -1531,8 +1531,10 @@ var LINKS = {
 
 
 function 岗位链接(id){
-  var j = (DATA.jobs||[]).filter(function(x){ return x.id === id; })[0];
-  return (j && j.link) || LINKS[id] || '';
+  var j = (DATA.jobs||[]).filter(function(x){ return x.id == id; })[0];
+  if (!j) return LINKS[id] || '';
+  /* 优先用 Boss直聘投递入口（公司名搜索页或岗位详情页），其次原链接 */
+  return j['Boss直聘投递入口'] || j.link || LINKS[id] || '';
 }
 
 /* ================= 渲染 ================= */
@@ -1845,13 +1847,15 @@ function closeGuide(){
   document.body.style.overflow = '';
 }
 function applyJob(id){
-  if (!jobById(id).role) return;
-  var j = DATA.jobs.filter(function(x){ return x.id == id; })[0] || {};
+  var j = jobById(id);
+  if (!j.role) return;
   document.getElementById('gdCo').textContent = j.co || '';
   document.getElementById('gdRole').textContent = (j.role || '') +
     (j.pay ? '　·　' + j.pay : '') + (j.city === 'sz' ? '　·　深圳' : j.city === 'xa' ? '　·　西安' : '');
-  document.getElementById('gdMsg').textContent = m.m;
-  document.getElementById('gdGo').href = 岗位链接(id) || 'https://www.zhipin.com/';
+  document.getElementById('gdMsg').textContent = getMsg(id);
+  var 链 = 岗位链接(id) || 'https://www.zhipin.com/';
+  document.getElementById('gdGo').href = 链;
+  try { window.open(链, '_blank'); } catch(e) {}
   document.getElementById('gdTip').textContent = '公司+话术复制中…';
   document.getElementById('guideMask').classList.add('on');
   document.body.style.overflow = 'hidden';
@@ -2354,7 +2358,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111z';
+var BUILD = '20261111z2';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
