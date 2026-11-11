@@ -1971,9 +1971,10 @@ function renderAp(){
         '<span class="cksum">归档时间 ' + timeTag(x.at) + '</span>' +
       '</div>' +
       '<div class="actrow">' +
+        '<button class="msbtn" onclick="applyJob(' + j.id + ')">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 12.5 5 5L20 6.5"/><path d="M4 5v8a2 2 0 0 0 2 2h4"/><path d="M13 9l7 3-7 3z"/></svg>一键投</button>' +
         '<button class="msbtn" onclick="copyTalk(this,' + j.id + ')">' +
           '<svg viewBox="0 0 24 24"><path d="M20.5 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.2-.65L4.5 20l1.4-4.1A7.5 7.5 0 1 1 20.5 11.5Z"/><path d="M9 11h6M9 14h4"/></svg>话术</button>' +
-        (j.link ? '<a class="msbtn" href="' + esc(j.link) + '" target="_blank" rel="noopener">投递页 ↗</a>' : '<button class="msbtn" onclick="openMsg(' + j.id + ')">详情</button>') +
         '<button class="msbtn del" onclick="unmarkAp(' + j.id + ')">删除</button>' +
       '</div>' +
       ((j.why || '') ? '<div class="why">' + j.why + '</div>' : '') +
@@ -2439,7 +2440,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112a';
+var BUILD = '20261112b';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
