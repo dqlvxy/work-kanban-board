@@ -1034,6 +1034,12 @@ function copyText(txt, cb){
   }
   cb(ok);
 }
+var curGdId = null;
+function payload(id){
+  var j = (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
+  var m = MSGS[id] || {};
+  return 'CO:' + (j.co || '') + '\nROLE:' + (j.role || '') + '\nMSG:' + (m.m || '');
+}
 function markOne(id){
   var st = getCk(); st[id] = true; setCk(st);
   var t = getT(); t[id] = Date.now(); setT(t);
@@ -1043,8 +1049,8 @@ function markOne(id){
 function applyOne(e, id){
   var m = MSGS[id];
   if (!m) return;
-  copyText(m.m, function(ok){
-    if (ok){ markOne(id); toast('话术已复制 · 已记为已投，去沟通页粘贴发送'); }
+  copyText(payload(id), function(ok){
+    if (ok){ markOne(id); toast('公司+话术已复制 · 已记为已投，去 BOSS 跑脚本'); }
     else { toast('复制失败，请在弹层里长按话术手动复制'); }
   });
 }
@@ -1057,9 +1063,9 @@ function selAll(id){
   toast('已选中，长按就能复制');
 }
 function copyGd(){
-  var txt = document.getElementById('gdMsg').textContent;
+  var txt = curGdId != null ? payload(curGdId) : document.getElementById('gdMsg').textContent;
   copyText(txt, function(ok){
-    document.getElementById('gdTip').textContent = ok ? '话术已复制到剪贴板' : '没复制上，点一下话术框全选再长按';
+    document.getElementById('gdTip').textContent = ok ? '公司+话术已复制到剪贴板' : '没复制上，点一下话术框全选再长按';
     toast(ok ? '已复制' : '复制失败');
   });
 }
@@ -1076,13 +1082,14 @@ function applyJob(id){
     (j.pay ? '　·　' + j.pay : '') + (j.city === 'sz' ? '　·　深圳' : j.city === 'xa' ? '　·　西安' : '');
   document.getElementById('gdMsg').textContent = m.m;
   document.getElementById('gdGo').href = LINKS[id] || 'https://www.zhipin.com/';
-  document.getElementById('gdTip').textContent = '话术复制中…';
+  document.getElementById('gdTip').textContent = '公司+话术复制中…';
   document.getElementById('guideMask').classList.add('on');
   document.body.style.overflow = 'hidden';
+  curGdId = id;
   markOne(id);
-  copyText(m.m, function(ok){
+  copyText(payload(id), function(ok){
     document.getElementById('gdTip').textContent = ok
-      ? '话术已复制到剪贴板（已记为已投）'
+      ? '公司名+岗位+话术已复制，去 BOSS 跑脚本（已记为已投）'
       : '自动复制被浏览器拦了，点一下话术框全选再长按复制';
   });
   if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
