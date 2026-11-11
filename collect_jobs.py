@@ -28,17 +28,19 @@ SOURCES = [
     ("前程无忧", "ak", "https://mgongchengshi.51job.com/ankang/jixiegcs/", "gbk"),
 ]
 
-# ===== BOSS 直聘：普通来源之一，不置顶、同样会过期 =====
+# ===== BOSS 直聘：普通来源之一，不置顶、不按时间下架 =====
 # 机房 IP 直连 BOSS 会被风控（wapi/joblist.json 返回 code=37「环境存在异常」），
 # 因此 BOSS 岗位由杜哥手机截图批量录入 jobs-boss.json。
-# 它和猎聘／前程无忧一视同仁：按首次收录时间排新鲜度，按最后见到时间算过期。
+# 它和猎聘／前程无忧一视同仁：按首次收录时间排先后，只在超过每城上限时被挤掉。
 BOSS_FILE = "jobs-boss.json"
 BOSS_CITY_CODE = {"xa": "101110100", "sz": "101280600", "ak": "101110900"}
 
-# ===== 时效规则（用户 2026-11-11 12:07 明确要求：不置顶、会过期、新岗位取代旧岗位） =====
-TTL_DAYS = 7          # 岗位有效期：7 天没有再出现就自动下架（BOSS 从录入当天算）
-NEW_WINDOW_DAYS = 1   # 24 小时内首次收录算「新岗位」，整批排在旧岗位前面
-PER_CITY = 40         # 每城保留上限；新岗位进来会把排最后面的旧岗位挤掉
+# ===== 看板容量规则（用户 2026-11-11 12:25 明确要求） =====
+# 取消「7 天自动下架」：任何岗位都不因「多久没出现」而下架。
+# 西安 / 深圳 / 安康各自最多 50 条；超过 50 时按首次收录时间倒序，
+# 最新的留下、最旧的被挤掉 —— 这是「以新换旧」唯一的淘汰方式。
+NEW_WINDOW_DAYS = 1   # 24 小时内首次收录标「新」，只用于展示
+PER_CITY = 50         # 每城上限（xa / sz / ak 各自独立计算）
 
 def boss_search_url(co, city):
     """BOSS 岗位没有可直连详情页时，给一个公司名直达搜索链接，方便手机一键去投"""
@@ -60,7 +62,8 @@ EXCLUDE_JOB = ("销售", "采购", "文员", "行政", "财务", "会计", "市�
 
 def load_boss(addAt):
     """读 BOSS 岗位池：分数/理由/话术均已人工核对，服务端不重算，只做规范化。
-    lastSeen 固定为录入时间，绝不每轮刷新——刷新就等于永不过期。"""
+    addAt / firstSeen / lastSeen 全部固定为录入时间，绝不每轮刷新，
+    否则岗位会一直被当成「刚抓到」，排序会失真。"""
     try:
         with open(BOSS_FILE, encoding="utf-8") as f:
             src = json.load(f)
@@ -298,19 +301,9 @@ def job_key(co, role, city):
 def is_boss(j):
     return bool(j.get("boss")) or j.get("src") == "BOSS直聘"
 
-# ===== 时效：首次收录时间决定「新不新」，最后见到时间决定「过不过期」 =====
+# ===== 排序与容量：首次收录时间决定先后，超过每城上限才淘汰 =====
 def seen_time(j):
     return parse_dt(j.get("firstSeen") or j.get("addAt") or "")
-
-def last_time(j):
-    return parse_dt(j.get("lastSeen") or j.get("addAt") or "")
-
-def age_days(j, now):
-    """离最后一次见到过了几天；没有时间字段的按已过期处理，不让它赖着不走"""
-    t = last_time(j)
-    if not t:
-        return TTL_DAYS + 1
-    return (now - t).total_seconds() / 86400.0
 
 def new_days(j, now):
     t = seen_time(j)
@@ -321,6 +314,13 @@ def new_days(j, now):
 def is_fresh(j, now):
     return 0 <= new_days(j, now) <= NEW_WINDOW_DAYS
 
+def on_board_days(j, now):
+    """在榜天数：从首次收录算起，仅用于手机端展示，不触发任何下架"""
+    t = seen_time(j)
+    if not t:
+        return 0
+    return max(0, int((now - t).total_seconds() / 86400.0))
+
 def rank_key(j, now):
     """主序＝首次收录时间倒序：越晚出现的岗位越靠前，新岗位直接把旧岗位挤到后面。
     次序＝同批内按匹配度。来源（BOSS／猎聘／51job）完全不参与排序，没有任何置顶。"""
@@ -328,9 +328,6 @@ def rank_key(j, now):
     return (-(t.timestamp() if t else 0),
             -int(j.get("score") or 0),
             j.get("co") or "")
-
-def 剩余天数(j, now):
-    return max(0, int(TTL_DAYS - age_days(j, now) + 0.999))
 
 def main():
     now = datetime.datetime.now(CST)
@@ -345,12 +342,9 @@ def main():
     except Exception:
         pass
 
-    # ① BOSS 岗位池：普通来源，超过 7 天有效期直接淘汰，不复活、不置顶
-    boss_all = load_boss(addAt)
-    boss_rows = [b for b in boss_all if age_days(b, now) <= TTL_DAYS]
-    boss_expired = len(boss_all) - len(boss_rows)
-    print("[boss] BOSS岗位池 %d 条，过期淘汰 %d 条（不置顶）" %
-          (len(boss_rows), boss_expired))
+    # ① BOSS 岗位池：普通来源，不按时间下架、不置顶，只补空缺
+    boss_rows = load_boss(addAt)
+    print("[boss] BOSS岗位池 %d 条（不置顶、不按时间下架）" % len(boss_rows))
 
     # ② 其余公开源（猎聘 12 + 前程无忧 3）
     rows, ok_src = [], 0
@@ -364,9 +358,9 @@ def main():
         except Exception as e:
             print("[fail]", src, city, str(e)[:60], file=sys.stderr)
 
-    # 外部源全挂也照常输出（BOSS 池 + 未过期旧快照），不让手机空白
+    # 外部源全挂也照常输出（BOSS 池 + 旧快照），不让手机空白
     if not ok_src:
-        print("外部源全部失败，仅输出 BOSS 池与未过期旧快照", file=sys.stderr)
+        print("外部源全部失败，仅输出 BOSS 池与旧快照", file=sys.stderr)
 
     # 去重 + 相关性过滤（挡掉「选矿工程师」这类同名不同行噪声）
     seen, uniq = set(), []
@@ -408,10 +402,8 @@ def main():
         )
 
     # BOSS 岗位没有特权：同名条目以本轮公开源实抓结果为准，BOSS 只补空缺
-    boss_keys = set()
     for b in boss_rows:
         k = job_key(b["co"], b["role"], b["city"])
-        boss_keys.add(k)
         if k in fresh:
             continue
         old = old_map.get(k)
@@ -419,25 +411,13 @@ def main():
         b["firstSeen"] = (old or {}).get("firstSeen") or b["firstSeen"]
         fresh[k] = b
 
-    # 旧岗位本轮没抓到 → 统一按 7 天有效期淘汰（BOSS 一样不豁免）
+    # 旧岗位本轮没抓到 → 照样留在看板。时间再久也不自动下架，
+    # 也不二次过滤（进快照时已过滤过）；唯一淘汰方式＝超过每城上限被挤掉。
     merged = dict(fresh)
-    expired = 0
     for k, oldj in old_map.items():
         if k in merged:
             continue
-        # BOSS 岗位一旦从录入池消失或过期，旧快照不许把它复活
-        if is_boss(oldj) and k not in boss_keys:
-            expired += 1
-            continue
-        if age_days(oldj, now) > TTL_DAYS:
-            expired += 1
-            continue
         role = oldj.get("role") or ""
-        if oldj.get("city") == "ak":
-            if any(x in role for x in EXCLUDE_JOB[:12]):
-                continue
-        elif any(x in role for x in EXCLUDE_JOB) or not any(x in role for x in INCLUDE):
-            continue
         keep = dict(oldj)
         keep["stale"] = True
         keep["isNew"] = False
@@ -448,13 +428,14 @@ def main():
             keep["why"] = (keep.get("why") or "") + " 安康本地机械岗很少，这条是宽口径抓到的低相关岗位，只作参考。"
         merged[k] = keep
 
-    # 每条岗位都写清「是不是新岗位」「还剩几天」，手机端可直接显示
+    # 每条岗位只标「是不是 24 小时内新收录」，不再写「剩余天数」——没有有效期
     for j in merged.values():
         j["isNew"] = is_fresh(j, now)
-        j["剩余天数"] = 剩余天数(j, now)
+        j["在榜天数"] = on_board_days(j, now)
+        j.pop("剩余天数", None)
 
-    # 排序：新岗位整批在前 → 匹配度 → 收录时间倒序；来源完全不参与排序（无置顶）
-    # 每城 PER_CITY 条，排最后面的旧岗位被新岗位挤掉
+    # 排序：首次收录时间倒序（新在前）→ 同批按匹配度；来源完全不参与排序（无置顶）
+    # 每城最多 PER_CITY 条，只有超过上限才会把最旧的岗位挤掉
     allj = sorted(merged.values(), key=lambda j: (j["city"],) + rank_key(j, now))
     per_city, kept = {}, []
     for j in allj:
@@ -467,19 +448,19 @@ def main():
         j["id"] = i
     boss_cnt = len([j for j in kept if is_boss(j)])
     new_cnt = len([j for j in kept if j["isNew"]])
-    gone = expired + boss_expired
     evicted = len(merged) - len(kept)      # 超过每城上限、被新岗位挤掉的旧岗位
     data = dict(updated=addAt, round=0, bossCount=boss_cnt, newCount=new_cnt,
-                ttlDays=TTL_DAYS, newDays=NEW_WINDOW_DAYS, perCity=PER_CITY,
-                expired=gone, evicted=evicted, jobs=kept)
+                newDays=NEW_WINDOW_DAYS, perCity=PER_CITY,
+                evicted=evicted, jobs=kept)
     with open("jobs.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     by_city = {}
     for j in kept:
         by_city[j["city"]] = by_city.get(j["city"], 0) + 1
     print("采集完成：外部源 %d/%d，岗位 %d 条（新岗位 %d，BOSS %d 条不置顶，"
-          "过期淘汰 %d 条，超上限挤掉 %d 条旧岗位），城市 %s" %
-          (ok_src, len(SOURCES), len(kept), new_cnt, boss_cnt, gone, evicted, by_city))
+          "超过每城 %d 条挤掉 %d 条旧岗位），城市 %s" %
+          (ok_src, len(SOURCES), len(kept), new_cnt, boss_cnt,
+           PER_CITY, evicted, by_city))
     return 0
 
 if __name__ == "__main__":
