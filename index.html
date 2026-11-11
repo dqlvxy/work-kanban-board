@@ -1575,6 +1575,7 @@ function restOf(j){
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
+var CITY_LIMIT = 100;   /* 每城最多展示 100 条，与采集器 PER_CITY 对齐 */
 function byCity(city){
   var ap = getAp();
   return DATA.jobs.filter(function(j){ return j.city === city && !ap[j.id]; })
@@ -1583,7 +1584,8 @@ function byCity(city){
       var rb = (b.src === 'BOSS直聘') ? 0 : 1;
       if (ra !== rb) return ra - rb;               /* BOSS 岗位优先 */
       return (b.score || 0) - (a.score || 0);      /* 同来源内按匹配度从高到低 */
-    });
+    })
+    .slice(0, CITY_LIMIT);
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
@@ -2437,7 +2439,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111u';
+var BUILD = '20261112a';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2463,8 +2465,8 @@ setInterval(查版本, PERIOD);
 
 loadData();
 /* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
-__上次更新时间 = DATA.updated;
-拉最新数据();
+__上次更新时间 = '';
+拉最新数据();   /* 打开即拉一次最新：不看内嵌快照的时间戳，直接问云端要 */
 
 /* 打开即追新：云端每 5 分钟采一次，页面打开后若数据偏旧，就隔一会儿再拉，拿到新的就停 */
 var __追新轮 = 0;
@@ -2595,10 +2597,12 @@ function 合并Boss(d){
     items.push(j); added++;
   });
   if (!added) return;
-  items.forEach(function(j,i){ j.id = i + 1; });
-  DATA.jobs = items;
-  renderJobs('xa'); renderJobs('sz'); renderJobs('ak'); 统计刷新();
-  var st = document.getElementById('stText'); if (st) st.textContent = '已合并 BOSS 岗位 ' + added + ' 条';
+  var base = DATA.jobs.slice(), maxId = 0;
+  base.forEach(function(j){ if (+j.id > maxId) maxId = +j.id; });
+  items.forEach(function(j,i){ j.id = maxId + i + 1; });
+  DATA.jobs = base.concat(items);
+  renderJobs('xa'); renderJobs('sz'); renderJobs('ak'); 统计刷新(); renderAp();
+  var st = document.getElementById('stText'); if (st) st.textContent = '已合并 BOSS 岗位 +' + added + ' 条';
 }
 
 function 拉Boss(){
