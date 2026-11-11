@@ -178,6 +178,49 @@
     padding:1px 9px;margin-left:7px;vertical-align:2px;transition:.15s;white-space:nowrap}
   .cpbtn:active{background:var(--blue-soft)}
   .cpbtn.done{background:var(--green);color:#fff}
+  .cpbtn.jd{background:rgba(35,105,170,.14);color:var(--blue);border:1px solid rgba(35,105,170,.35)}
+  /* 面试链路时间轴：三列（时间 / 轴 / 内容），圆点与轴线像素对齐 */
+  .tl{display:grid;grid-template-columns:64px 16px 1fr;column-gap:8px;row-gap:2px;margin-top:6px}
+  .tl-i{display:contents}
+  .tl-t{font-size:11.5px;font-weight:700;color:var(--blue);text-align:right;padding-top:2px}
+  .tl-d{position:relative;display:flex;justify-content:center}
+  .tl-d::before{content:"";position:absolute;top:0;bottom:-2px;width:2px;background:var(--line)}
+  .tl-d::after{content:"";position:absolute;top:6px;width:9px;height:9px;border-radius:50%;
+    background:var(--blue);box-shadow:0 0 0 2px var(--card);transform:translateX(-50%);left:50%}
+  .tl-d.last::before{bottom:50%}
+  .tl-c{padding:0 0 14px 4px;min-width:0}
+  .tl-c b{display:block;font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px}
+  .tl-c span{font-size:11.5px;line-height:1.65;color:var(--muted)}
+
+  /* 概览柱状图 */
+  .viz{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 15px 8px;
+    margin-top:12px;box-shadow:0 2px 10px rgba(16,24,40,.05)}
+  .viz .vh{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink);
+    margin:2px 0 8px}
+  .viz .vh svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .vrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .vrow .vl{font-size:11.5px;color:var(--muted);width:66px;flex:none;white-space:nowrap}
+  .vrow .vt{flex:1;height:9px;border-radius:5px;background:var(--track);overflow:hidden}
+  .vrow .vf{height:100%;border-radius:5px;background:var(--green);transition:width .45s ease}
+  .vrow .vf.b{background:var(--blue)} .vrow .vf.a{background:var(--amber)}
+  .vrow .vn{font-size:12px;font-weight:800;color:var(--ink);width:34px;text-align:right;
+    font-variant-numeric:tabular-nums}
+
+  /* 岗位详情弹层 */
+  .jdgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 12px}
+  .jdcell{background:var(--soft2);border-radius:10px;padding:9px 11px;min-width:0}
+  .jdcell span{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
+  .jdcell b{font-size:13px;font-weight:700;color:var(--ink);word-break:break-all}
+  .jdh{font-size:12px;font-weight:800;color:var(--blue);margin:12px 0 6px;padding-left:8px;
+    border-left:3px solid var(--blue)}
+  .jdchips{display:flex;flex-wrap:wrap;gap:6px}
+  .jdchips span{font-size:11.5px;font-weight:600;color:var(--ink);background:var(--soft2);
+    border-radius:7px;padding:4px 9px}
+  .jdtxt{font-size:12.5px;line-height:1.85;color:var(--why);background:var(--soft2);
+    border-radius:10px;padding:10px 12px}
+  .jdn{font-size:11.5px;line-height:1.7;color:var(--muted);margin-top:12px;
+    border-top:1px dashed var(--line);padding-top:9px}
   .job .role{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
   .job .pay{text-align:right;flex:none}
   .job .pay b{font-size:16.5px;color:var(--red);font-weight:700;letter-spacing:-.4px;white-space:nowrap}
@@ -597,6 +640,15 @@
       <div class="go">›</div>
     </div>
 
+    <div class="viz">
+      <div class="vh"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>三城在招量 · 实时</div>
+      <div id="vizCity"></div>
+      <div class="vh"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 12V3"/></svg>匹配度分布</div>
+      <div id="vizScore"></div>
+      <div class="vh"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 8h10M5 13h14"/></svg>薪资档位（按上限）</div>
+      <div id="vizPay"></div>
+    </div>
+
     <div class="info" style="margin-top:14px">
       <h3>怎么打这三座城</h3>
       <p><b>深圳是你的金矿，不是退路。</b>你 10 年的 ICT／FCT 测试治具、FPC 连接器治具经验，在深圳是密集在招的硬需求，薪资上限能到 35K。西安更多是"非标自动化"泛岗，薪资中位低一档但离家近。</p>
@@ -616,9 +668,9 @@
   <!-- ========== 2 西安 ========== -->
   <section class="page" id="p-xa">
     <div class="dock"><div class="stats">
-      <div class="stat a"><div class="v">10<small>家</small></div><div class="k">在招岗位</div></div>
-      <div class="stat b"><div class="v">30<small>K</small></div><div class="k">最高月薪</div></div>
-      <div class="stat"><div class="v">2<small>家</small></div><div class="k">高匹配 ≥80</div></div>
+      <div class="stat a"><div class="v" id="s-xa-n">10<small>家</small></div><div class="k">在招岗位</div></div>
+      <div class="stat b"><div class="v" id="s-xa-p">30<small>K</small></div><div class="k">最高月薪</div></div>
+      <div class="stat"><div class="v" id="s-xa-e">2<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="xa">
       <button class="chip on" data-f="all">全部 10</button>
@@ -634,9 +686,9 @@
   <!-- ========== 3 深圳 ========== -->
   <section class="page" id="p-sz">
     <div class="dock"><div class="stats">
-      <div class="stat a"><div class="v">9<small>家</small></div><div class="k">在招岗位</div></div>
-      <div class="stat b"><div class="v">35<small>K</small></div><div class="k">最高月薪</div></div>
-      <div class="stat"><div class="v">6<small>家</small></div><div class="k">高匹配 ≥80</div></div>
+      <div class="stat a"><div class="v" id="s-sz-n">9<small>家</small></div><div class="k">在招岗位</div></div>
+      <div class="stat b"><div class="v" id="s-sz-p">35<small>K</small></div><div class="k">最高月薪</div></div>
+      <div class="stat"><div class="v" id="s-sz-e">6<small>家</small></div><div class="k">高匹配 ≥80</div></div>
     </div>
     <div class="chips" data-city="sz">
       <button class="chip on" data-f="all">全部 9</button>
@@ -652,8 +704,8 @@
   <section class="page" id="p-ak">
     <div class="dock"><div class="stats">
       <div class="stat a"><div class="v">1<small>家</small></div></div><div class="k">值得投</div></div>
-      <div class="stat b"><div class="v">12<small>K</small></div><div class="k">预估上限</div></div>
-      <div class="stat"><div class="v">0<small>家</small></div><div class="k">明标 10K+</div></div>
+      <div class="stat b"><div class="v" id="s-ak-p">12<small>K</small></div><div class="k">预估上限</div></div>
+      <div class="stat"><div class="v" id="s-ak-e">0<small>家</small></div><div class="k">明标 10K+</div></div>
     </div>
     <div class="joblist" data-city="ak"></div>
 
@@ -734,6 +786,66 @@
       </div>
     </div>
 
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">⑥ 治具精度怎么保证？探针压合力怎么算？</div><div class="s">给方法，不给形容词</div></div>
+        <div class="p">技术面</div>
+      </div>
+      <div class="body">
+        <p id="faq6">精度分三层管：结构层靠基准面三点定位＋销钉导向，加工件标公差，治具本体平面度控制在 0.05 以内；装配层靠压合行程可调，探针座做浮动，避免过压伤板；验证层先做首件测试，用千分表和塞规卡行程，再看测试数据的接触电阻是否稳定。压合力按探针规格算——单针额定量乘以针数，留 20% 余量，气缸选型时把摩擦和弹簧回弹算进去。FPC 连接器那类小间距的，我用的是浮动导向＋限位块双保险，插拔不伤金手指。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq6')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">⑦ 一个非标项目从需求到交付，你怎么排？</div><div class="s">说清节点，别讲空话</div></div>
+        <div class="p">技术面</div>
+      </div>
+      <div class="body">
+        <p id="faq7">接需求先做方案评审：产品图纸、测试项、节拍要求三样确认清楚，出 2D 方案和节拍测算，这一周内必须让客户签字。然后拆件出图、发外协，长周期件（气缸、导轨、定制探针）先下单，剩下的自己跟。装配调试留总工期的 30%，首件测试不合格就是结构或压合的问题，当场改。交付前给客户做验收清单，把每个测试项的判定标准和数据格式写进去。我做过双车床机器人上下料和保压盒缓存机构，这两个都是按这个节点走的，没拖过验收。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq7')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">⑧ 出图、BOM、装配谁做？你能独立扛吗？</div><div class="s">直接说能，然后举一个闭环的例子</div></div>
+        <div class="p">技术面</div>
+      </div>
+      <div class="body">
+        <p id="faq8">从方案到出图、BOM、装配调试我一条线走下来，SolidWorks 建模出图是日常，标准件选型（亚德客、SMC、上银）和加工件标注我自己出，BOM 我按装配层级拆，谁买谁装写清楚。装配我自己能上手，现场调气路、调行程、试压合都干过。大庆油田那个井口药剂注入自动化，就是我从方案、出图、BOM 到现场调试一个人推到验收的。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq8')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="bar" onclick="toggleMsg(this)">
+        <div class="l"><div class="t">⑨ 客户现场出问题，你怎么办？</div><div class="s">先止损，再定位，最后留台账</div></div>
+        <div class="p">高频</div>
+      </div>
+      <div class="body">
+        <p id="faq9">先看是不是影响产线停机，影响就先上临时方案（手动位、备用治具）把线保住，再回来查根因。查的顺序是：先看测试数据是偶发还是全挂，偶发多是接触问题（探针脏、压合不到位），全挂多结构或程序。改完必须复测，并且把这次的故障现象、原因、改法记进设备台账，下次同类问题直接调记录。3C 厂线体不能停，客户要的是"你先给我恢复"，不是听你解释。</p>
+        <div class="btns"><button onclick="copyEl(this,'faq9')">复制答法</button></div>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:14px">
+      <h3>面试链路 · 每一步该干什么</h3>
+      <div class="tl">
+        <div class="tl-i"><div class="tl-t">投递当天</div><div class="tl-d"></div>
+          <div class="tl-c"><b>话术 + 作品集</b><span>打招呼带上岗位名和一句硬证据，别群发模板</span></div></div>
+        <div class="tl-i"><div class="tl-t">1-3 天</div><div class="tl-d"></div>
+          <div class="tl-c"><b>电话初筛</b><span>只答三件事：做什么、做多久、什么时候能到岗</span></div></div>
+        <div class="tl-i"><div class="tl-t">技术面</div><div class="tl-d"></div>
+          <div class="tl-c"><b>图纸 + 项目讲</b><span>带 3 张图：双车床单元、保压回流线、转盘机</span></div></div>
+        <div class="tl-i"><div class="tl-t">HR / 谈薪</div><div class="tl-d"></div>
+          <div class="tl-c"><b>先问预算再报价</b><span>手上 18K 的 offer 是你的锚</span></div></div>
+        <div class="tl-i"><div class="tl-t">入职前</div><div class="tl-d last"></div>
+          <div class="tl-c"><b>离职证明 + 体检</b><span>原件备齐，别卡在最后一步</span></div></div>
+      </div>
+    </div>
+
     <div class="info" style="margin-top:14px"><h3>面试要带的东西</h3></div>
     <div class="info">
       <div class="kv"><span>简历打印件</span><b>3 份（多带不亏）</b></div>
@@ -793,6 +905,25 @@
     <div class="sheet-btns">
       <button id="msCopy" onclick="copyM(this, curMsgId)">复制话术</button>
       <a id="msLink" target="_blank" rel="noopener" onclick="applyOne(event, curMsgId)">一键投递 ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 岗位详情弹层 ================= -->
+<div class="mask" id="jdMask">
+  <div class="sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-hd">
+      <div class="l">
+        <div class="t" id="jdCo"></div>
+        <div class="s" id="jdRole"></div>
+      </div>
+      <div class="p" id="jdPay"></div>
+    </div>
+    <div class="sheet-bd" id="jdBody"></div>
+    <div class="sheet-btns">
+      <button onclick="closeJd()">关闭</button>
+      <a id="jdLink" target="_blank" rel="noopener">去原站看完整JD ↗</a>
     </div>
   </div>
 </div>
@@ -1662,6 +1793,7 @@ function renderJobs(city, filter){
         '<div style="min-width:0">' +
           '<div class="co">' + esc(j.co) +
             '<button class="cpbtn" onclick="copyCo(this,\'' + esc(j.co) + '\')">复制</button>' +
+            '<button class="cpbtn jd" onclick="openJd(' + j.id + ')">详情</button>' +
             (j.coTag ? '<i>' + esc(j.coTag) + '</i>' : '') + '</div>' +
           '<div class="role">' + esc(j.role) + '</div>' +
         '</div>' +
@@ -2027,6 +2159,7 @@ function renderAp(){
         '<div style="min-width:0">' +
           '<div class="co">' + esc(j.co) +
             '<button class="cpbtn" onclick="copyCo(this,\'' + esc(j.co) + '\')">复制</button>' +
+            '<button class="cpbtn jd" onclick="openJd(' + j.id + ')">详情</button>' +
             (j.coTag ? '<i>' + esc(j.coTag) + '</i>' : '') + '</div>' +
           '<div class="role">' + esc(j.role) + '</div>' +
         '</div>' +
@@ -2054,6 +2187,37 @@ function renderAp(){
       '</div>';
   }).join('');
 }
+
+/* 岗位详情：只展示采集到的真实字段，不编造职责；完整 JD 走原站 */
+function openJd(id){
+  var ap = getAp(), j = (ap[id] && ap[id].job) || jobById(id);
+  if (!j) return;
+  var m = document.getElementById('jdMask');
+  document.getElementById('jdCo').textContent = j.co || '';
+  document.getElementById('jdRole').textContent = j.role || '';
+  document.getElementById('jdPay').textContent = j.pay || '';
+  var rows = [
+    ['区域', j.area || '未标注'], ['经验', j.exp || '未标注'], ['学历', j.edu || '未标注'],
+    ['来源', j.src || ''], ['匹配度', (j.score || 0) + '%'], ['收录', j.addAt || '—'],
+    ['发布', j.postAt || '待同步'],
+    ['在榜', (j.stale ? '已下线' : ((j['在榜天数'] || 1) + ' 天'))]
+  ];
+  var body = '<div class="jdgrid">' + rows.map(function(r){
+    return '<div class="jdcell"><span>' + r[0] + '</span><b>' + esc(String(r[1])) + '</b></div>';
+  }).join('') + '</div>';
+  if (j.chips && j.chips.length){
+    body += '<div class="jdh">技能与条件</div><div class="jdchips">' +
+      j.chips.map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('') + '</div>';
+  }
+  body += '<div class="jdh">为什么匹配你</div><div class="jdtxt">' + (j.why || '暂无匹配说明') + '</div>';
+  body += '<div class="jdn">招聘站的列表页只给到上面这些字段，完整岗位职责与任职要求得点下面按钮去原站看——我不替你编。</div>';
+  document.getElementById('jdBody').innerHTML = body;
+  var lk = document.getElementById('jdLink');
+  if (j.link && /^http/.test(j.link)){ lk.href = j.link; lk.style.display = ''; }
+  else { lk.style.display = 'none'; }
+  m.classList.add('on');
+}
+function closeJd(){ document.getElementById('jdMask').classList.remove('on'); }
 
 function copyTalk(btn, id){
   var ap = getAp();
@@ -2487,6 +2651,9 @@ document.querySelectorAll('.chips[data-city]').forEach(function(box){
 document.getElementById('msgMask').addEventListener('click', function(e){
   if (e.target === this) closeMsg();
 });
+document.getElementById('jdMask').addEventListener('click', function(e){
+  if (e.target === this) closeJd();
+});
 
 /* ================= 10 分钟自动刷新 ================= */
 var PERIOD = 10 * 60 * 1000;
@@ -2521,7 +2688,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112i';
+var BUILD = '20261112m';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2741,6 +2908,62 @@ function renderChips(city){
   });
 }
 
+/* 概览页柱状图：全部按真实数据算 */
+function 柱(label, n, max, cls){
+  var w = max ? Math.round(n / max * 100) : 0;
+  if (w < 2 && n > 0) w = 2;
+  return '<div class="vrow"><span class="vl">' + label + '</span>' +
+    '<div class="vt"><div class="vf ' + (cls || '') + '" style="width:' + w + '%"></div></div>' +
+    '<b class="vn">' + n + '</b></div>';
+}
+function 渲染概览指标(){
+  var all = [], 上限 = 0, 高 = 0;
+  CITY_ORDER.forEach(function(c){
+    all = all.concat(byCity(c));
+    var m = maxPayOf(c); if (m > 上限) 上限 = m;
+  });
+  all.forEach(function(j){ if ((j.score || 0) >= 80) 高++; });
+  var a = document.getElementById('h1n'), b = document.getElementById('h2n'), d = document.getElementById('h3n');
+  if (a) a.innerHTML = all.length + '<small>家</small>';
+  if (b) b.innerHTML = (上限 || 0) + '<small>K</small>';
+  if (d) d.innerHTML = 高 + '<small>家</small>';
+}
+
+function 渲染概览图表(){
+  var cities = CITY_ORDER.map(function(c){ return { c: c, n: byCity(c).length }; });
+  var mx = Math.max.apply(null, cities.map(function(x){ return x.n; }).concat([1]));
+  var el1 = document.getElementById('vizCity');
+  if (el1) el1.innerHTML = cities.map(function(x){
+    return 柱(CITY_NAME[x.c], x.n, mx, x.c === 'xa' ? '' : (x.c === 'sz' ? 'b' : 'a'));
+  }).join('');
+
+  var all = [];
+  CITY_ORDER.forEach(function(c){ all = all.concat(byCity(c)); });
+  var seg = [0,0,0,0];
+  all.forEach(function(j){
+    var sc = j.score || 0;
+    if (sc >= 90) seg[0]++; else if (sc >= 80) seg[1]++; else if (sc >= 70) seg[2]++; else seg[3]++;
+  });
+  var mx2 = Math.max.apply(null, seg.concat([1]));
+  var el2 = document.getElementById('vizScore');
+  if (el2) el2.innerHTML = ['90以上', '80-89', '70-79', '70以下'].map(function(l, i){
+    return 柱(l, seg[i], mx2, i === 0 ? '' : (i === 1 ? 'b' : 'a'));
+  }).join('');
+
+  var band = [0,0,0,0], names = ['10K以下', '10-15K', '15-20K', '20K以上'];
+  all.forEach(function(j){
+    var nums = String(j.pay || '').match(/\d+/g);
+    if (!nums || !nums.length) return;
+    var hi = Math.max.apply(null, nums.map(Number));
+    if (hi <= 10000) band[0]++; else if (hi <= 15000) band[1]++; else if (hi <= 20000) band[2]++; else band[3]++;
+  });
+  var mx3 = Math.max.apply(null, band.concat([1]));
+  var el3 = document.getElementById('vizPay');
+  if (el3) el3.innerHTML = names.map(function(l, i){
+    return 柱(l, band[i], mx3, i === 3 ? '' : 'b');
+  }).join('');
+}
+
 function 统计刷新(){
   try{
     CITY_ORDER.forEach(function(c){
@@ -2749,6 +2972,14 @@ function 统计刷新(){
       var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
       var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
       renderChips(c);
+      var vn = document.getElementById('s-' + c + '-n');
+      if (vn) vn.innerHTML = list.length + '<small>家</small>';
+      var vp = document.getElementById('s-' + c + '-p');
+      if (vp) vp.innerHTML = (maxPayOf(c) || 0) + '<small>K</small>';
+      var ve = document.getElementById('s-' + c + '-e');
+      if (ve) ve.innerHTML = list.filter(function(j){ return (j.score || 0) >= 80; }).length + '<small>家</small>';
+      渲染概览指标();
+      if (window.渲染概览图表) 渲染概览图表();
     });
     var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
   }catch(e){}
