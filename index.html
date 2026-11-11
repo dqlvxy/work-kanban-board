@@ -1813,8 +1813,8 @@ function getMsg(id){
   return 生成话术(j);
 }
 function payload(id){
-  var j = (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
-  return 'CO:' + (j.co || '') + '\nROLE:' + (j.role || '') + '\nMSG:' + getMsg(id);
+  /* 手动投递只粘话术正文，不带头缀（CO/ROLE/MSG 会污染输入框） */
+  return getMsg(id);
 }
 function markOne(id){
   var st = getCk(); st[id] = true; setCk(st);
@@ -2361,7 +2361,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111z5';
+var BUILD = '20261111z6';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
