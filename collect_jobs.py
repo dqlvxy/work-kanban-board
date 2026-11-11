@@ -165,6 +165,61 @@ SKILL_CLUSTERS = [
     (10, ["AGV", "AMR", "自动化产线", "产线", "设备集成"], "自动化设备集成与产线无人化改造"),
 ]
 
+# ===== 作品集四项目的真实证据（话术和匹配理由只从这里取，不编） =====
+PROJECTS = {
+    "cnc": {
+        "kw": ["cnc", "车床", "上下料", "机床", "机加工", "加工中心", "料仓", "码垛", "桁架", "机械手", "机器人"],
+        "one": "两台 CNC 车床＋平行四边形摆臂双夹爪＋三轴龙门码垛＋多工位旋转料仓的无人上下料单元，一台加工完就取成品放毛坯，换产不用停线",
+        "full": "双车床机器人上下料自动化设备：集成 2 台 CNC 数控车床、平行四边形摆臂移栽机构（双夹爪同步取成品/上毛坯）、三轴龙门码垛结构与多工位旋转料仓，做成柔性机加工单元，支持多品种小批量快换产",
+    },
+    "press": {
+        "kw": ["保压", "回流", "拆解", "屏幕", "码垛", "缓存", "固化", "上下层"],
+        "one": "手机屏幕保压拆解回流整机，保压盒和码垛托盘双回流全自动循环，全程不用人干预",
+        "full": "全自动手机屏幕保压拆解回流设备：夹取上料、保压盒装载、扫码、码垛、保压固化、拆解取屏，加上下两层回流线让保压盒与托盘自动循环，我独立做整机方案布局、全套 2D 加工图与 BOM",
+    },
+    "turntable": {
+        "kw": ["转盘", "多工位", "分度", "组装", "分拣", "四工位", "工位"],
+        "one": "四工位转盘式组装测试一体机，上料—装配—功能测试—良品分拣一条流走完",
+        "full": "四工位转盘式电子烟组装测试一体化设备：转盘分割、上下料、装配对接、测试定位、良品/不良品分拣各机构都由我设计，输出全套 2D 加工图和 BOM 并跟到验收",
+    },
+    "current": {
+        "kw": ["电流", "pogo", "探针", "pcba", "ict", "fct", "在线测试", "功能测试", "测试治具", "type-c", "尾插"],
+        "one": "给小米做过 PCBA 电流测试设备，Pogo Pin 下探针配 Type-C 尾插，测开机冲击电流和待机漏电，数据直传 MES",
+        "full": "小米手机 PCBA 电流测试设备：下探针 Pogo Pin 模组＋Type-C 尾插工装＋产品定位载具，采开机冲击电流、静态待机漏电流、VBATT 与各路 LDO/DC-DC 起压，超差自动判 NG 并拦截",
+    },
+}
+
+# ===== 岗位族 → 一条真实案例（打招呼只甩一句最贴的证据，不是套模板） =====
+FAMILY = [
+    ("jc", ["治具", "夹具", "工装"],
+     "3C 测试治具这摊我最熟：ICT/FCT 方案、FPC 连接器治具、Pogo Pin 下探针模组都做过，快换和防呆是一起设计的"),
+    ("test", ["测试", "ict", "fct", "电流", "pcba", "在线测试", "功能测试"],
+     "测试设备给小米做过 PCBA 电流测试：Pogo Pin 下探针＋Type-C 尾插，测开机冲击电流和待机漏电，数据直传 MES"),
+    ("cnc", ["上下料", "cnc", "车床", "机床", "机器人", "桁架", "机械手", "机加工"],
+     "机加工无人化做过：2 台 CNC 车床＋摆臂双夹爪＋三轴龙门码垛＋旋转料仓，一台加工完就取成品放毛坯，换产不停线"),
+    ("turn", ["转盘", "多工位", "分拣", "组装"],
+     "多工位转盘做过整机：转盘分割、上下料、装配对接、测试定位、良品分拣一条流走完"),
+    ("整机", ["结构", "整机", "机械设计", "方案", "非标", "自动化", "设备"],
+     "整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收"),
+]
+
+def pick_family(text):
+    t = (text or "").lower()
+    for name, kws, one in FAMILY:
+        if any(k in t for k in kws):
+            return one
+    return ""
+
+def pick_project(text):
+    """按岗位文本选最贴的作品集项目，选不出就回 3C 测试治具主线"""
+    t = (text or "").lower()
+    best, best_n = None, 0
+    for k, v in PROJECTS.items():
+        n = sum(1 for kw in v["kw"] if kw in t)
+        if n > best_n:
+            best, best_n = k, n
+    return best, best_n
+
 EDU_本科 = ["本科", "学士", "硕士", "研究生", "博士"]
 
 # 机械行业一律放行，只排除明显非技术职能岗（学历/经验都不作门槛）
@@ -280,6 +335,17 @@ def judge(job_role, edu, pay, city, raw_text=""):
             score += w
             hits.append(fact)
 
+    # 作品集项目命中再加权：有实物项目做证据的岗优先
+    pk, pn = pick_project(text)
+    if pk and pn >= 2:
+        score += 6
+        hits.append("作品集项目「%s」直接对口" % {"cnc": "双车床机器人上下料", "press": "手机屏幕保压拆解回流",
+                                          "turntable": "四工位转盘组装测试", "current": "小米 PCBA 电流测试"}[pk])
+
+    # 一条机械簇都没命中的（矿业、QE、样品兼维修这类），明确压到不推荐档
+    if not hits:
+        score -= 10
+
     # 学历只作展示：不参与打分，也不作为投不投的门槛（经验与作品集才是筹码）
     edu_ok = True
 
@@ -298,17 +364,17 @@ def judge(job_role, edu, pay, city, raw_text=""):
 
     return max(35, min(97, score)), edu_ok, hits
 
-def build_why(role, co, edu, edu_ok, pay, city, hits):
+def build_why(role, co, edu, edu_ok, pay, city, hits, text=""):
     """用命中的真实简历事实拼匹配理由，不写没依据的话"""
     parts = []
+    pk, pn = pick_project((role or "") + " " + (text or ""))
+    if pk and pn >= 1:
+        parts.append("你的作品集里有直接能摆上桌的案例：" + PROJECTS[pk]["full"])
     if hits:
-        parts.append("岗位要求里的" + "、".join(hits[:3]) + "，你都实打实做过")
+        parts.append("岗位要求里的" + "、".join([h for h in hits[:3] if "作品集项目" not in h] or hits[:1]) + "，你都实打实做过")
     else:
         parts.append("这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投")
-    if edu and "不限" not in edu and "大专" not in edu:
-        parts.append("学历标「%s」，只是明面要求，你 16 年非标经验＋作品集可以硬顶，投不投你自己定" % edu)
-    else:
-        parts.append("学历「%s」，不设门槛" % (edu or "未标注"))
+    # 匹配理由里不再拿学历说事：能不能投看项目，学历在卡片上标着就行
     hi = pay_hi(pay)
     if hi >= 25000:
         parts.append("薪资上限 %s，是这块的天花板档，值得优先投" % pay)
@@ -322,17 +388,18 @@ def build_why(role, co, edu, edu_ok, pay, city, hits):
         parts.append("在安康本地，通勤成本几乎为零")
     return "；".join(parts) + "。"
 
-def build_msg(role, co, city, hits):
+def build_msg(role, co, city, hits, text=""):
     """每个岗位一条定制话术：按岗位名 + 命中的真实简历事实拼，不依赖前端预置库。
     云端每轮都会重编号，写进数据里才不会出现「话术串到别的公司」。"""
-    fact = ("其中" + hits[0]) if hits else "主做 ICT/FCT 测试治具与非标整机方案"
-    where = {"xa": "在西安正是我的期望城市",
-             "sz": "在深圳做了十多年这行，回来就能上手",
-             "ak": "安康本地通勤方便"}.get(city, "")
-    return ("您好，看到贵司在招「%s」。我有 16 年非标自动化机械设计经验，%s；"
-            "SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。%s，学历是大专，"
-            "想先把简历和作品集发您看看，方便的话约个时间聊。") % (
-            role.replace("（", "(").replace("）", ")")[:24], fact, where)
+    r = role.replace("（", "(").replace("）", ")")[:22]
+    fact = pick_family((role or "") + " " + (text or ""))
+    if not fact:
+        fact = "非标整机、工装夹具、传动与气动选型都做过，从 SolidWorks 出图、BOM 到装配调试能独立跟"
+    where = {"xa": "我人在西安，正是简历写的期望城市",
+             "sz": "2011 到 2022 年我一直在深圳干这行，回来就能上手",
+             "ak": "我安康本地，通勤几乎零成本"}.get(city, "")
+    return ("您好，看到贵司在招「%s」。我 16 年机械设计、10 年 3C 非标治具与自动化：%s。%s，"
+            "简历和作品集发您看看？") % (r, fact, where)
 
 def parse_dt(s):
     try:
@@ -455,8 +522,8 @@ def main():
     for r in uniq:
         k = job_key(r["co"], r["role"], r["city"])
         old = old_map.get(k)
-        sc, eduOk, hits = judge(r["role"], r["edu"], r["pay"], r["city"])
-        why = build_why(r["role"], r["co"], r["edu"], eduOk, r["pay"], r["city"], hits)
+        sc, eduOk, hits = judge(r["role"], r["edu"], r["pay"], r["city"], r.get("raw", ""))
+        why = build_why(r["role"], r["co"], r["edu"], eduOk, r["pay"], r["city"], hits, r.get("raw", ""))
         if r["city"] == "ak" and not hits:
             sc = min(sc, 55)
             why += " 安康本地机械岗很少，这条是宽口径抓到的低相关岗位，只作参考，建议同时看西安和深圳。"
@@ -467,7 +534,7 @@ def main():
             role=r["role"], area=r["area"], exp=r["exp"], edu=r["edu"] or "未标注",
             eduOk=eduOk, pay=r["pay"] or "面议", payNote="", score=sc,
             g="core" if sc >= 78 else "near", cls="g", chips=chips, why=why,
-            msg=build_msg(r["role"], r["co"], r["city"], hits),
+            msg=build_msg(r["role"], r["co"], r["city"], hits, r.get("raw", "")),
             src=r["src"], srcUrl=r["link"], link=r["link"], boss=False,
             postAt="", addAt=addAt, lastSeen=addAt,
             firstSeen=first_seen_of(k, old, addAt),
@@ -523,6 +590,12 @@ def main():
     # 每条岗位只标「是不是 24 小时内新收录」，不再写「剩余天数」——没有有效期
     for j in merged.values():
         j["isNew"] = is_fresh(j, now)
+        # 话术统一按简历口径重生：旧数据里"学历是大专"这类自曝短板的一律清掉
+        j["msg"] = build_msg(j.get("role", ""), j.get("co", ""), j.get("city", ""), [], "")
+        # 老数据的匹配理由里带"学历「大专」…""这类评述，整段剔掉，别在老岗位上来回提学历
+        if j.get("why"):
+            j["why"] = "；".join([x for x in str(j["why"]).split("；")
+                                  if not x.strip().startswith("学历")]).strip("；")
         j["在榜天数"] = on_board_days(j, now)
         j.pop("剩余天数", None)
 
