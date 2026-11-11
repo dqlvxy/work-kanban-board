@@ -269,7 +269,9 @@
   .sheet-btns button.done{background:var(--green);box-shadow:none}
   .sheet-btns a{background:var(--blue-soft);color:var(--blue)}
 
-  /* 添加到手机桌面 */
+  /* 添加到手机桌面（底部抽屉） */
+  #instSheet{max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #instSheet .installbtn{margin-bottom:2px}
   .inst-x{position:absolute;right:14px;top:12px;width:30px;height:30px;border-radius:50%;
     border:1px solid var(--line);background:none;color:var(--muted);font-size:17px;
     line-height:1;cursor:pointer;font-family:inherit;z-index:2}
@@ -754,7 +756,7 @@
 
 <!-- ================= 添加到手机桌面 ================= -->
 <div class="mask" id="instMask" onclick="if(event.target===this)closeInst()">
-  <div class="sheet" style="position:relative">
+  <div class="sheet" id="instSheet">
     <button class="inst-x" aria-label="关闭" onclick="closeInst()">×</button>
     <div class="sheet-grab"></div>
     <div class="inst-hd">
