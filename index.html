@@ -504,9 +504,11 @@
   .actrow .msbtn svg,.actrow .apchk4 svg{width:12px;height:12px;flex:none}
   /* 已投胶囊：没勾是白底灰字，勾上变绿 */
   .apchk4{display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden;
-    font-family:inherit;font-weight:700;color:var(--muted);background:var(--card);
-    border:1.5px solid var(--line);box-shadow:none;transition:.15s;letter-spacing:.3px}
-  .apchk4 i{display:block;width:11px;height:11px;border-radius:3px;border:1.5px solid var(--line);
+    font-family:inherit;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,var(--blue),#5a3fd6);
+    border:0;box-shadow:0 3px 10px rgba(35,105,170,.32);transition:.15s;letter-spacing:.3px}
+  .apchk4 i{display:block;width:11px;height:11px;border-radius:3px;
+    border:1.5px solid rgba(255,255,255,.9);
     background:transparent;position:relative;flex:none;transition:.15s}
   .apchk4:active{transform:scale(.94)}
   .actrow .toggle{width:100%;min-width:0;justify-content:center;overflow:hidden;letter-spacing:.3px;
@@ -2467,7 +2469,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112e';
+var BUILD = '20261112f';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
