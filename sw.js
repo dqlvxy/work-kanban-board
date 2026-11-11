@@ -1,5 +1,5 @@
 /* 工作看板 · 离线缓存（网络优先，断网回退缓存） */
-var CACHE = 'wb-rt-v8';
+var CACHE = 'wb-rt-v9';
 self.addEventListener('install', function(e){ self.skipWaiting(); });
 self.addEventListener('activate', function(e){
   e.waitUntil((async function(){

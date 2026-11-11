@@ -773,7 +773,7 @@
       <button onclick="copyGd()">重新复制</button>
       <a id="gdGo" target="_blank" rel="noopener" onclick="closeGuide()">打开岗位页 ↗</a>
     </div>
-    <div class="gd-steps">到页面后三步：① 点右下角「立即沟通」（没登录会先跳登录）② 输入框长按 → 粘贴 → 发送 ③ 回来打卡页会自动多一条「已投」</div>
+    <div class="gd-steps">不跳网页，照这个来：① 打开 BOSS App，搜上面的公司名进岗位 ② 点「立即沟通」③ 输入框长按 → 粘贴 → 发送。要开网页就点下面的「打开岗位页」</div>
   </div>
 </div>
 
@@ -1855,7 +1855,6 @@ function applyJob(id){
   document.getElementById('gdMsg').textContent = getMsg(id);
   var 链 = 岗位链接(id) || 'https://www.zhipin.com/';
   document.getElementById('gdGo').href = 链;
-  try { window.open(链, '_blank'); } catch(e) {}
   document.getElementById('gdTip').textContent = '公司+话术复制中…';
   document.getElementById('guideMask').classList.add('on');
   document.body.style.overflow = 'hidden';
@@ -1863,7 +1862,7 @@ function applyJob(id){
   markOne(id);
   copyText(payload(id), function(ok){
     document.getElementById('gdTip').textContent = ok
-      ? '公司名+岗位+话术已复制，去 BOSS 跑脚本（已记为已投）'
+      ? '公司+岗位+话术已复制 · 去 BOSS App 搜公司名粘贴发送（已记为已投）'
       : '自动复制被浏览器拦了，点一下话术框全选再长按复制';
   });
   if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
@@ -2358,7 +2357,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111z3';
+var BUILD = '20261111z4';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
