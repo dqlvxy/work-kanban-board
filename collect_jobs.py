@@ -16,6 +16,7 @@ SOURCES = [
     ("猎聘", "sz", "https://www.liepin.com/city-sz/zpjixieyanfasheji112/", "utf-8"),
     ("前程无忧", "xa", "https://mgongchengshi.51job.com/xian/jixiegcs/", "gbk"),
     ("前程无忧", "sz", "https://mgongchengshi.51job.com/shenzhen/jixiegcs/", "gbk"),
+    ("前程无忧", "ak", "https://mgongchengshi.51job.com/ankang/jixiegcs/", "gbk"),
 ]
 
 
@@ -180,9 +181,9 @@ def build_why(role, co, edu, edu_ok, pay, city, hits):
     """用命中的真实简历事实拼匹配理由，不写没依据的话"""
     parts = []
     if hits:
-        parts.append("JD 里" + "、".join(hits[:3]) + "这几项你都实打实做过")
+        parts.append("岗位要求里的" + "、".join(hits[:3]) + "，你都实打实做过")
     else:
-        parts.append("JD 与你的非标自动化/结构设计主线沾边，但没命中硬技能，属于保守试投")
+        parts.append("这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投")
     if edu and "不限" not in edu and "大专" not in edu:
         parts.append("学历标「%s」，只是明面要求，你 16 年非标经验＋作品集可以硬顶，投不投你自己定" % edu)
     else:
@@ -196,6 +197,8 @@ def build_why(role, co, edu, edu_ok, pay, city, hits):
         parts.append("在西安，正是你简历写的期望城市")
     elif city == "sz":
         parts.append("在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手")
+    elif city == "ak":
+        parts.append("在安康本地，通勤成本几乎为零")
     return "；".join(parts) + "。"
 
 def main():
