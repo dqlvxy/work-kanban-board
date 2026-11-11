@@ -2,9 +2,11 @@
 """工作看板·岗位采集器
 数据源（均为公开可访问的招聘列表页，服务器端可直接读取）：
   猎聘 城市机械设计专场页 / 前程无忧工程师招聘网城市机械页
+  BOSS直聘收录快照 boss-snapshot.json（搜索引擎收录的 zhipin.com 公开页原文，
+    由 import_boss_snapshot.py 从 11 列 CSV 清洗生成，非实时在招数据）
 只收录机械/结构/非标相关岗位，字段缺失一律留空，不编造。
 """
-import re, json, datetime, urllib.request, urllib.parse, sys, time
+import re, json, datetime, urllib.request, urllib.parse, sys, time, os
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
@@ -34,6 +36,17 @@ SOURCES = [
 # 它和猎聘／前程无忧一视同仁：按首次收录时间排先后，只在超过每城上限时被挤掉。
 BOSS_FILE = "jobs-boss.json"
 BOSS_CITY_CODE = {"xa": "101110100", "sz": "101280600", "ak": "101110900"}
+
+# 2026-11-11 收录快照：50 条西安机械设计岗（原 11 列全部保留 + 看板映射字段）。
+# 每轮采集都重新读入，避免 Actions 定时跑时把这批岗位冲掉。
+SNAPSHOT_FILE = "boss-snapshot.json"
+
+# 首次收录台账：记录所有「见过」的岗位 (公司,岗位,城市) 及首次时间。
+# 没有它时，外部源每轮抓到的上百个岗位只要在上一版 jobs.json 里没出现过，
+# 就会被重新当成「本轮新岗位」，10 分钟一轮把看板整批翻一遍。
+# 台账让「新」只属于真正第一次出现的岗位；老岗位沿用首次时间，不刷新。
+SEEN_LOG = "seen-log.json"
+SEEN_LOG_MAX = 6000
 
 # ===== 看板容量规则（用户 2026-11-11 12:25 明确要求） =====
 # 取消「7 天自动下架」：任何岗位都不因「多久没出现」而下架。
@@ -92,6 +105,30 @@ def load_boss(addAt):
             firstSeen=j.get("firstSeen") or j.get("addAt") or addAt,
             lastSeen=j.get("lastSeen") or j.get("addAt") or addAt,
         )
+        out.append(item)
+    return out
+
+
+def load_snapshot():
+    """读 BOSS 收录快照（已是看板字段），只做规范化，不重算分数/理由/话术。
+    数据来自搜索引擎收录的 zhipin.com 公开页原文，不是实时在招数据。"""
+    try:
+        with open(SNAPSHOT_FILE, encoding="utf-8") as f:
+            src = json.load(f)
+    except Exception as e:
+        print("[fail] BOSS 收录快照读取失败 %s" % str(e)[:60], file=sys.stderr)
+        return []
+    out = []
+    for j in src.get("jobs", []):
+        co = (j.get("co") or "").strip()
+        role = (j.get("role") or "").strip()
+        if not co or not role:
+            continue
+        item = dict(j)
+        link = j.get("link") or boss_search_url(co, j.get("city"))
+        item.update(src="BOSS直聘", srcUrl=link, link=link, boss=True,
+                    快照=True, 公司名未显示=bool(j.get("公司名未显示")),
+                    Boss直聘投递入口=link)
         out.append(item)
     return out
 
@@ -334,17 +371,39 @@ def main():
     addAt = now.strftime("%Y-%m-%d %H:%M")
 
     # 旧快照：源站偶发失败时保住手机上已有的岗位
-    old_map = {}
+    old_map, old_updated = {}, None
     try:
         with open("jobs.json", encoding="utf-8") as f:
-            for j in json.load(f).get("jobs", []):
-                old_map[job_key(j.get("co"), j.get("role"), j.get("city"))] = j
+            old_data = json.load(f)
+        old_updated = old_data.get("updated")
+        for j in old_data.get("jobs", []):
+            old_map[job_key(j.get("co"), j.get("role"), j.get("city"))] = j
     except Exception:
         pass
 
-    # ① BOSS 岗位池：普通来源，不按时间下架、不置顶，只补空缺
+    # 首次收录台账。首次建立时，把本轮之前就已抓到过的岗位统一记为
+    # 上一版 jobs.json 的更新时间，避免台账初始化瞬间把上百个老岗位全标成「新」。
+    log_existed = os.path.exists(SEEN_LOG)
+    seen_log = {}
+    if log_existed:
+        try:
+            with open(SEEN_LOG, encoding="utf-8") as f:
+                raw_log = json.load(f).get("seen", {})
+            seen_log = {tuple(k.split("\t", 2)): v for k, v in raw_log.items()}
+        except Exception:
+            seen_log = {}
+    legacy_time = addAt if log_existed else (old_updated or addAt)
+
+    def first_seen_of(k, old, fallback):
+        t = seen_log.get(k) or (old or {}).get("firstSeen") or legacy_time or fallback
+        seen_log[k] = t
+        return t
+
+    # ① BOSS 岗位池 + 收录快照：都是普通来源，不按时间下架、不置顶
     boss_rows = load_boss(addAt)
-    print("[boss] BOSS岗位池 %d 条（不置顶、不按时间下架）" % len(boss_rows))
+    snap_rows = load_snapshot()
+    print("[boss] BOSS岗位池 %d 条 + 收录快照 %d 条（不置顶、不按时间下架）" %
+          (len(boss_rows), len(snap_rows)))
 
     # ② 其余公开源（猎聘 12 + 前程无忧 3）
     rows, ok_src = [], 0
@@ -397,18 +456,37 @@ def main():
             msg=build_msg(r["role"], r["co"], r["city"], hits),
             src=r["src"], srcUrl=r["link"], link=r["link"], boss=False,
             postAt="", addAt=addAt, lastSeen=addAt,
-            firstSeen=(old or {}).get("firstSeen") or addAt,
+            firstSeen=first_seen_of(k, old, addAt),
             isNew=(old is None), stale=False,
         )
 
-    # BOSS 岗位没有特权：同名条目以本轮公开源实抓结果为准，BOSS 只补空缺
-    for b in boss_rows:
+    # BOSS 岗位没有特权：同名条目以本轮公开源实抓结果为准，BOSS 只补空缺。
+    # 收录快照按文档增量规则：主键 (公司, 岗位, 薪资) 已存在的条目，
+    # 只刷新「来源页 / 投递入口 / 数据时间」，沿用原 firstSeen，不重复插入。
+    for b in boss_rows + snap_rows:
         k = job_key(b["co"], b["role"], b["city"])
         if k in fresh:
             continue
         old = old_map.get(k)
+        if old and b.get("快照"):
+            keep = dict(old)
+            keep.update(
+                link=b["link"], srcUrl=b["srcUrl"],
+                Boss直聘投递入口=b.get("Boss直聘投递入口") or b["link"],
+                来源页=b.get("来源页") or keep.get("来源页", ""),
+                数据时间=b.get("数据时间") or "2026-11-11",
+                快照=True, 公司名未显示=bool(b.get("公司名未显示")),
+                stale=False,
+            )
+            keep.setdefault("firstSeen", keep.get("addAt") or addAt)
+            seen_log.setdefault(k, keep["firstSeen"])
+            fresh[k] = keep
+            continue
         b["id"] = 0
-        b["firstSeen"] = (old or {}).get("firstSeen") or b["firstSeen"]
+        # BOSS 池 / 收录快照自带固定的首次收录时间，不用台账初始化时间覆盖，
+        # 否则刚灌入的 BOSS 快照会被降级成「上一轮老岗位」。
+        b["firstSeen"] = seen_log.get(k) or (old or {}).get("firstSeen") or b["firstSeen"]
+        seen_log[k] = b["firstSeen"]
         fresh[k] = b
 
     # 旧岗位本轮没抓到 → 照样留在看板。时间再久也不自动下架，
@@ -447,19 +525,29 @@ def main():
     for i, j in enumerate(kept, 1):
         j["id"] = i
     boss_cnt = len([j for j in kept if is_boss(j)])
+    snap_cnt = len([j for j in kept if j.get("快照")])
     new_cnt = len([j for j in kept if j["isNew"]])
     evicted = len(merged) - len(kept)      # 超过每城上限、被新岗位挤掉的旧岗位
     data = dict(updated=addAt, round=0, bossCount=boss_cnt, newCount=new_cnt,
+                snapshotCount=snap_cnt, snapshotDate="2026-11-11",
                 newDays=NEW_WINDOW_DAYS, perCity=PER_CITY,
                 evicted=evicted, jobs=kept)
     with open("jobs.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    # 台账落盘：只按 (公司,岗位,城市) 存首次时间，超量时保留最近收录的
+    if len(seen_log) > SEEN_LOG_MAX:
+        recent = sorted(seen_log.items(), key=lambda kv: kv[1], reverse=True)[:SEEN_LOG_MAX]
+        seen_log = dict(recent)
+    with open(SEEN_LOG, "w", encoding="utf-8") as f:
+        json.dump({"updated": addAt, "count": len(seen_log),
+                   "seen": {"\t".join(k): v for k, v in seen_log.items()}},
+                  f, ensure_ascii=False, indent=1)
     by_city = {}
     for j in kept:
         by_city[j["city"]] = by_city.get(j["city"], 0) + 1
-    print("采集完成：外部源 %d/%d，岗位 %d 条（新岗位 %d，BOSS %d 条不置顶，"
-          "超过每城 %d 条挤掉 %d 条旧岗位），城市 %s" %
-          (ok_src, len(SOURCES), len(kept), new_cnt, boss_cnt,
+    print("采集完成：外部源 %d/%d，岗位 %d 条（新岗位 %d，BOSS %d 条 / 其中收录快照 %d 条，"
+          "均不置顶；超过每城 %d 条挤掉 %d 条旧岗位），城市 %s" %
+          (ok_src, len(SOURCES), len(kept), new_cnt, boss_cnt, snap_cnt,
            PER_CITY, evicted, by_city))
     return 0
 

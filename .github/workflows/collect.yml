@@ -28,7 +28,7 @@ jobs:
           for i in $(seq 1 55); do
             echo "===== 第 $i 轮 $(date -u '+%H:%M:%S') UTC ====="
             python3 collect_jobs.py || echo "本轮抓取失败，继续下一轮"
-            git add jobs.json
+            git add jobs.json seen-log.json boss-snapshot.json
             if git diff --staged --quiet; then
               echo "本轮无变化"
             else

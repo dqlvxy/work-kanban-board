@@ -8,6 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <meta name="apple-mobile-web-app-title" content="工作看板">
@@ -488,8 +489,10 @@
 /* 来源与时间行 */
 .srcrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.5}
 .srcbadge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:6px;background:rgba(41,108,226,.11);color:#296ce2;font-weight:600;font-size:11px;letter-spacing:.2px}
+.srcbadge.fresh{background:rgba(226,59,59,.13);color:#e23b3b}
 .srcrow i{font-style:normal;opacity:.9}
 .srcrow i b{font-weight:600;color:var(--text)}
+.srcrow i.ttl b{color:var(--text)}
 
 </style>
 </head>
@@ -581,7 +584,7 @@
       <button class="chip" data-f="high">高匹配 2</button>
       <button class="chip" data-f="core">核心对口 3</button>
       <button class="chip" data-f="near">相近可投 4</button>
-      <button class="chip" data-f="risk">有硬门槛 3</button>
+      <button class="chip" data-f="risk">明标本科 3</button>
     </div>
     <div class="joblist" data-city="xa"></div>
   </section>
@@ -1558,14 +1561,38 @@ function restOf(j){
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
+/* ===== 看板容量：与云端 collect_jobs.py 完全同一套规则 =====
+   不按时间下架。西安 / 深圳 / 安康各自最多 50 条；
+   超过上限时按首次收录时间倒序，最新的留下、最旧的被挤掉。 */
+function 每城上限(){ return Number(DATA.perCity) || 50; }
+function 新鲜天数(){ return Number(DATA.newDays) || 1; }
+function 时间戳(s){
+  if (!s) return 0;
+  var v = String(s).trim();
+  if (v.indexOf('+') < 0 && v.indexOf('Z') < 0) v += '+08:00';
+  var d = new Date(v.replace(' ', 'T'));
+  return isNaN(d.getTime()) ? 0 : d.getTime();
+}
+function 首次时间(j){ return 时间戳(j.firstSeen || j.addAt || ''); }
+function 是新岗(j){
+  var t = 首次时间(j);
+  if (!t) return false;
+  var d = (Date.now() - t) / 86400000;
+  return d >= -0.05 && d <= 新鲜天数();
+}
+function 在榜天数(j){
+  var t = 首次时间(j);
+  if (!t) return 0;
+  return Math.max(0, Math.floor((Date.now() - t) / 86400000));
+}
 function byCity(city){
   return DATA.jobs.filter(function(j){ return j.city === city; })
     .sort(function(a, b){
-      var ra = (a.src === 'BOSS直聘') ? 0 : 1;
-      var rb = (b.src === 'BOSS直聘') ? 0 : 1;
-      if (ra !== rb) return ra - rb;               /* BOSS 岗位优先 */
-      return (b.score || 0) - (a.score || 0);      /* 同来源内按匹配度从高到低 */
-    });
+      var t = 首次时间(b) - 首次时间(a);           /* 收录越晚越靠前：新岗位取代旧岗位 */
+      if (t) return t;
+      return (b.score || 0) - (a.score || 0);      /* 同一批内按匹配度，来源无关 */
+    })
+    .slice(0, 每城上限());                          /* 每城上限 50，超出的旧岗位不显示 */
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
@@ -1579,10 +1606,14 @@ function renderJobs(city, filter){
     if (filter === 'all') return true;
     if (filter === 'high') return j.score >= 80;
     if (filter === 'boss') return j.src === 'BOSS直聘';
+    if (filter === 'risk') return /本科|硕士|博士/.test(j.edu || '');
     return j.g === filter;
   });
   if (!list.length){
-    host.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:40px 0">这个分类暂时没有岗位</div>';
+    var 空文案 = (city === 'ak')
+      ? '安康暂时没有匹配岗位 · 云端每 10 分钟仍在监控<br>有岗会自动出现，建议先看西安'
+      : '这个分类暂时没有岗位';
+    host.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:40px 0;line-height:1.8">' + 空文案 + '</div>';
     return;
   }
   host.innerHTML = list.map(function(j){
@@ -1613,8 +1644,10 @@ function renderJobs(city, filter){
       (restVal ? '<div class="restrow"><span class="restb on">' + esc(restVal) + '</span></div>' : '') +
       '<div class="srcrow">' +
         (j.src ? '<span class="srcbadge">' + esc(j.src) + '</span>' : '') +
-        (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '<i>发布时间 待同步</i>') +
+        (是新岗(j) ? '<span class="srcbadge fresh">新</span>' : '') +
+        (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '') +
         (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
+        '<i class="ttl">在榜 <b>' + 在榜天数(j) + '</b> 天</i>' +
       '</div>' +
       '<div class="score"><b class="scl">匹配度</b><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
@@ -1645,11 +1678,13 @@ function openMsg(id){
   var j = jobById(id);
   if (!j.role) return;
   var m = MSGS[id] || {};
+  /* 云端每轮会重编号，公司名对不上就不许用预置库，免得串到别家 */
+  var 库可用 = !!(m.t && j.co && m.t === j.co);
   curMsgId = id;
-  document.getElementById('msCo').textContent = m.t || j.co || '';
+  document.getElementById('msCo').textContent = (库可用 ? m.t : j.co) || '';
   document.getElementById('msRole').textContent = (j.area ? j.area + ' · ' : '') +
     (j.exp ? j.exp + ' · ' : '') + (j.edu || '');
-  document.getElementById('msPay').textContent = m.p || j.pay || '';
+  document.getElementById('msPay').textContent = (库可用 && m.p) ? m.p : (j.pay || '');
   document.getElementById('msBody').innerHTML = '<p>' + esc(getMsg(id)) + '</p>';
   var link = document.getElementById('msLink');
   var 链 = 岗位链接(id); if (链){ link.href = 链; link.style.display = ''; }
@@ -1760,42 +1795,17 @@ var curGdId = null;
 function jobById(id){
   return (DATA.jobs || []).filter(function(x){ return x.id == id; })[0] || {};
 }
-/* 每家岗位单独定制话术：按岗位真实要求匹配简历里的对应项目 */
-var TALK = [
-  {re:/ICT|FCT|测试|检测|探针|Pogo|FPC|连接器|电流/i, w:'测试治具与检测设备', e:'做过ICT／FCT测试方案和FPC／Pogo探针治具'},
-  {re:/治具|夹具|工装/i,            w:'非标治具与工装',   e:'10年非标治具设计，服务过华为、OPPO、小米'},
-  {re:/3C|消费电子|手机|PCBA|电子|智能硬件/i, w:'3C消费电子精密结构', e:'做过手机保压拆解回流线和PCBA电流测试整机'},
-  {re:/机床|CNC|车床|数控|加工中心/i, w:'机床上下料自动化', e:'做过双车床机器人上下料整机'},
-  {re:/机器人|机械手|码垛|移栽|上下料|转盘|回流线/i, w:'机器人上下料与码垛', e:'双夹爪摆臂、三轴龙门码垛都做过整机'},
-  {re:/非标|自动化|整线|产线|集成|设备/i, w:'非标自动化整机', e:'从整机方案、样机调试做到量产'},
-  {re:/结构|机架|龙门|钣金|传动|标准件|选型/i, w:'整机结构与机架龙门', e:'整机结构设计、标准件选型与出图都熟'},
-  {re:/医疗|器械/i,                w:'医疗器械精密机构', e:'精密机构设计加量产落地经验'},
-  {re:/工艺|制图|BOM|文档|标准化/i, w:'出图与BOM文档',   e:'SolidWorks出图、BOM和装配说明书都能扛'},
-  {re:/航空|军工|兵器|装备|专用设备/i, w:'专用装备结构', e:'做过专用设备的整机结构'}
-];
+/* 每家岗位一句极简话术，不依赖预置库 */
 function 生成话术(j){
-  if (!j) return '';
-  if (j.msg) return j.msg;
-  var role = (j.role || '机械工程师').replace(/\s+/g, ' ').trim();
-  if (role.length > 18) role = role.slice(0, 18);
-  var blob = role + ' ' + (j.why || '') + ' ' + ((j.tags || []).join(' ')) + ' ' + (j.co || '') + ' ' + (j.area || '');
-  var hit = null, i;
-  for (i = 0; i < TALK.length; i++){
-    if (TALK[i].re.test(blob)){ hit = TALK[i]; break; }
-  }
-  var 侧重 = hit ? hit.w : '机械结构设计';
-  var 证据 = hit ? hit.e : '10年非标治具与整机设计';
-  var co = (j.co || '').replace(/股份有限公司|有限责任公司|有限公司/g, '').trim();
-  if (/未展示|未填写|未知/.test(co)) co = '';
-  if (co.length > 9) co = co.slice(0, 9);
-  var 头 = co ? co + '的「' + role + '」' : '贵司「' + role + '」';
-  return '您好，' + 头 + '要' + 侧重 + '，我16年非标自动化，' + 证据 + '，简历发您？';
+  if (j && j.msg) return j.msg;
+  var r = (j.role || '机械工程师').replace(/[（(].*?[）)]/g, '').slice(0, 14);
+  return '您好，16年非标自动化机械设计经验，做过ICT／FCT测试治具和整机方案，想应聘「' + r + '」，简历可发您看下。';
 }
 function getMsg(id){
   var j = jobById(id);
   if (j.msg) return j.msg;
   var m = MSGS[id];
-  if (m && m.m) return m.m;
+  if (m && m.m && m.t && j.co && m.t === j.co) return m.m;
   return 生成话术(j);
 }
 function payload(id){
@@ -2344,7 +2354,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111u';
+var BUILD = '20261111w';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2367,13 +2377,15 @@ function 查版本(){
   }catch(e){}
 }
 setInterval(查版本, PERIOD);
+document.addEventListener('visibilitychange', function(){ if (!document.hidden) 查版本(); });
+查版本();
 
 loadData();
 /* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
 __上次更新时间 = DATA.updated;
 拉最新数据();
 
-/* 打开即追新：云端每 5 分钟采一次，页面打开后若数据偏旧，就隔一会儿再拉，拿到新的就停 */
+/* 打开即追新：云端每 10 分钟采一次，页面打开后若数据偏旧，就隔一会儿再拉，拿到新的就停 */
 var __追新轮 = 0;
 function 数据旧了吗(){
   try{
@@ -2454,14 +2466,18 @@ document.getElementById('upd2').textContent = upTxt;
 document.getElementById('h1n').innerHTML = DATA.jobs.length + '<small>家</small>';
 
 function maxPayOf(city){
+  /* 先把「万 / 千 / K」统一换算成元，再取区间上限，兼容混合单位写法 */
   var mx = 0;
   byCity(city).forEach(function(j){
-    var m = String(j.pay).match(/(\d+)\s*-\s*(\d+)K/);
-    if (m){ var hi = parseInt(m[2],10); if (hi > mx) mx = hi; }
-    else if (j.payNote){
-      var m2 = String(j.payNote).match(/(\d+)\s*-\s*(\d+)K/);
-      if (m2){ var hi2 = parseInt(m2[2],10); if (hi2 > mx) mx = hi2; }
-    }
+    var s = String(j.pay || '') + ' ' + String(j.payNote || '');
+    var t = s.replace(/(\d+(?:\.\d+)?)\s*万/g, function(_, n){ return String(Math.round(parseFloat(n) * 10000)); })
+             .replace(/(\d+(?:\.\d+)?)\s*千/g, function(_, n){ return String(Math.round(parseFloat(n) * 1000)); })
+             .replace(/(\d+(?:\.\d+)?)\s*[Kk]/g, function(_, n){ return String(Math.round(parseFloat(n) * 1000)); });
+    var m = t.match(/(\d+(?:\.\d+)?)\s*[-~]\s*(\d+(?:\.\d+)?)/);
+    if (!m) return;
+    var hi = parseFloat(m[2]) / 1000;         /* 元 → K */
+    if (/年/.test(s)) hi = hi / 12;
+    if (hi >= 1 && hi <= 200) mx = Math.max(mx, Math.round(hi));
   });
   return mx;
 }
@@ -2476,57 +2492,22 @@ CITY_ORDER.forEach(function(c){
   if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
 });
 
+统计刷新();   /* 断网用内嵌兜底数据时也按真实条数显示，不留写死的旧数字 */
 tick();
 
 /* ===== 每分钟向站点拉一次最新数据（jobs.json），有变化才重渲染 ===== */
 var __上次更新时间 = '';
-function 合并Boss(d){
-  if (!d || !d.jobs || !d.jobs.length) return;
-  var key = function(j){ return (j.co||'') + '|' + (j.role||'') + '|' + (j.city||''); };
-  var seen = {}, items = [];
-  DATA.jobs.forEach(function(j){ seen[key(j)] = 1; });
-  var added = 0;
-  d.jobs.forEach(function(j){
-    var k = key(j);
-    if (seen[k]) return;
-    seen[k] = 1;
-    if (!j.score) j.score = 60;
-    if (!j.g) j.g = 'near';
-    if (!j.cls) j.cls = 'g';
-    if (!j.chips) j.chips = (j.tags||[]).slice(0,2);
-    if (!j.payNote) j.payNote = '';
-    if (!j.addAt) j.addAt = d.updated || '';
-    if (!j.msg) j.msg = 生成话术(j);
-    if (!j.why) j.why = 'BOSS直聘在招，' + (j.tags && j.tags.length ? '标签：' + j.tags.join('、') + '。' : '') + '匹配度按岗位名称粗算，点开原站看详情。';
-    items.push(j); added++;
-  });
-  if (!added) return;
-  items.forEach(function(j,i){ j.id = i + 1; });
-  DATA.jobs = items;
-  renderJobs('xa'); renderJobs('sz'); renderJobs('ak'); 统计刷新();
-  var st = document.getElementById('stText'); if (st) st.textContent = '已合并 BOSS 岗位 ' + added + ' 条';
-}
-
-function 拉Boss(){
-  try{
-    var x = new XMLHttpRequest();
-    x.open('GET', 'jobs-boss.json?t=' + Date.now(), true);
-    x.timeout = 8000;
-    x.onload = function(){
-      if (x.status !== 200) return;
-      try { 合并Boss(JSON.parse(x.responseText)); } catch(e){}
-    };
-    x.send();
-  }catch(e){}
-}
-
+/* ===== 唯一数据源：jobs.json =====
+   旧版前端会另外拉 jobs-boss.json 把岗位追加回来，导致云端已淘汰的岗位复活。
+   现在下架、排序、每城上限全部由云端 collect_jobs.py 统一裁决，
+   手机端只读 jobs.json，不再私加任何岗位。 */
 function 拉最新数据(){
   var xhr = new XMLHttpRequest();
   var url = 'jobs.json?t=' + Date.now();
   xhr.open('GET', url, true);
   xhr.timeout = 8000;
   xhr.onload = function(){
-    if (xhr.status !== 200){ 拉Boss(); return; }
+    if (xhr.status !== 200) return;
     try{
       var d = JSON.parse(xhr.responseText);
       if (!d || !d.jobs || !d.jobs.length) return;
@@ -2539,27 +2520,58 @@ function 拉最新数据(){
       var st = document.getElementById('stText');
       if (st) st.textContent = '数据快照已载入';
       统计刷新();
-      拉Boss();
     }catch(e){}
   };
-  xhr.onerror = function(){ 拉Boss(); };
+  xhr.onerror = function(){};
   try{ xhr.send(); }catch(e){}
 }
 function 统计刷新(){
   try{
+    var 总岗位 = 0, 总高匹配 = 0, 总薪资 = 0;
     CITY_ORDER.forEach(function(c){
       var list = byCity(c);
+      总岗位 += list.length;
+      var 高 = list.filter(function(j){ return j.score >= 80; }).length;
+      var 上限 = maxPayOf(c);
+      总高匹配 += 高; if (上限 > 总薪资) 总薪资 = 上限;
       var elN = document.getElementById('c-' + c + '-n'); if (elN) elN.textContent = list.length;
-      var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = list.filter(function(j){ return j.score >= 80; }).length;
-      var elP = document.getElementById('c-' + c + '-p'); if (elP){ var mx = maxPayOf(c); if (mx) elP.textContent = mx + 'K'; }
-      var box = document.querySelector('.chips[data-city="' + c + '"]');
-      if (box){ var bn = box.querySelector('.bn'); if (bn) bn.textContent = list.filter(function(j){ return j.src === 'BOSS直聘'; }).length; }
+      var elE = document.getElementById('c-' + c + '-e'); if (elE) elE.textContent = 高;
+      var elP = document.getElementById('c-' + c + '-p'); if (elP && 上限) elP.textContent = 上限 + 'K';
+
+      /* 城市页顶部三格 + 筛选胶囊：全部按云端真实数据重算，不留写死数字 */
+      var sec = document.getElementById('p-' + c);
+      if (sec){
+        var 格 = sec.querySelectorAll('.stats .v');
+        if (格.length >= 3){
+          格[0].innerHTML = list.length + '<small>家</small>';
+          if (上限) 格[1].innerHTML = 上限 + '<small>K</small>';
+          格[2].innerHTML = 高 + '<small>家</small>';
+        }
+        var 计数 = {
+          all:list.length,
+          boss:list.filter(function(j){ return j.src === 'BOSS直聘'; }).length,
+          high:高,
+          core:list.filter(function(j){ return j.g === 'core'; }).length,
+          near:list.filter(function(j){ return j.g === 'near'; }).length,
+          risk:list.filter(function(j){ return /本科|硕士|博士/.test(j.edu || ''); }).length
+        };
+        sec.querySelectorAll('.chips .chip').forEach(function(btn){
+          var f = btn.getAttribute('data-f');
+          if (!(f in 计数)) return;
+          var bn = btn.querySelector('.bn');
+          if (bn){ bn.textContent = 计数[f]; return; }
+          var 标签 = (btn.textContent || '').replace(/\s*\d+\s*$/, '').trim();
+          btn.textContent = 标签 + ' ' + 计数[f];
+        });
+      }
     });
-    var t = document.getElementById('t-n'); if (t) t.textContent = DATA.jobs.length;
+    var h1 = document.getElementById('h1n'); if (h1) h1.innerHTML = 总岗位 + '<small>家</small>';
+    var h2 = document.getElementById('h2n'); if (h2 && 总薪资) h2.innerHTML = 总薪资 + '<small>K</small>';
+    var h3 = document.getElementById('h3n'); if (h3) h3.innerHTML = 总高匹配 + '<small>家</small>';
+    var t = document.getElementById('t-n'); if (t) t.textContent = 总岗位;
   }catch(e){}
 }
-/* 数据只由 tick 到点触发，不再另设计时器，避免同一分钟里拉两遍 */
-
+/* 数据只由 tick 到点触发 + 打开即追新，不再另设计时器，避免同一分钟里拉两遍 */
 setInterval(tick, 1000);
 
 /* 页面重新可见时校正倒计时（手机切后台会暂停计时器） */
