@@ -492,7 +492,7 @@
 .srcbadge.fresh{background:rgba(226,59,59,.13);color:#e23b3b}
 .srcrow i{font-style:normal;opacity:.9}
 .srcrow i b{font-weight:600;color:var(--text)}
-.srcrow i.ttl b{color:#d87218}
+.srcrow i.ttl b{color:var(--text)}
 
 </style>
 </head>
@@ -1561,9 +1561,10 @@ function restOf(j){
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-/* ===== 时效：与云端 collect_jobs.py 完全同一套规则 =====
-   首次收录时间决定「新不新」，最后见到时间决定「过不过期」；来源不参与排序。 */
-function 有效天数(){ return Number(DATA.ttlDays) || 7; }
+/* ===== 看板容量：与云端 collect_jobs.py 完全同一套规则 =====
+   不按时间下架。西安 / 深圳 / 安康各自最多 50 条；
+   超过上限时按首次收录时间倒序，最新的留下、最旧的被挤掉。 */
+function 每城上限(){ return Number(DATA.perCity) || 50; }
 function 新鲜天数(){ return Number(DATA.newDays) || 1; }
 function 时间戳(s){
   if (!s) return 0;
@@ -1573,29 +1574,25 @@ function 时间戳(s){
   return isNaN(d.getTime()) ? 0 : d.getTime();
 }
 function 首次时间(j){ return 时间戳(j.firstSeen || j.addAt || ''); }
-function 末次时间(j){ return 时间戳(j.lastSeen || j.addAt || ''); }
 function 是新岗(j){
   var t = 首次时间(j);
   if (!t) return false;
   var d = (Date.now() - t) / 86400000;
   return d >= -0.05 && d <= 新鲜天数();
 }
-function 剩余天数(j){
-  var t = 末次时间(j);
+function 在榜天数(j){
+  var t = 首次时间(j);
   if (!t) return 0;
-  return Math.max(0, Math.ceil((t + 有效天数() * 86400000 - Date.now()) / 86400000));
-}
-function 已过期(j){
-  var t = 末次时间(j);
-  return !t || (Date.now() - t) > 有效天数() * 86400000;
+  return Math.max(0, Math.floor((Date.now() - t) / 86400000));
 }
 function byCity(city){
-  return DATA.jobs.filter(function(j){ return j.city === city && !已过期(j); })
+  return DATA.jobs.filter(function(j){ return j.city === city; })
     .sort(function(a, b){
       var t = 首次时间(b) - 首次时间(a);           /* 收录越晚越靠前：新岗位取代旧岗位 */
       if (t) return t;
       return (b.score || 0) - (a.score || 0);      /* 同一批内按匹配度，来源无关 */
-    });
+    })
+    .slice(0, 每城上限());                          /* 每城上限 50，超出的旧岗位不显示 */
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
@@ -1650,7 +1647,7 @@ function renderJobs(city, filter){
         (是新岗(j) ? '<span class="srcbadge fresh">新</span>' : '') +
         (j.postAt ? '<i>发布 <b>' + esc(j.postAt) + '</b></i>' : '') +
         (j.addAt ? '<i>收录 <b>' + esc(j.addAt) + '</b></i>' : '') +
-        '<i class="ttl">剩 <b>' + 剩余天数(j) + '</b> 天</i>' +
+        '<i class="ttl">在榜 <b>' + 在榜天数(j) + '</b> 天</i>' +
       '</div>' +
       '<div class="score"><b class="scl">匹配度</b><div class="track"><div class="fill ' + fillc + '" style="width:' + j.score + '%"></div></div>' +
         '<span>' + j.score + '%</span></div>' +
@@ -2357,7 +2354,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111u';
+var BUILD = '20261111v';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2472,9 +2469,9 @@ tick();
 /* ===== 每分钟向站点拉一次最新数据（jobs.json），有变化才重渲染 ===== */
 var __上次更新时间 = '';
 /* ===== 唯一数据源：jobs.json =====
-   旧版前端会另外拉 jobs-boss.json 把岗位追加回来，等于把云端已判定过期的
-   BOSS 岗位又复活成「永不过期」。现在过期、排序、去置顶全部由云端
-   collect_jobs.py 统一裁决，手机端只读 jobs.json，不再私加任何岗位。 */
+   旧版前端会另外拉 jobs-boss.json 把岗位追加回来，导致云端已淘汰的岗位复活。
+   现在下架、排序、每城上限全部由云端 collect_jobs.py 统一裁决，
+   手机端只读 jobs.json，不再私加任何岗位。 */
 function 拉最新数据(){
   var xhr = new XMLHttpRequest();
   var url = 'jobs.json?t=' + Date.now();
