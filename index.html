@@ -2354,7 +2354,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111w';
+var BUILD = '20261111x';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2427,13 +2427,13 @@ function 催云端(){
   try{
     var ctl = ('AbortController' in window) ? new AbortController() : null;
     var tm = ctl ? setTimeout(function(){ ctl.abort(); }, 6000) : null;
-    var opts = { mode: 'cors', cache: 'no-store' };
+    /* Worker 未配 CORS 头：no-cors 只发请求、不读响应，避免控制台报错 */
+    var opts = { mode: 'no-cors', cache: 'no-store' };
     if (ctl) opts.signal = ctl.signal;
     fetch(POKE + '?t=' + Date.now(), opts)
-      .then(function(r){ return r.json(); })
-      .then(function(d){
+      .then(function(){
         var st = document.getElementById('stText');
-        if (d && d.ok && !d.throttled && st) st.textContent = '云端已开跑，约 1 分钟出新岗位';
+        if (st) st.textContent = '已催云端采集，约 1 分钟出新岗位';
       })
       .catch(function(){})
       .then(function(){ if (tm) clearTimeout(tm); });
