@@ -4,7 +4,7 @@
   猎聘 城市机械设计专场页 / 前程无忧工程师招聘网城市机械页
 只收录机械/结构/非标相关岗位，字段缺失一律留空，不编造。
 """
-import re, json, datetime, urllib.request, sys, time
+import re, json, datetime, urllib.request, urllib.parse, sys, time
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
@@ -27,6 +27,61 @@ SOURCES = [
     ("前程无忧", "sz", "https://mgongchengshi.51job.com/shenzhen/jixiegcs/", "gbk"),
     ("前程无忧", "ak", "https://mgongchengshi.51job.com/ankang/jixiegcs/", "gbk"),
 ]
+
+# ===== BOSS 直聘：第一优先来源 =====
+# 机房 IP 直连 BOSS 会被风控（wapi/joblist.json 返回 code=37「环境存在异常」，
+# SEO 详情页与搜索收录也拿不到岗位），因此 BOSS 岗位由杜哥手机截图批量录入
+# jobs-boss.json，服务端每轮「最先读取 + 各城置顶 + 永不过期」。
+BOSS_FILE = "jobs-boss.json"
+BOSS_CITY_CODE = {"xa": "101110100", "sz": "101280600", "ak": "101110900"}
+
+def boss_search_url(co, city):
+    """BOSS 岗位没有可直连详情页时，给一个公司名直达搜索链接，方便手机一键去投"""
+    return "https://www.zhipin.com/web/geek/job?query=%s&city=%s" % (
+        urllib.parse.quote(co or ""), BOSS_CITY_CODE.get(city, "100010000"))
+
+# 只收机械/结构/治具相关，挡掉「选矿工程师」这类同名不同行的噪声
+INCLUDE = ("机械", "结构", "夹具", "治具", "工装", "非标", "自动化", "设备",
+           "设计", "工艺", "机电", "模具", "CNC", "cnc", "研发", "制图",
+           "测试", "ICT", "FCT", "装配", "产品", "调试", "数控")
+EXCLUDE_JOB = ("销售", "采购", "文员", "行政", "财务", "会计", "市场", "客服",
+               "司机", "仓管", "业务员", "跟单", "选矿", "采矿", "护士", "教师",
+               "厨师", "保安", "美容", "房产", "保险", "快递", "服务员",
+               # 含「设计」但不属于机械/结构/治具的跨行岗，别把薪资上限拉虚
+               "SoC", "AI Core", "数字设计", "建筑师", "芯片", "IC设计",
+               "半导体", "验证工程师", "测试开发", "算法工程师", "软件工程师",
+               "前端", "后端", "Java", "java", "Python")
+
+def load_boss(addAt):
+    """读 BOSS 岗位池：分数/理由/话术均已人工核对，服务端不重算，只做规范化"""
+    try:
+        with open(BOSS_FILE, encoding="utf-8") as f:
+            src = json.load(f)
+    except Exception as e:
+        print("[fail] BOSS 岗位池读取失败 %s" % str(e)[:60], file=sys.stderr)
+        return []
+    out = []
+    for j in src.get("jobs", []):
+        co = (j.get("co") or "").strip()
+        role = (j.get("role") or "").strip()
+        if not co or not role or any(k in role for k in EXCLUDE_JOB):
+            continue
+        link = j.get("link") or boss_search_url(co, j.get("city"))
+        sc = int(j.get("score") or 70)
+        item = dict(j)
+        item.update(
+            src="BOSS直聘", srcUrl=link, link=link, boss=True, coTag="",
+            pay=j.get("pay") or "面议", payNote=j.get("payNote") or "",
+            edu=j.get("edu") or "未标注", eduOk=j.get("eduOk", True), score=sc,
+            g=j.get("g") or ("core" if sc >= 78 else "near"), cls=j.get("cls") or "g",
+            chips=j.get("chips") or (j.get("tags") or [])[:2],
+            why=j.get("why") or "BOSS直聘在招，岗位与你的非标自动化/治具设计主线相关，点开原站看详情。",
+            msg=j.get("msg") or "", postAt=j.get("postAt") or "",
+            isNew=False, stale=False, addAt=j.get("addAt") or addAt,
+            firstSeen=j.get("firstSeen") or j.get("addAt") or addAt, lastSeen=addAt,
+        )
+        out.append(item)
+    return out
 
 
 # ===== 杜全龙画像（来自 2026-11 简历 + 非标自动化作品集，仅用于本地匹配打分） =====
@@ -210,11 +265,49 @@ def build_why(role, co, edu, edu_ok, pay, city, hits):
         parts.append("在安康本地，通勤成本几乎为零")
     return "；".join(parts) + "。"
 
+def build_msg(role, co, city, hits):
+    """每个岗位一条定制话术：按岗位名 + 命中的真实简历事实拼，不依赖前端预置库。
+    云端每轮都会重编号，写进数据里才不会出现「话术串到别的公司」。"""
+    fact = ("其中" + hits[0]) if hits else "主做 ICT/FCT 测试治具与非标整机方案"
+    where = {"xa": "在西安正是我的期望城市",
+             "sz": "在深圳做了十多年这行，回来就能上手",
+             "ak": "安康本地通勤方便"}.get(city, "")
+    return ("您好，看到贵司在招「%s」。我有 16 年非标自动化机械设计经验，%s；"
+            "SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。%s，学历是大专，"
+            "想先把简历和作品集发您看看，方便的话约个时间聊。") % (
+            role.replace("（", "(").replace("）", ")")[:24], fact, where)
+
+def parse_dt(s):
+    try:
+        return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M").replace(tzinfo=CST)
+    except Exception:
+        return None
+
+def job_key(co, role, city):
+    return (co or "", role or "", city or "")
+
+def is_boss(j):
+    return bool(j.get("boss")) or j.get("src") == "BOSS直聘"
+
 def main():
     now = datetime.datetime.now(CST)
     addAt = now.strftime("%Y-%m-%d %H:%M")
-    rows = []
-    ok_src = 0
+
+    # 旧快照：源站偶发失败时保住手机上已有的岗位
+    old_map = {}
+    try:
+        with open("jobs.json", encoding="utf-8") as f:
+            for j in json.load(f).get("jobs", []):
+                old_map[job_key(j.get("co"), j.get("role"), j.get("city"))] = j
+    except Exception:
+        pass
+
+    # ① BOSS 直聘：第一优先，先入池、置顶、不参与 3 天过期
+    boss_rows = load_boss(addAt)
+    print("[boss] BOSS直聘优先池 %d 条" % len(boss_rows))
+
+    # ② 其余公开源（猎聘 12 + 前程无忧 3）
+    rows, ok_src = [], 0
     for src, city, url, enc in SOURCES:
         before = len(rows)
         try:
@@ -225,46 +318,106 @@ def main():
         except Exception as e:
             print("[fail]", src, city, str(e)[:60], file=sys.stderr)
 
-    # 去重：同公司同岗位
+    # 外部源全挂也照常输出（BOSS 优先池 + 旧快照），不让手机空白
+    if not ok_src:
+        print("外部源全部失败，仅输出 BOSS 优先池与旧快照", file=sys.stderr)
+
+    # 去重 + 相关性过滤（挡掉「选矿工程师」这类同名不同行噪声）
     seen, uniq = set(), []
     for r in rows:
-        k = (r["co"], r["role"], r["city"])
+        role = r["role"]
+        # 安康本地机械岗极少：宽口径保留并低分标注，别让这一页空着
+        if r["city"] == "ak":
+            if any(k in role for k in EXCLUDE_JOB[:12]):
+                continue
+        elif any(k in role for k in EXCLUDE_JOB) or not any(k in role for k in INCLUDE):
+            continue
+        k = job_key(r["co"], role, r["city"])
         if k in seen:
             continue
         seen.add(k)
         uniq.append(r)
 
-    jobs = []
-    for i, r in enumerate(uniq, 1):
+    fresh = {}
+    for r in uniq:
+        k = job_key(r["co"], r["role"], r["city"])
+        old = old_map.get(k)
         sc, eduOk, hits = judge(r["role"], r["edu"], r["pay"], r["city"])
         why = build_why(r["role"], r["co"], r["edu"], eduOk, r["pay"], r["city"], hits)
+        if r["city"] == "ak" and not hits:
+            sc = min(sc, 55)
+            why += " 安康本地机械岗很少，这条是宽口径抓到的低相关岗位，只作参考，建议同时看西安和深圳。"
         chips = []
         if hits: chips.append(hits[0][:12].replace("、", "").replace("  ", ""))
-        jobs.append(dict(
-            id=i, city=r["city"], co=r["co"] or "（用人单位未展示）", coTag="",
+        fresh[k] = dict(
+            id=0, city=r["city"], co=r["co"] or "（用人单位未展示）", coTag="",
             role=r["role"], area=r["area"], exp=r["exp"], edu=r["edu"] or "未标注",
             eduOk=eduOk, pay=r["pay"] or "面议", payNote="", score=sc,
-            g="core" if sc >= 78 else "near", cls="g",
-            chips=chips, why=why,
-            src=r["src"], srcUrl=r["link"], link=r["link"],
-            postAt="", addAt=addAt,
-        ))
-    jobs.sort(key=lambda j: (j["city"], -j["score"]))
+            g="core" if sc >= 78 else "near", cls="g", chips=chips, why=why,
+            msg=build_msg(r["role"], r["co"], r["city"], hits),
+            src=r["src"], srcUrl=r["link"], link=r["link"], boss=False,
+            postAt="", addAt=addAt, lastSeen=addAt,
+            firstSeen=(old or {}).get("firstSeen") or addAt,
+            isNew=(old is None), stale=False,
+        )
+
+    # BOSS 岗位覆盖同名条目：同名时以 BOSS 为准，这就是「优先」
+    for b in boss_rows:
+        k = job_key(b["co"], b["role"], b["city"])
+        old = old_map.get(k)
+        b["id"] = 0
+        b["isNew"] = old is None
+        b["firstSeen"] = (old or {}).get("firstSeen") or b["firstSeen"]
+        fresh[k] = b
+
+    # 旧岗位本轮没抓到 → 保留 3 天（BOSS 只认岗位池，避免旧噪声残留）
+    merged = dict(fresh)
+    for k, oldj in old_map.items():
+        if k in merged or is_boss(oldj):
+            continue
+        role = oldj.get("role") or ""
+        if oldj.get("city") == "ak":
+            if any(x in role for x in EXCLUDE_JOB[:12]):
+                continue
+        elif any(x in role for x in EXCLUDE_JOB) or not any(x in role for x in INCLUDE):
+            continue
+        last = parse_dt(oldj.get("lastSeen") or oldj.get("addAt") or "")
+        if last and (now - last).total_seconds() > 3 * 24 * 3600:
+            continue
+        keep = dict(oldj)
+        keep["stale"] = True
+        keep["isNew"] = False
+        keep["boss"] = False
+        keep.setdefault("msg", build_msg(role, oldj.get("co", ""), oldj.get("city", ""), []))
+        if oldj.get("city") == "ak" and "宽口径" not in (keep.get("why") or ""):
+            keep["score"] = min(int(keep.get("score") or 55), 55)
+            keep["why"] = (keep.get("why") or "") + " 安康本地机械岗很少，这条是宽口径抓到的低相关岗位，只作参考。"
+        merged[k] = keep
+
+    # BOSS 全部置顶，其余按匹配度；每城 40 条（给 12 条 BOSS 留足位置）
+    allj = sorted(merged.values(), key=lambda j: (
+        0 if is_boss(j) else 1, -int(j.get("score", 0)), j.get("co", "")))
     per_city, kept = {}, []
-    for j in jobs:
+    for j in allj:
         n = per_city.get(j["city"], 0)
-        if n >= 25:
+        if n >= 40:
             continue
         per_city[j["city"]] = n + 1
         kept.append(j)
-    jobs = kept
-    for i, j in enumerate(jobs, 1):
+    kept.sort(key=lambda j: (j["city"], 0 if is_boss(j) else 1,
+                             -int(j.get("score", 0))))
+    for i, j in enumerate(kept, 1):
         j["id"] = i
-    data = dict(updated=addAt, round=0, jobs=jobs)
+    boss_cnt = len([j for j in kept if is_boss(j)])
+    data = dict(updated=addAt, round=0, bossCount=boss_cnt, jobs=kept)
     with open("jobs.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print("采集完成：源 %d/%d，岗位 %d 条" % (ok_src, len(SOURCES), len(jobs)))
-    return 0 if ok_src else 1
+    by_city = {}
+    for j in kept:
+        by_city[j["city"]] = by_city.get(j["city"], 0) + 1
+    print("采集完成：外部源 %d/%d，岗位 %d 条（BOSS 置顶 %d 条），城市 %s" %
+          (ok_src, len(SOURCES), len(kept), boss_cnt, by_city))
+    return 0
 
 if __name__ == "__main__":
     sys.exit(main())
