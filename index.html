@@ -1395,6 +1395,16 @@ function 下载到桌面(){
   var body = clone.querySelector('body');
   if (body) body.classList.remove('动效开');
   var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  /* 手机浏览器普遍不支持 Blob 直接落盘，走了也是静默失败，改了明确回话 */
+  var 是手机 = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent);
+  if (是手机){
+    copyText(html, function(ok){
+      toast(ok
+        ? '手机上不让直接存文件，离线版源码已进剪贴板 —— 粘到「新建文件」里存成 .html 就能离线打开'
+        : '复制被拦了，请用浏览器菜单里的「保存网页 / 下载」');
+    });
+    return;
+  }
   try{
     var blob = new Blob([html], {type:'text/html;charset=utf-8'});
     var url = URL.createObjectURL(blob);
