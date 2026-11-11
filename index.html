@@ -773,7 +773,7 @@
       <button onclick="copyGd()">重新复制</button>
       <a id="gdGo" target="_blank" rel="noopener" onclick="closeGuide()">打开岗位页 ↗</a>
     </div>
-    <div class="gd-steps">不跳网页，照这个来：① 打开 BOSS App，搜上面的公司名进岗位 ② 点「立即沟通」③ 输入框长按 → 粘贴 → 发送。要开网页就点下面的「打开岗位页」</div>
+    <div class="gd-steps">网页已打开，照这个来：① 点右下角「立即沟通」（没登录会先跳登录）② 输入框长按 → 粘贴 → 发送 ③ 回来打卡页会自动多一条「已投」。话术没粘上就点「重新复制」</div>
   </div>
 </div>
 
@@ -1778,6 +1778,7 @@ function timeTag(ts){
   return p2(d.getMonth()+1) + '-' + p2(d.getDate()) + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes());
 }
 function copyText(txt, cb){
+  /* 先试 execCommand：同步执行，在点击手势里最稳；不行再走异步剪贴板 API */
   var ta = document.createElement('textarea');
   ta.value = txt;
   ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '0';
@@ -1787,11 +1788,12 @@ function copyText(txt, cb){
   var ok = false;
   try{ ok = document.execCommand('copy'); }catch(e){}
   document.body.removeChild(ta);
-  if (!ok && navigator.clipboard){
+  if (ok){ cb(true); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(txt).then(function(){ cb(true); }).catch(function(){ cb(false); });
     return;
   }
-  cb(ok);
+  cb(false);
 }
 var curGdId = null;
 function jobById(id){
@@ -1862,8 +1864,10 @@ function applyJob(id){
   markOne(id);
   copyText(payload(id), function(ok){
     document.getElementById('gdTip').textContent = ok
-      ? '公司+岗位+话术已复制 · 去 BOSS App 搜公司名粘贴发送（已记为已投）'
-      : '自动复制被浏览器拦了，点一下话术框全选再长按复制';
+      ? '话术已复制 · 网页马上打开，到页面上输入框长按粘贴发送'
+      : '复制被拦了，点下面「重新复制」，或长按话术框全选再复制';
+    /* 复制是同步完成的，紧接着在点击链里开网页，既不会被拦窗也不打断剪贴板 */
+    try{ window.open(链, '_blank'); }catch(e){}
   });
   if (navigator.vibrate) navigator.vibrate([10, 26, 10]);
 }
@@ -2357,7 +2361,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111z4';
+var BUILD = '20261111z5';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
