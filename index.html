@@ -1541,7 +1541,16 @@ function loadData(){
 var RKEY = 'du_rest_v1';
 function restMap(){ try{ return JSON.parse(localStorage.getItem(RKEY) || '{}'); }catch(e){ return {}; } }
 function restKey(j){ return (j.co || '') + '|' + (j.role || ''); }
-function restOf(j){ return restMap()[restKey(j)] || ''; }
+function restOf(j){
+  var m = restMap()[restKey(j)] || '';
+  if (m) return m;
+  var t = ((j.tags || []).join(' ') + ' ' + (j.why || ''));
+  if (t.indexOf('双休') >= 0) return '双休';
+  if (t.indexOf('朝九晚五') >= 0) return '朝九晚五';
+  if (t.indexOf('8:30') >= 0) return '双休·8:30';
+  if (t.indexOf('9:00') >= 0) return '双休·9:00';
+  return '';
+}
 function markRest(el){
   var k = el.getAttribute('data-k'); var m = restMap();
   var seq = ['', '双休', '双休·9:00', '双休·8:30', '单休', '大小周'];
@@ -2298,7 +2307,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111i';
+var BUILD = '20261111k';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2324,6 +2333,7 @@ loadData();
 /* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
 __上次更新时间 = DATA.updated;
 拉最新数据();
+拉Boss();
 
 /* 主题：默认跟随系统，记住上次选择 */
 var 存的主题 = null;
@@ -2376,6 +2386,45 @@ tick();
 
 /* ===== 每分钟向站点拉一次最新数据（jobs.json），有变化才重渲染 ===== */
 var __上次更新时间 = '';
+function 合并Boss(d){
+  if (!d || !d.jobs || !d.jobs.length) return;
+  var key = function(j){ return (j.co||'') + '|' + (j.role||'') + '|' + (j.city||''); };
+  var seen = {}, items = [];
+  DATA.jobs.forEach(function(j){ seen[key(j)] = 1; });
+  var added = 0;
+  d.jobs.forEach(function(j){
+    var k = key(j);
+    if (seen[k]) return;
+    seen[k] = 1;
+    if (!j.score) j.score = 60;
+    if (!j.g) j.g = 'near';
+    if (!j.cls) j.cls = 'g';
+    if (!j.chips) j.chips = (j.tags||[]).slice(0,2);
+    if (!j.payNote) j.payNote = '';
+    if (!j.addAt) j.addAt = d.updated || '';
+    if (!j.why) j.why = 'BOSS直聘在招，' + (j.tags && j.tags.length ? '标签：' + j.tags.join('、') + '。' : '') + '匹配度按岗位名称粗算，点开原站看详情。';
+    items.push(j); added++;
+  });
+  if (!added) return;
+  items.forEach(function(j,i){ j.id = i + 1; });
+  DATA.jobs = items;
+  renderJobs('xa'); renderJobs('sz'); renderJobs('ak'); 统计刷新();
+  var st = document.getElementById('stText'); if (st) st.textContent = '已合并 BOSS 岗位 ' + added + ' 条';
+}
+
+function 拉Boss(){
+  try{
+    var x = new XMLHttpRequest();
+    x.open('GET', 'jobs-boss.json?t=' + Date.now(), true);
+    x.timeout = 8000;
+    x.onload = function(){
+      if (x.status !== 200) return;
+      try { 合并Boss(JSON.parse(x.responseText)); } catch(e){}
+    };
+    x.send();
+  }catch(e){}
+}
+
 function 拉最新数据(){
   var xhr = new XMLHttpRequest();
   var url = 'jobs.json?t=' + Date.now();
@@ -2395,6 +2444,7 @@ function 拉最新数据(){
       var st = document.getElementById('stText');
       if (st) st.textContent = '数据快照已载入';
       统计刷新();
+      拉Boss();
     }catch(e){}
   };
   xhr.onerror = function(){};
