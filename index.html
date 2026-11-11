@@ -729,7 +729,7 @@
       <p>面试必问的几个问题，<b>点开看答法</b>。话术不用背原文，记住每题的<b>落点</b>：离职说规划、空窗说充电、学历说战绩、年龄说稳定、薪资不先松口。</p>
     </div>
 
-    <div class="info"><h3>必问五题 · 答法</h3></div>
+    <div class="info"><h3>必问九题 · 答法（含技术面）</h3></div>
 
     <div class="msg">
       <div class="bar" onclick="toggleMsg(this)">
@@ -2205,9 +2205,11 @@ function openJd(id){
   var body = '<div class="jdgrid">' + rows.map(function(r){
     return '<div class="jdcell"><span>' + r[0] + '</span><b>' + esc(String(r[1])) + '</b></div>';
   }).join('') + '</div>';
-  if (j.chips && j.chips.length){
+  var dupJ = [j.area, j.exp, j.edu].filter(Boolean);
+  var jc = (j.chips || []).filter(function(c){ return dupJ.indexOf(String(c).trim()) < 0; });
+  if (jc.length){
     body += '<div class="jdh">技能与条件</div><div class="jdchips">' +
-      j.chips.map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('') + '</div>';
+      jc.map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('') + '</div>';
   }
   body += '<div class="jdh">为什么匹配你</div><div class="jdtxt">' + (j.why || '暂无匹配说明') + '</div>';
   body += '<div class="jdn">招聘站的列表页只给到上面这些字段，完整岗位职责与任职要求得点下面按钮去原站看——我不替你编。</div>';
@@ -2688,7 +2690,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112n';
+var BUILD = '20261112o';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
