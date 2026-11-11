@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11 20:56",
+  "updated": "2026-11-11 21:02",
   "round": 0,
   "bossCount": 50,
   "newCount": 106,
@@ -7,7 +7,7 @@
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 50,
-  "evicted": 109,
+  "evicted": 112,
   "jobs": [
     {
       "id": 1,
@@ -32,8 +32,8 @@
       "link": "https://msearch.51job.com/jobs/ankang-hyx/173078150.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -122,8 +122,8 @@
       "link": "https://msearch.51job.com/jobs/ankang/164425763.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -182,8 +182,8 @@
       "link": "https://msearch.51job.com/jobs/ankang/172790728.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -406,6 +406,38 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174197448.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
+      "firstSeen": "2026-11-11 20:15",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 14,
+      "city": "sz",
+      "co": "（用人单位未展示）",
+      "coTag": "",
+      "role": "非标自动化机械工程师",
+      "area": "",
+      "exp": "3年及以上",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "1.5-2万",
+      "payNote": "",
+      "score": 69,
+      "g": "near",
+      "cls": "g",
+      "chips": [
+        "10 年非标治具与非标自"
+      ],
+      "why": "岗位要求里的10 年非标治具与非标自动化设备开发，你都实打实做过；学历「大专」，不设门槛；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
+      "msg": "您好，看到贵司在招「非标自动化机械工程师」。我有 16 年非标自动化机械设计经验，其中10 年非标治具与非标自动化设备开发；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/shenzhen-baq/174197448.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/shenzhen-baq/174197448.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
       "addAt": "2026-11-11 20:15",
       "lastSeen": "2026-11-11 20:15",
       "firstSeen": "2026-11-11 20:15",
@@ -414,7 +446,7 @@
       "在榜天数": 0
     },
     {
-      "id": 14,
+      "id": 15,
       "city": "sz",
       "co": "深圳市大族数控科技",
       "coTag": "",
@@ -438,15 +470,15 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174193805.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:33",
-      "lastSeen": "2026-11-11 20:33",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 18:59",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 15,
+      "id": 16,
       "city": "sz",
       "co": "深圳市诺航自动化科技",
       "coTag": "",
@@ -478,7 +510,7 @@
       "在榜天数": 0
     },
     {
-      "id": 16,
+      "id": 17,
       "city": "sz",
       "co": "（用人单位未展示）",
       "coTag": "",
@@ -510,7 +542,7 @@
       "在榜天数": 0
     },
     {
-      "id": 17,
+      "id": 18,
       "city": "sz",
       "co": "深圳市智信精密仪器",
       "coTag": "",
@@ -542,7 +574,7 @@
       "在榜天数": 0
     },
     {
-      "id": 18,
+      "id": 19,
       "city": "sz",
       "co": "珠海锐翔智能科技",
       "coTag": "",
@@ -574,7 +606,7 @@
       "在榜天数": 0
     },
     {
-      "id": 19,
+      "id": 20,
       "city": "sz",
       "co": "兴禾豪自动化设备（深圳）",
       "coTag": "",
@@ -606,7 +638,7 @@
       "在榜天数": 0
     },
     {
-      "id": 20,
+      "id": 21,
       "city": "sz",
       "co": "日东智能装备科技（深圳）",
       "coTag": "",
@@ -638,7 +670,7 @@
       "在榜天数": 0
     },
     {
-      "id": 21,
+      "id": 22,
       "city": "sz",
       "co": "大族激光科技产业集团",
       "coTag": "",
@@ -670,7 +702,7 @@
       "在榜天数": 0
     },
     {
-      "id": 22,
+      "id": 23,
       "city": "sz",
       "co": "深圳天鼎新材料",
       "coTag": "",
@@ -702,7 +734,7 @@
       "在榜天数": 0
     },
     {
-      "id": 23,
+      "id": 24,
       "city": "sz",
       "co": "大族激光科技产业集团",
       "coTag": "",
@@ -734,7 +766,7 @@
       "在榜天数": 0
     },
     {
-      "id": 24,
+      "id": 25,
       "city": "sz",
       "co": "深圳市青虹激光科技",
       "coTag": "",
@@ -766,7 +798,7 @@
       "在榜天数": 0
     },
     {
-      "id": 25,
+      "id": 26,
       "city": "sz",
       "co": "海目星激光科技集团",
       "coTag": "",
@@ -798,7 +830,7 @@
       "在榜天数": 0
     },
     {
-      "id": 26,
+      "id": 27,
       "city": "sz",
       "co": "软通动力",
       "coTag": "",
@@ -822,15 +854,15 @@
       "link": "https://www.liepin.com/job/1985020215.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 27,
+      "id": 28,
       "city": "sz",
       "co": "丰宾电子科技股份有限公司",
       "coTag": "",
@@ -854,15 +886,15 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 28,
+      "id": 29,
       "city": "sz",
       "co": "大族激光智能装备集团有限公司",
       "coTag": "",
@@ -886,15 +918,15 @@
       "link": "https://www.liepin.com/job/1986248617.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 29,
+      "id": 30,
       "city": "sz",
       "co": "深圳市创世纪机械有限公司",
       "coTag": "",
@@ -918,15 +950,15 @@
       "link": "https://www.liepin.com/job/1986448143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 30,
+      "id": 31,
       "city": "sz",
       "co": "茂名茂南东粤万达广场商业运营管理",
       "coTag": "",
@@ -958,7 +990,7 @@
       "在榜天数": 0
     },
     {
-      "id": 31,
+      "id": 32,
       "city": "sz",
       "co": "深圳市伟鹏世纪科技",
       "coTag": "",
@@ -990,7 +1022,7 @@
       "在榜天数": 0
     },
     {
-      "id": 32,
+      "id": 33,
       "city": "sz",
       "co": "深圳市圆朗智能科技",
       "coTag": "",
@@ -1022,7 +1054,7 @@
       "在榜天数": 0
     },
     {
-      "id": 33,
+      "id": 34,
       "city": "sz",
       "co": "深圳曼顿科技",
       "coTag": "",
@@ -1054,7 +1086,7 @@
       "在榜天数": 0
     },
     {
-      "id": 34,
+      "id": 35,
       "city": "sz",
       "co": "深圳从平技术",
       "coTag": "",
@@ -1078,15 +1110,15 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174193366.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:21",
-      "lastSeen": "2026-11-11 20:21",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 35,
+      "id": 36,
       "city": "sz",
       "co": "深圳市元特科技",
       "coTag": "",
@@ -1118,7 +1150,7 @@
       "在榜天数": 0
     },
     {
-      "id": 36,
+      "id": 37,
       "city": "sz",
       "co": "菲托斯三维科技（苏州）",
       "coTag": "",
@@ -1150,7 +1182,7 @@
       "在榜天数": 0
     },
     {
-      "id": 37,
+      "id": 38,
       "city": "sz",
       "co": "深圳市奇力电子",
       "coTag": "",
@@ -1182,7 +1214,7 @@
       "在榜天数": 0
     },
     {
-      "id": 38,
+      "id": 39,
       "city": "sz",
       "co": "深圳爱克莱特科技",
       "coTag": "",
@@ -1214,7 +1246,7 @@
       "在榜天数": 0
     },
     {
-      "id": 39,
+      "id": 40,
       "city": "sz",
       "co": "锦好医疗",
       "coTag": "",
@@ -1238,15 +1270,75 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 40,
+      "id": 41,
+      "city": "sz",
+      "co": "深圳市创科达精密机电",
+      "coTag": "",
+      "role": "结构设计工程师",
+      "area": "深圳·龙华区",
+      "exp": "3年及以上",
+      "edu": "本科",
+      "eduOk": true,
+      "pay": "1-1.6万·13薪",
+      "payNote": "",
+      "score": 49,
+      "g": "near",
+      "cls": "g",
+      "chips": [],
+      "why": "这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投；学历标「本科」，只是明面要求，你 16 年非标经验＋作品集可以硬顶，投不投你自己定；薪资上限 1-1.6万·13薪，是这块的天花板档，值得优先投；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
+      "msg": "您好，看到贵司在招「结构设计工程师」。我有 16 年非标自动化机械设计经验，主做 ICT/FCT 测试治具与非标整机方案；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/shenzhen-baq/174196142.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/shenzhen-baq/174196142.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
+      "firstSeen": "2026-11-11 21:02",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 42,
+      "city": "sz",
+      "co": "科讯工业制造（深圳）",
+      "coTag": "",
+      "role": "玻璃切割结构工程师",
+      "area": "深圳·龙岗区",
+      "exp": "2-5年",
+      "edu": "大专",
+      "eduOk": true,
+      "pay": "1.3-1.6万",
+      "payNote": "",
+      "score": 49,
+      "g": "near",
+      "cls": "g",
+      "chips": [],
+      "why": "这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投；学历「大专」，不设门槛；薪资上限 1.3-1.6万，是这块的天花板档，值得优先投；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
+      "msg": "您好，看到贵司在招「玻璃切割结构工程师」。我有 16 年非标自动化机械设计经验，主做 ICT/FCT 测试治具与非标整机方案；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/shenzhen-lhq/174187526.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/shenzhen-lhq/174187526.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
+      "firstSeen": "2026-11-11 21:02",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 43,
       "city": "sz",
       "co": "欣旺达电子",
       "coTag": "",
@@ -1276,7 +1368,7 @@
       "在榜天数": 0
     },
     {
-      "id": 41,
+      "id": 44,
       "city": "sz",
       "co": "深圳市圆朗智能科技",
       "coTag": "",
@@ -1306,7 +1398,7 @@
       "在榜天数": 0
     },
     {
-      "id": 42,
+      "id": 45,
       "city": "sz",
       "co": "深圳市圆朗智能科技",
       "coTag": "",
@@ -1336,7 +1428,7 @@
       "在榜天数": 0
     },
     {
-      "id": 43,
+      "id": 46,
       "city": "sz",
       "co": "深圳市永成光电子",
       "coTag": "",
@@ -1358,15 +1450,15 @@
       "link": "https://msearch.51job.com/jobs/shenzhen/174185010.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:51",
-      "lastSeen": "2026-11-11 20:51",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 20:15",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 44,
+      "id": 47,
       "city": "sz",
       "co": "深圳市大族数控科技",
       "coTag": "",
@@ -1396,7 +1488,7 @@
       "在榜天数": 0
     },
     {
-      "id": 45,
+      "id": 48,
       "city": "sz",
       "co": "珠海锐翔智能科技",
       "coTag": "",
@@ -1418,15 +1510,15 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-baq/174197196.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:51",
-      "lastSeen": "2026-11-11 20:51",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 19:29",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 46,
+      "id": 49,
       "city": "sz",
       "co": "深圳市伟鹏世纪科技",
       "coTag": "",
@@ -1456,7 +1548,7 @@
       "在榜天数": 0
     },
     {
-      "id": 47,
+      "id": 50,
       "city": "sz",
       "co": "深圳市创科达精密机电",
       "coTag": "",
@@ -1486,7 +1578,7 @@
       "在榜天数": 0
     },
     {
-      "id": 48,
+      "id": 51,
       "city": "sz",
       "co": "深圳市大族数控科技",
       "coTag": "",
@@ -1516,7 +1608,7 @@
       "在榜天数": 0
     },
     {
-      "id": 49,
+      "id": 52,
       "city": "sz",
       "co": "深圳市诺航自动化科技",
       "coTag": "",
@@ -1546,7 +1638,7 @@
       "在榜天数": 0
     },
     {
-      "id": 50,
+      "id": 53,
       "city": "sz",
       "co": "深圳市富恒通科技",
       "coTag": "",
@@ -1576,7 +1668,7 @@
       "在榜天数": 0
     },
     {
-      "id": 51,
+      "id": 54,
       "city": "sz",
       "co": "深圳市富恒通科技",
       "coTag": "",
@@ -1606,7 +1698,7 @@
       "在榜天数": 0
     },
     {
-      "id": 52,
+      "id": 55,
       "city": "sz",
       "co": "深圳市新圳宇科技开发",
       "coTag": "",
@@ -1628,15 +1720,15 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-lgq/174187168.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:15",
-      "lastSeen": "2026-11-11 20:15",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 18:11",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 53,
+      "id": 56,
       "city": "sz",
       "co": "深圳市鼎耀科技",
       "coTag": "",
@@ -1658,99 +1750,9 @@
       "link": "https://msearch.51job.com/jobs/shenzhen-nsq/174189458.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 20:15",
-      "lastSeen": "2026-11-11 20:15",
+      "addAt": "2026-11-11 21:02",
+      "lastSeen": "2026-11-11 21:02",
       "firstSeen": "2026-11-11 18:11",
-      "isNew": true,
-      "stale": true,
-      "在榜天数": 0
-    },
-    {
-      "id": 54,
-      "city": "sz",
-      "co": "茂名茂南东粤万达广场商业运营管理",
-      "coTag": "",
-      "role": "结构工程师",
-      "area": "深圳·龙华区",
-      "exp": "5年及以上",
-      "edu": "大专",
-      "eduOk": true,
-      "pay": "1.5-2.5万",
-      "payNote": "",
-      "score": 49,
-      "g": "near",
-      "cls": "g",
-      "chips": [],
-      "why": "这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投；学历「大专」，不设门槛；薪资上限 1.5-2.5万，是这块的天花板档，值得优先投；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
-      "msg": "您好，看到贵司在招「结构工程师」。我有 16 年非标自动化机械设计经验，主做 ICT/FCT 测试治具与非标整机方案；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
-      "src": "前程无忧",
-      "srcUrl": "https://msearch.51job.com/jobs/shenzhen-lhq/174196813.html?rc=czzpzqlb_",
-      "link": "https://msearch.51job.com/jobs/shenzhen-lhq/174196813.html?rc=czzpzqlb_",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-11 19:58",
-      "lastSeen": "2026-11-11 19:58",
-      "firstSeen": "2026-11-11 18:11",
-      "isNew": true,
-      "stale": true,
-      "在榜天数": 0
-    },
-    {
-      "id": 55,
-      "city": "sz",
-      "co": "深圳从平技术",
-      "coTag": "",
-      "role": "镜头结构设计工程师",
-      "area": "深圳·南山区",
-      "exp": "5年及以上",
-      "edu": "本科",
-      "eduOk": true,
-      "pay": "1.8-2.5万·13薪",
-      "payNote": "",
-      "score": 49,
-      "g": "near",
-      "cls": "g",
-      "chips": [],
-      "why": "这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投；学历标「本科」，只是明面要求，你 16 年非标经验＋作品集可以硬顶，投不投你自己定；薪资上限 1.8-2.5万·13薪，是这块的天花板档，值得优先投；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
-      "msg": "您好，看到贵司在招「镜头结构设计工程师」。我有 16 年非标自动化机械设计经验，主做 ICT/FCT 测试治具与非标整机方案；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
-      "src": "前程无忧",
-      "srcUrl": "https://msearch.51job.com/jobs/shenzhen-lgq/174187168.html?rc=czzpzqlb_",
-      "link": "https://msearch.51job.com/jobs/shenzhen-lgq/174187168.html?rc=czzpzqlb_",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-11 19:46",
-      "lastSeen": "2026-11-11 19:46",
-      "firstSeen": "2026-11-11 18:00",
-      "isNew": true,
-      "stale": true,
-      "在榜天数": 0
-    },
-    {
-      "id": 56,
-      "city": "sz",
-      "co": "融智通略管理咨询(深圳)有限公司",
-      "coTag": "",
-      "role": "电机研发工程师（结构设计）",
-      "area": "宝安区",
-      "exp": "5年以上",
-      "edu": "本科",
-      "eduOk": true,
-      "pay": "20-40k",
-      "payNote": "",
-      "score": 49,
-      "g": "near",
-      "cls": "g",
-      "chips": [],
-      "why": "这个岗和你非标自动化/结构设计的主线沾边，但没命中硬技能，属于保守试投；学历标「本科」，只是明面要求，你 16 年非标经验＋作品集可以硬顶，投不投你自己定；薪资上限 20-40k，是这块的天花板档，值得优先投；在深圳，你 2011-2022 年一直在深圳做这行，回来就能上手。",
-      "msg": "您好，看到贵司在招「电机研发工程师(结构设计)」。我有 16 年非标自动化机械设计经验，主做 ICT/FCT 测试治具与非标整机方案；SolidWorks 建模出图、BOM 和整机装配调试都能独立跟。在深圳做了十多年这行，回来就能上手，学历是大专，想先把简历和作品集发您看看，方便的话约个时间聊。",
-      "src": "猎聘",
-      "srcUrl": "https://www.liepin.com/job/1985580753.shtml",
-      "link": "https://www.liepin.com/job/1985580753.shtml",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-11 20:56",
-      "lastSeen": "2026-11-11 20:56",
-      "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
       "在榜天数": 0
