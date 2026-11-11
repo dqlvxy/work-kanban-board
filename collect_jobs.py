@@ -359,11 +359,17 @@ def on_board_days(j, now):
     return max(0, int((now - t).total_seconds() / 86400.0))
 
 def rank_key(j, now):
-    """主序＝首次收录时间倒序：越晚出现的岗位越靠前，新岗位直接把旧岗位挤到后面。
-    次序＝同批内按匹配度。来源（BOSS／猎聘／51job）完全不参与排序，没有任何置顶。"""
+    """排序规则（2026-11-11 杜哥定，压过旧的「最新收录优先」）：
+    ① 来源优先 —— BOSS直聘（含收录快照 / 岗位池）永远排在其它源前面；
+    ② 组内按简历匹配度 score 降序 —— 越贴杜全龙非标自动化/治具主线的越靠前；
+    ③ 同分再按首次收录时间倒序（新的在前）；
+    ④ 最后按公司名，保证结果稳定可复现。
+    注意：score 必须两套口径可比 —— BOSS 快照由 import_boss_snapshot.py 算、
+    外部源由 judge() 算，均落在 35~97 区间。"""
     t = seen_time(j)
-    return (-(t.timestamp() if t else 0),
+    return (0 if is_boss(j) else 1,
             -int(j.get("score") or 0),
+            -(t.timestamp() if t else 0),
             j.get("co") or "")
 
 def main():
