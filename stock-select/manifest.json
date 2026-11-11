@@ -1,0 +1,23 @@
+{
+  "id": "/work-kanban-board/stock-select/",
+  "name": "A股选股看板",
+  "short_name": "选股看板",
+  "description": "A股选股信号与行情看板",
+  "start_url": "/work-kanban-board/stock-select/",
+  "scope": "/work-kanban-board/stock-select/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#0b0f1d",
+  "theme_color": "#0b0f1d",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "./icon-board-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-board-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-board-mask-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icon-board-mask-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "version": "1.0.0"
+}
