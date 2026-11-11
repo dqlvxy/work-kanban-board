@@ -2688,7 +2688,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112m';
+var BUILD = '20261112n';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2798,15 +2798,28 @@ document.getElementById('upd').textContent = upShort;
 document.getElementById('upd2').textContent = upTxt;
 document.getElementById('h1n').innerHTML = (DATA.jobs.length - Object.keys(getAp()).length) + '<small>家</small>';
 
+/* 薪资上限统一解析：支持 "15-30K" / "1.2-1.8万" / "15000-30000元" */
+function payHi(j){
+  var p = String(j.pay || '');
+  var m = p.match(/(\d+(?:\.\d+)?)\s*[-~至]\s*(\d+(?:\.\d+)?)\s*[Kk]/);
+  if (m) return Math.round(parseFloat(m[2]) * 1000);
+  m = p.match(/(\d+(?:\.\d+)?)\s*[-~至]\s*(\d+(?:\.\d+)?)\s*万/);
+  if (m) return Math.round(parseFloat(m[2]) * 10000);
+  m = p.match(/(\d+)\s*[-~至]\s*(\d+)/);
+  if (m) return parseInt(m[2], 10);
+  m = p.match(/(\d+(?:\.\d+)?)\s*[Kk]/);
+  if (m) return Math.round(parseFloat(m[1]) * 1000);
+  return 0;
+}
+
 function maxPayOf(city){
   var mx = 0;
   byCity(city).forEach(function(j){
-    var m = String(j.pay).match(/(\d+)\s*-\s*(\d+)K/);
-    if (m){ var hi = parseInt(m[2],10); if (hi > mx) mx = hi; }
-    else if (j.payNote){
-      var m2 = String(j.payNote).match(/(\d+)\s*-\s*(\d+)K/);
-      if (m2){ var hi2 = parseInt(m2[2],10); if (hi2 > mx) mx = hi2; }
-    }
+    var c = {};
+    for (var k in j) c[k] = j[k];
+    if (!c.pay && j.payNote) c.pay = j.payNote;
+    var hi = Math.round(payHi(c) / 1000);
+    if (hi > mx) mx = hi;
   });
   return mx;
 }
@@ -2952,9 +2965,8 @@ function 渲染概览图表(){
 
   var band = [0,0,0,0], names = ['10K以下', '10-15K', '15-20K', '20K以上'];
   all.forEach(function(j){
-    var nums = String(j.pay || '').match(/\d+/g);
-    if (!nums || !nums.length) return;
-    var hi = Math.max.apply(null, nums.map(Number));
+    var hi = payHi(j);
+    if (!hi) return;
     if (hi <= 10000) band[0]++; else if (hi <= 15000) band[1]++; else if (hi <= 20000) band[2]++; else band[3]++;
   });
   var mx3 = Math.max.apply(null, band.concat([1]));
