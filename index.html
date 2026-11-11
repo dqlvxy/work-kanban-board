@@ -2344,7 +2344,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111s';
+var BUILD = '20261111t';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2372,6 +2372,33 @@ loadData();
 /* 数据在云上：启动即从云端 jobs.json 读最新快照，内嵌数据只作断网兜底 */
 __上次更新时间 = DATA.updated;
 拉最新数据();
+
+/* 打开即追新：云端每 5 分钟采一次，页面打开后若数据偏旧，就隔一会儿再拉，拿到新的就停 */
+var __追新轮 = 0;
+function 数据旧了吗(){
+  try{
+    var u = (DATA.updated || '').replace(' ', 'T');
+    var tt = Date.parse(u + ':00+08:00');
+    if (!tt) return true;
+    return (Date.now() - tt) > 6 * 60 * 1000;
+  }catch(e){ return true; }
+}
+function 追新(){
+  if (__追新轮 >= 3) return;
+  __追新轮++;
+  var 延迟 = __追新轮 === 1 ? 18000 : 45000;
+  setTimeout(function(){
+    var 旧值 = __上次更新时间;
+    var st = document.getElementById('stText');
+    if (st && 数据旧了吗()) st.textContent = '正在向云端要最新的…';
+    拉最新数据();
+    setTimeout(function(){
+      if (__上次更新时间 === 旧值) 追新();
+      else { __追新轮 = 0; if (st) st.textContent = '已同步到最新岗位'; }
+    }, 7000);
+  }, 延迟);
+}
+if (数据旧了吗()) 追新();
 
 /* 主题：默认跟随系统，记住上次选择 */
 var 存的主题 = null;
