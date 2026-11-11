@@ -2354,7 +2354,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261111y';
+var BUILD = '20261111z';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2411,32 +2411,6 @@ function 追新(){
   }, 延迟);
 }
 if (数据旧了吗()) 追新();
-
-/* 打开即催：向 Cloudflare Worker 发一次请求，让云端当场跑一轮采集
-   服务端 55 秒节流，页面只催一次；网络不通或被拦就静默跳过，不影响页面 */
-var POKE = 'https://work-poke.astock-board.workers.dev/';
-var __催过 = false;
-function 催云端(){
-  if (__催过) return;
-  __催过 = true;
-  var 分钟 = String(Math.floor(Date.now() / 60000));
-  try{
-    if (sessionStorage.getItem('du_poke') === 分钟) return;
-    sessionStorage.setItem('du_poke', 分钟);
-  }catch(e){}
-  try{
-    var ctl = ('AbortController' in window) ? new AbortController() : null;
-    var tm = ctl ? setTimeout(function(){ ctl.abort(); }, 6000) : null;
-    /* Worker 未配 CORS 头：no-cors 只发请求、不读响应，避免控制台报错 */
-    var opts = { mode: 'no-cors', cache: 'no-store' };
-    if (ctl) opts.signal = ctl.signal;
-    /* Worker 已由手机豆包 12:54 判定不可达：保留静默触发，不显示误导提示 */
-    fetch(POKE + '?t=' + Date.now(), opts)
-      .catch(function(){})
-      .then(function(){ if (tm) clearTimeout(tm); });
-  }catch(e){}
-}
-催云端();
 
 /* 主题：默认跟随系统，记住上次选择 */
 var 存的主题 = null;
