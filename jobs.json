@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11 16:07",
+  "updated": "2026-11-11 16:13",
   "round": 0,
   "bossCount": 50,
   "newCount": 104,
@@ -7,7 +7,7 @@
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 50,
-  "evicted": 125,
+  "evicted": 110,
   "jobs": [
     {
       "id": 1,
@@ -32,8 +32,8 @@
       "link": "https://msearch.51job.com/jobs/ankang-hyx/173078150.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 12:31",
       "isNew": true,
       "stale": false,
@@ -92,8 +92,8 @@
       "link": "https://msearch.51job.com/jobs/ankang/164425763.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -122,8 +122,8 @@
       "link": "https://msearch.51job.com/jobs/ankang/172790728.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -190,7 +190,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 14:43",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -350,7 +350,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -570,8 +570,8 @@
       "link": "https://www.liepin.com/job/1985020215.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -602,8 +602,8 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -634,8 +634,8 @@
       "link": "https://www.liepin.com/job/1986248617.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -666,8 +666,8 @@
       "link": "https://www.liepin.com/job/1986448143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -702,7 +702,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -858,8 +858,8 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-11 16:07",
-      "lastSeen": "2026-11-11 16:07",
+      "addAt": "2026-11-11 16:13",
+      "lastSeen": "2026-11-11 16:13",
       "firstSeen": "2026-11-11 11:26",
       "isNew": true,
       "stale": false,
@@ -892,7 +892,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -922,7 +922,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -952,7 +952,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -982,7 +982,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 16:07",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1372,7 +1372,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 15:25",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1492,7 +1492,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 15:13",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
@@ -1522,7 +1522,7 @@
       "lastSeen": "2026-11-11 16:07",
       "firstSeen": "2026-11-11 15:13",
       "isNew": true,
-      "stale": false,
+      "stale": true,
       "在榜天数": 0
     },
     {
