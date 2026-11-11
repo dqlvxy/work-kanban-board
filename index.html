@@ -1760,6 +1760,7 @@ function byCity(city){
 }
 
 var jobFilter = { xa:'all', sz:'all', ak:'all' };
+var SRCTOP = {};
 
 function renderJobs(city, filter){
   if (arguments.length === 1){ filter = jobFilter[city] || 'all'; }
@@ -1769,7 +1770,7 @@ function renderJobs(city, filter){
   var list = byCity(city).filter(function(j){
     if (filter === 'all') return true;
     if (filter === 'high') return j.score >= 80;
-    if (filter === 'boss') return j.src === 'BOSS直聘';
+    if (filter === 'boss') return j.src === (SRCTOP[city] || 'BOSS直聘');
     return j.g === filter;
   });
   if (!list.length){
@@ -2692,7 +2693,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112t';
+var BUILD = '20261112u';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -2918,7 +2919,14 @@ function renderChips(city){
     if(!b.dataset.label) b.dataset.label=(b.textContent||'').replace(/\s*\d+\s*$/,'').trim();
     var f=b.dataset.f, n=0;
     if(f==='all') n=list.length;
-    else if(f==='boss') n=list.filter(function(j){return j.src==='BOSS直聘';}).length;
+    else if(f==='boss'){
+      var cnt={}; list.forEach(function(j){ var k=j.src||'其他'; cnt[k]=(cnt[k]||0)+1; });
+      var top='BOSS直聘', tv=-1;
+      Object.keys(cnt).forEach(function(k){ if(cnt[k]>tv){ tv=cnt[k]; top=k; } });
+      SRCTOP[city]=top;
+      b.dataset.label=top;
+      n=tv;
+    }
     else if(f==='high') n=list.filter(function(j){return (j.score||0)>=80;}).length;
     else if(f==='low') n=list.filter(function(j){return (j.score||0)<65;}).length;
     else n=list.filter(function(j){return j.g===f;}).length;
