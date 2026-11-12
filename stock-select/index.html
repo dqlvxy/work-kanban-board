@@ -8022,7 +8022,7 @@ function fetchSectorFund(){
 
 function renderSectorFlow(data){
   var box=document.getElementById("sectorBox"); if(!box) return;
-  if(arguments.length===0) data = (T1D && T1D.sectorFund);   /* 无参时取已存的真实资金流 */
+  if(arguments.length===0) data = (T1D && (T1D.sectorFund || T1D.sector_fund));   /* 无参时取已存的真实资金流；兼容快照字段名 sector_fund（下划线） */
   /* —— 真实口径：主力净流入（红）/ 净流出（绿） —— */
   if(data && data.rows && data.rows.length){
     var 是板块 = (data.口径 === "板块");
