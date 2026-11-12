@@ -582,6 +582,24 @@
 .srcrow i{font-style:normal;opacity:.9}
 .srcrow i b{font-weight:600;color:var(--text)}
 
+
+  /* ===== 自定义确认弹层（替掉浏览器原生 confirm 白框） ===== */
+  .cfmask{position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;padding:26px;
+    background:rgba(6,10,20,.58);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .cfmask.on{display:flex}
+  .cfcard{width:100%;max-width:326px;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:22px 20px 18px;box-shadow:0 26px 64px rgba(0,0,0,.38);animation:cfIn .22s cubic-bezier(.22,1.2,.36,1)}
+  @keyframes cfIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+  .cftitle{font-size:16.5px;font-weight:800;color:var(--text);letter-spacing:.2px;margin-bottom:9px}
+  .cfmsg{font-size:14px;line-height:1.65;color:var(--desc);margin-bottom:18px}
+  .cfbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cfbtn{height:46px;border-radius:13px;font-size:14.5px;font-weight:700;border:0;cursor:pointer;
+    font-family:inherit;transition:transform .12s ease,opacity .12s}
+  .cfbtn:active{transform:scale(.97);opacity:.9}
+  .cfcancel{background:var(--chip);color:var(--chip-txt);border:1px solid var(--line)}
+  .cfok{background:linear-gradient(135deg,var(--blue),#5a3fd6);color:#fff;font-weight:800;
+    box-shadow:0 6px 18px rgba(90,63,214,.28)}
+  .cfok.danger{background:linear-gradient(135deg,#ff7a7a,#d13a3a);box-shadow:0 6px 18px rgba(209,58,58,.3)}
 </style>
 </head>
 <body>
@@ -2110,8 +2128,37 @@ function apStateOf(j){
   }
   return null;
 }
-function delAp(id){
-  if (!confirm('彻底删掉这条？删了连同城列表也不会再出现。')) return;
+
+/* ===== 自定义确认弹层：替代原生 confirm ===== */
+var _cfResolve = null;
+function askConfirm(title, msg, okText, danger){
+  return new Promise(function(res){
+    _cfResolve = res;
+    var t = document.getElementById('cfTitle');
+    var m = document.getElementById('cfMsg');
+    var ok = document.getElementById('cfOk');
+    var cc = document.getElementById('cfCancel');
+    if (t) t.textContent = title || '确认操作';
+    if (m) m.textContent = msg || '';
+    if (ok) { ok.textContent = okText || '确定'; ok.className = 'cfbtn cfok' + (danger ? ' danger' : ''); }
+    if (cc) cc.textContent = danger ? '取消' : '取消';
+    document.getElementById('cfMask').classList.add('on');
+  });
+}
+function cfClose(v){
+  var mask = document.getElementById('cfMask');
+  if (mask) mask.classList.remove('on');
+  var r = _cfResolve; _cfResolve = null;
+  if (r) r(v);
+}
+document.addEventListener('click', function(e){
+  if (e.target && e.target.id === 'cfOk'){ cfClose(true); }
+  else if (e.target && e.target.id === 'cfCancel'){ cfClose(false); }
+  else if (e.target && e.target.id === 'cfMask'){ cfClose(false); }
+}, true);
+
+async function delAp(id){
+  if (!(await askConfirm('删除这条岗位？', '彻底删掉后，这条会进黑名单，连同城列表也不会再出现。', '删除', true))) return;
   var ap = getAp(), rec = ap[id], hd = getHd();
   var j = (rec && rec.job) || jobById(id);
   delete ap[id]; setAp(ap);
@@ -2231,8 +2278,8 @@ function copyTalk(btn, id){
   copyText(txt, function(ok){ toast(ok ? '话术已复制，去 BOSS 粘贴发送' : '复制失败，长按话术手动选'); });
 }
 
-function resetCk(){
-  if (confirm('清空全部已投档案？撤掉后这些岗位会回到原城市列表。')){
+async function resetCk(){
+  if (await askConfirm('清空已投档案？', '清空后这些岗位会全部回到原城市列表，仍可重新标记。', '清空', true)){
     setAp({});
     renderAp();
     renderJobs('xa'); renderJobs('sz'); renderJobs('ak');
@@ -2693,7 +2740,7 @@ function hardRefresh(){
 
 /* ================= 启动 ================= */
 /* 版本自检：云端页面一改，手机端自动换到最新版（避免桌面图标打开是旧页面） */
-var BUILD = '20261112z';
+var BUILD = '20261112aa';
 function 查版本(){
   try{
     var x = new XMLHttpRequest();
@@ -3019,5 +3066,16 @@ document.addEventListener('visibilitychange', function(){
   if (!document.hidden){ tick(); renderAp(); }
 });
 </script>
+
+<div class="cfmask" id="cfMask">
+  <div class="cfcard" role="dialog" aria-modal="true">
+    <div class="cftitle" id="cfTitle">确认操作</div>
+    <div class="cfmsg" id="cfMsg"></div>
+    <div class="cfbtns">
+      <button class="cfbtn cfcancel" id="cfCancel">取消</button>
+      <button class="cfbtn cfok" id="cfOk">确定</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
