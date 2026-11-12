@@ -3293,9 +3293,10 @@ function 拉云端温度(){
   if(现在 - __云端温时 < 3000) return;          /* 3 秒节流：与主定时器同频 */
   __云端温忙 = true; __云端温时 = 现在;
   /* file:// 场景（本地文件直接打开）无法走相对路径 → 回退主域绝对地址 */
-  var 址 = (location.protocol === "file:")
-    ? "https://astock-board-9t0.pages.dev/api/temp"
-    : "/api/temp";
+  /* 2026-11-12：旧 Cloudflare Pages 站（astock-board-9t0）与备份站已全部下线清理，
+     不再向任何旧域名发请求。统一走同源 /api/temp：GitHub Pages 下该路径为 404，
+     由 catch 静默并回落到 today.json 的 temperature 字段（口径同源、跨设备一致）。 */
+  var 址 = "/api/temp";
   /* 2026-10-23：把「涨跌分布」模块已经算好的涨/平/跌家数随请求带给云端温度（老板要求：
      这里明明有涨跌家数，别再重复取数）。家数由 拉全市场→涨跌分档 得出，每 3 秒随主定时器刷新；
      云端拿到 up/total 后按同款算法重算广度分，不再自行拉东财 clist（边缘常被限流，广度长期 null）。
@@ -7284,8 +7285,8 @@ function miniChart(rc){
 
 
 /* 本地文件打开时「添加到手机桌面」复制的线上地址。
-   用 pages.dev：它带 Cloudflare 边缘代理（真实资金流）+ PWA 资源（全屏），
-   且用户手机网络可正常访问；surge.sh 在部分手机网络下不可达，故不作首选。 */
+   2026-11-12 杜哥定案：唯一正式入口就是本 GitHub Pages 子站，
+   其余各域名的旧站与备份站全部删除清理，不再作为任何兜底入口。 */
 var 线上地址 = "https://dqlvxy.github.io/work-kanban-board/stock-select/";
 function 取安装地址(){
   try{
@@ -7979,8 +7980,9 @@ function vLadder(){
 function fetchSectorFund(){
   if(!T1D) T1D={};
   /* 根治方案：浏览器不再直连任何第三方域名（用户手机对东财/新浪均不可达）。
-     改为请求线上边缘代理（固定 pages.dev 绝对地址）的 /api/fund —— 由 Cloudflare Pages
-     Functions 在边缘节点服务端代取行情并回传，彻底绕开客户端网络限制。无论本地打开还是
+     改为请求同源 /api/fund —— 由边缘代理在服务端代取行情并回传，绕开客户端网络限制。
+     2026-11-12：旧 CF Pages 站已下线清理，GitHub Pages 下该路径为 404，
+     自动落到「云端 Actions 当日快照」，不再指向任何旧域名。无论本地打开还是
      手机打开本文件都能用，因为请求指向线上代理而非相对路径。代理失败才回退封单额口径。 */
   return new Promise(function(resolve){
     var 完=false;
@@ -7992,7 +7994,7 @@ function fetchSectorFund(){
     }
     var 已重试=false;
     function 拉代理(标签){
-      return fetch("https://astock-board-9t0.pages.dev/api/fund?t=" + Date.now() + 标签, { cache:"no-store", mode:"cors" })
+      return fetch("/api/fund?t=" + Date.now() + 标签, { cache:"no-store", mode:"cors" })
         .then(function(r){ return r.ok ? r.json() : Promise.reject(new Error("HTTP "+r.status)); })
         .then(function(d){ if(d && d.rows && d.rows.length) 收尾(d); else throw new Error("空数据"); });
     }
