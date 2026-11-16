@@ -2598,7 +2598,8 @@ function 一键安装(){
 /* ⑤ 装到桌面后独立启动 + 离线可用 */
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('sw.js', {scope: './'}).catch(function(){});
+    /* 2026-11-16：加版本闸，让「根 sw 让路子站」的新规则立刻装到手机，否则浏览器按 24h 更新策略会继续跑旧的串页逻辑 */
+    navigator.serviceWorker.register('sw.js?v=12', {scope: './', updateViaCache: 'none'}).then(function(reg){ try{ reg.update(); }catch(e){} }).catch(function(){});
   });
 }
 (function(){
