@@ -1,13 +1,13 @@
 {
-  "updated": "2026-11-19 13:44",
+  "updated": "2026-11-19 23:32",
   "round": 0,
   "bossCount": 90,
-  "newCount": 5,
+  "newCount": 6,
   "snapshotCount": 24,
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 120,
-  "evicted": 217,
+  "evicted": 228,
   "jobs": [
     {
       "id": 1,
@@ -41,8 +41,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -167,8 +167,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -203,8 +203,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -239,8 +239,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -275,8 +275,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -311,8 +311,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -347,8 +347,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -383,8 +383,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -419,8 +419,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -455,8 +455,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -491,8 +491,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -527,8 +527,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -563,8 +563,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -599,8 +599,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -635,8 +635,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -671,8 +671,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -707,8 +707,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -743,8 +743,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -779,8 +779,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -968,8 +968,8 @@
       "link": "https://www.liepin.com/job/1955777741.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -1000,8 +1000,8 @@
       "link": "https://www.liepin.com/job/1986680727.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -1192,8 +1192,8 @@
       "link": "https://www.liepin.com/job/1986104253.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 12:31",
       "isNew": false,
       "stale": false,
@@ -1224,8 +1224,8 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 11:26",
       "isNew": false,
       "stale": false,
@@ -1295,8 +1295,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1331,8 +1331,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1367,8 +1367,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1403,8 +1403,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1464,8 +1464,8 @@
       "link": "https://www.liepin.com/job/1984614715.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -1599,8 +1599,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1628,12 +1628,12 @@
       "link": "https://www.liepin.com/job/1932359901.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 49,
@@ -1660,8 +1660,8 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 11:26",
       "isNew": false,
       "stale": false,
@@ -1699,8 +1699,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1735,8 +1735,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1771,8 +1771,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1903,8 +1903,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1939,8 +1939,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -1975,8 +1975,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2011,8 +2011,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2047,8 +2047,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2147,8 +2147,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2183,8 +2183,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2219,8 +2219,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2255,8 +2255,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2291,8 +2291,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2327,8 +2327,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "在榜天数": 7
     },
     {
@@ -2356,12 +2356,12 @@
       "link": "https://www.liepin.com/job/1986590575.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 70,
@@ -2388,12 +2388,12 @@
       "link": "https://www.liepin.com/job/1986590525.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 71,
@@ -2420,12 +2420,12 @@
       "link": "https://www.liepin.com/job/1979108397.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 72,
@@ -2452,12 +2452,12 @@
       "link": "https://www.liepin.com/job/1973549051.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 73,
@@ -3380,8 +3380,8 @@
       "link": "https://www.liepin.com/job/1986373375.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -3412,8 +3412,8 @@
       "link": "https://www.liepin.com/job/1986698053.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -3444,8 +3444,8 @@
       "link": "https://www.liepin.com/job/1986599105.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -3476,8 +3476,8 @@
       "link": "https://www.liepin.com/job/1986686841.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -3508,8 +3508,8 @@
       "link": "https://www.liepin.com/job/1986668685.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -4116,8 +4116,8 @@
       "link": "https://www.liepin.com/job/1985580753.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 12:31",
       "isNew": false,
       "stale": false,
@@ -4166,7 +4166,7 @@
       "isNew": false,
       "stale": false,
       "id": 125,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -4771,11 +4771,11 @@
       "link": "https://msearch.51job.com/jobs/xian-ytq/174231187.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 08:06",
-      "lastSeen": "2026-11-19 08:06",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-19 08:06",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -4872,7 +4872,7 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
       "id": 143,
@@ -4904,7 +4904,7 @@
       "firstSeen": "2026-11-13 22:28",
       "isNew": false,
       "stale": true,
-      "在榜天数": 5
+      "在榜天数": 6
     },
     {
       "id": 144,
@@ -4931,12 +4931,12 @@
       "link": "https://www.liepin.com/job/1982154183.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "id": 145,
@@ -4963,12 +4963,12 @@
       "link": "https://www.liepin.com/job/1967757143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "id": 146,
@@ -4995,12 +4995,12 @@
       "link": "https://www.liepin.com/job/1985789719.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "id": 147,
@@ -5072,7 +5072,7 @@
       "isNew": false,
       "stale": false,
       "id": 148,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -5153,7 +5153,7 @@
       "isNew": false,
       "stale": false,
       "id": 150,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -5289,7 +5289,7 @@
       "公司名未显示": false,
       "质量分": 36,
       "id": 153,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "id": 154,
@@ -5353,7 +5353,7 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
       "id": 156,
@@ -5385,7 +5385,7 @@
       "firstSeen": "2026-11-14 21:16",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 157,
@@ -5417,7 +5417,7 @@
       "firstSeen": "2026-11-14 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 158,
@@ -5513,10 +5513,42 @@
       "firstSeen": "2026-11-11 18:11",
       "isNew": false,
       "stale": true,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
       "id": 161,
+      "city": "xa",
+      "co": "福建省威诺数控",
+      "coTag": "",
+      "role": "非标机械工程师",
+      "area": "西安",
+      "exp": "1-5年",
+      "edu": "本科",
+      "eduOk": true,
+      "pay": "1-2万",
+      "payNote": "",
+      "score": 84,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "10 年非标治具与非标自"
+      ],
+      "why": "岗位要求里的10 年非标治具与非标自动化设备开发，你都实打实做过；在西安，正是你简历写的期望城市。",
+      "msg": "您好，看到贵司在招「非标机械工程师」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/xian-hyq/173021075.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/xian-hyq/173021075.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
+      "firstSeen": "2026-11-19 23:32",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 162,
       "city": "xa",
       "co": "南通华茂电力科技",
       "coTag": "",
@@ -5543,12 +5575,12 @@
       "addAt": "2026-11-18 23:26",
       "lastSeen": "2026-11-18 23:26",
       "firstSeen": "2026-11-18 23:26",
-      "isNew": true,
+      "isNew": false,
       "stale": true,
-      "在榜天数": 0
+      "在榜天数": 1
     },
     {
-      "id": 162,
+      "id": 163,
       "city": "xa",
       "co": "合肥瑞识智能科技",
       "coTag": "",
@@ -5575,12 +5607,12 @@
       "addAt": "2026-11-18 23:26",
       "lastSeen": "2026-11-18 23:26",
       "firstSeen": "2026-11-18 23:26",
-      "isNew": true,
+      "isNew": false,
       "stale": true,
-      "在榜天数": 0
+      "在榜天数": 1
     },
     {
-      "id": 163,
+      "id": 164,
       "city": "xa",
       "co": "陕西至正德鑫机器人技术",
       "coTag": "",
@@ -5612,7 +5644,7 @@
       "在榜天数": 1
     },
     {
-      "id": 164,
+      "id": 165,
       "city": "xa",
       "co": "维美德造纸机械技术（中国）",
       "coTag": "",
@@ -5644,7 +5676,7 @@
       "在榜天数": 1
     },
     {
-      "id": 165,
+      "id": 166,
       "city": "xa",
       "co": "苏州达蒙德半导体科技",
       "coTag": "",
@@ -5676,7 +5708,7 @@
       "在榜天数": 1
     },
     {
-      "id": 166,
+      "id": 167,
       "city": "xa",
       "co": "陕西固勤材料技术",
       "coTag": "",
@@ -5705,10 +5737,10 @@
       "firstSeen": "2026-11-16 23:23",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 167,
+      "id": 168,
       "city": "xa",
       "co": "ABB（中国）",
       "coTag": "",
@@ -5737,10 +5769,10 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 168,
+      "id": 169,
       "city": "xa",
       "co": "昆山宏泰博数控刀具",
       "coTag": "",
@@ -5769,10 +5801,10 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 169,
+      "id": 170,
       "city": "xa",
       "co": "西安外科医学科技",
       "coTag": "",
@@ -5804,7 +5836,7 @@
       "在榜天数": 3
     },
     {
-      "id": 170,
+      "id": 171,
       "city": "xa",
       "co": "陕西凯瑞宏星电器",
       "coTag": "",
@@ -5833,10 +5865,10 @@
       "firstSeen": "2026-11-15 21:45",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 171,
+      "id": 172,
       "city": "xa",
       "co": "晟光硅研",
       "coTag": "",
@@ -5860,15 +5892,15 @@
       "link": "https://www.liepin.com/job/1986159467.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 172,
+      "id": 173,
       "city": "xa",
       "co": "BYD",
       "coTag": "",
@@ -5900,7 +5932,7 @@
       "在榜天数": 8
     },
     {
-      "id": 173,
+      "id": 174,
       "city": "xa",
       "co": "BYD",
       "coTag": "",
@@ -5973,8 +6005,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 174,
-      "在榜天数": 7
+      "id": 175,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -6018,8 +6050,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 175,
-      "在榜天数": 7
+      "id": 176,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -6063,8 +6095,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 176,
-      "在榜天数": 7
+      "id": 177,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -6109,8 +6141,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 177,
-      "在榜天数": 7
+      "id": 178,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -6146,7 +6178,7 @@
       "msg": "您好，看到贵司在招「机械结构设计工程师(半导体设备)」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
       "dataAt": "2026-11-11",
       "_srcPages": "机械传动结构工程师、机械结构设计",
-      "id": 178,
+      "id": 179,
       "stale": false,
       "在榜天数": 8,
       "isNew": false,
@@ -6194,7 +6226,7 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 179,
+      "id": 180,
       "在榜天数": 8
     },
     {
@@ -6234,7 +6266,7 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 180,
+      "id": 181,
       "在榜天数": 8
     },
     {
@@ -6280,7 +6312,7 @@
       "质量分": 42,
       "isNew": false,
       "stale": false,
-      "id": 181,
+      "id": 182,
       "在榜天数": 8
     },
     {
@@ -6326,7 +6358,7 @@
       "质量分": 42,
       "isNew": false,
       "stale": false,
-      "id": 182,
+      "id": 183,
       "在榜天数": 8
     },
     {
@@ -6372,7 +6404,7 @@
       "质量分": 52,
       "isNew": false,
       "stale": false,
-      "id": 183,
+      "id": 184,
       "在榜天数": 8
     },
     {
@@ -6412,11 +6444,43 @@
       "stale": false,
       "firstSeen": "2026-11-11 11:09",
       "lastSeen": "2026-11-11 11:09",
-      "id": 184,
+      "id": 185,
       "在榜天数": 8
     },
     {
-      "id": 185,
+      "id": 186,
+      "city": "xa",
+      "co": "苏州达蒙德半导体科技",
+      "coTag": "",
+      "role": "机械工程师（结构设计方向）急招",
+      "area": "西安·西咸新区",
+      "exp": "5年及以上",
+      "edu": "本科",
+      "eduOk": true,
+      "pay": "1.3-2.3万",
+      "payNote": "",
+      "score": 82,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "多台非标整机方案设计与落"
+      ],
+      "why": "岗位要求里的多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装），你都实打实做过；薪资上限 1.3-2.3万，是这块的天花板档，值得优先投；在西安，正是你简历写的期望城市。",
+      "msg": "您好，看到贵司在招「机械工程师(结构设计方向)急招」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/xian-caq/172993001.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/xian-caq/172993001.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
+      "firstSeen": "2026-11-19 23:32",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 187,
       "city": "xa",
       "co": "星域控制工程（上海）",
       "coTag": "",
@@ -6448,7 +6512,7 @@
       "在榜天数": 0
     },
     {
-      "id": 186,
+      "id": 188,
       "city": "xa",
       "co": "苏州钧信自动控制",
       "coTag": "",
@@ -6472,15 +6536,15 @@
       "link": "https://msearch.51job.com/jobs/xian-caq/172993001.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 08:06",
-      "lastSeen": "2026-11-19 08:06",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-19 08:06",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
-      "id": 187,
+      "id": 189,
       "city": "xa",
       "co": "ABB（中国）",
       "coTag": "",
@@ -6512,7 +6576,7 @@
       "在榜天数": 1
     },
     {
-      "id": 188,
+      "id": 190,
       "city": "xa",
       "co": "西安稀有金属材料研究院",
       "coTag": "",
@@ -6544,7 +6608,7 @@
       "在榜天数": 1
     },
     {
-      "id": 189,
+      "id": 191,
       "city": "xa",
       "co": "上海凯士比泵",
       "coTag": "",
@@ -6576,7 +6640,7 @@
       "在榜天数": 1
     },
     {
-      "id": 190,
+      "id": 192,
       "city": "xa",
       "co": "汉坤（北京）流体控制技术",
       "coTag": "",
@@ -6608,7 +6672,7 @@
       "在榜天数": 1
     },
     {
-      "id": 191,
+      "id": 193,
       "city": "xa",
       "co": "昆山宏泰博数控刀具",
       "coTag": "",
@@ -6640,7 +6704,7 @@
       "在榜天数": 2
     },
     {
-      "id": 192,
+      "id": 194,
       "city": "xa",
       "co": "陕西德仕金迪橡塑工业集团",
       "coTag": "",
@@ -6672,7 +6736,7 @@
       "在榜天数": 2
     },
     {
-      "id": 193,
+      "id": 195,
       "city": "xa",
       "co": "广电计量检测（西安）",
       "coTag": "",
@@ -6701,10 +6765,10 @@
       "firstSeen": "2026-11-16 23:23",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 194,
+      "id": 196,
       "city": "xa",
       "co": "西安西泽工程技术",
       "coTag": "",
@@ -6733,10 +6797,10 @@
       "firstSeen": "2026-11-16 23:23",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 195,
+      "id": 197,
       "city": "xa",
       "co": "西安前沿动力软件开发",
       "coTag": "",
@@ -6765,10 +6829,10 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 2
+      "在榜天数": 3
     },
     {
-      "id": 196,
+      "id": 198,
       "city": "xa",
       "co": "上海麦可洛自动化科技",
       "coTag": "",
@@ -6797,10 +6861,10 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 197,
+      "id": 199,
       "city": "xa",
       "co": "比亚迪汽车工业",
       "coTag": "",
@@ -6829,10 +6893,10 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 198,
+      "id": 200,
       "city": "xa",
       "co": "西安飞达雷达技术",
       "coTag": "",
@@ -6861,10 +6925,10 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 199,
+      "id": 201,
       "city": "xa",
       "co": "擎岳问天科技（苏州）",
       "coTag": "",
@@ -6896,7 +6960,7 @@
       "在榜天数": 4
     },
     {
-      "id": 200,
+      "id": 202,
       "city": "xa",
       "co": "擎岳问天科技（苏州）",
       "coTag": "",
@@ -6928,7 +6992,7 @@
       "在榜天数": 4
     },
     {
-      "id": 201,
+      "id": 203,
       "city": "xa",
       "co": "擎岳问天科技（苏州）",
       "coTag": "",
@@ -6960,7 +7024,7 @@
       "在榜天数": 4
     },
     {
-      "id": 202,
+      "id": 204,
       "city": "xa",
       "co": "西安宏泰时频技术",
       "coTag": "",
@@ -6992,7 +7056,7 @@
       "在榜天数": 4
     },
     {
-      "id": 203,
+      "id": 205,
       "city": "xa",
       "co": "东莞立讯技术有限公司",
       "coTag": "",
@@ -7016,15 +7080,15 @@
       "link": "https://www.liepin.com/job/1979243989.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
-      "id": 204,
+      "id": 206,
       "city": "xa",
       "co": "卧龙集团",
       "coTag": "",
@@ -7048,15 +7112,15 @@
       "link": "https://www.liepin.com/job/1986538589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
-      "id": 205,
+      "id": 207,
       "city": "xa",
       "co": "瑞源电气",
       "coTag": "",
@@ -7080,15 +7144,15 @@
       "link": "https://www.liepin.com/job/1981388845.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
-      "id": 206,
+      "id": 208,
       "city": "xa",
       "co": "陕西国科星达科技有限公司",
       "coTag": "",
@@ -7112,15 +7176,15 @@
       "link": "https://www.liepin.com/job/1984461151.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
-      "id": 207,
+      "id": 209,
       "city": "xa",
       "co": "合肥鼎拓精密技术",
       "coTag": "",
@@ -7152,7 +7216,7 @@
       "在榜天数": 7
     },
     {
-      "id": 208,
+      "id": 210,
       "city": "xa",
       "co": "北京通嘉宏瑞科技股份有限公司",
       "coTag": "",
@@ -7176,15 +7240,15 @@
       "link": "https://www.liepin.com/job/1986209763.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 209,
+      "id": 211,
       "city": "xa",
       "co": "华勤技术",
       "coTag": "",
@@ -7208,15 +7272,15 @@
       "link": "https://www.liepin.com/job/1983539801.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 210,
+      "id": 212,
       "city": "xa",
       "co": "奥令科电子科技",
       "coTag": "",
@@ -7245,10 +7309,10 @@
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": true,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 211,
+      "id": 213,
       "city": "xa",
       "co": "晟光硅研",
       "coTag": "",
@@ -7272,15 +7336,15 @@
       "link": "https://www.liepin.com/job/1986167281.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 212,
+      "id": 214,
       "city": "xa",
       "co": "瑞源电气",
       "coTag": "",
@@ -7309,10 +7373,10 @@
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": true,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 213,
+      "id": 215,
       "city": "xa",
       "co": "陕西有色碳陶复合材料研发有限公司",
       "coTag": "",
@@ -7336,15 +7400,15 @@
       "link": "https://www.liepin.com/job/1980812935.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 7
+      "在榜天数": 8
     },
     {
-      "id": 214,
+      "id": 216,
       "city": "xa",
       "co": "中能易电",
       "coTag": "",
@@ -7411,8 +7475,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 215,
-      "在榜天数": 7
+      "id": 217,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7455,8 +7519,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 216,
-      "在榜天数": 7
+      "id": 218,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7500,8 +7564,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 217,
-      "在榜天数": 7
+      "id": 219,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7540,8 +7604,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 218,
-      "在榜天数": 7
+      "id": 220,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7579,8 +7643,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 219,
-      "在榜天数": 7
+      "id": 221,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7619,8 +7683,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 220,
-      "在榜天数": 7
+      "id": 222,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7663,8 +7727,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 221,
-      "在榜天数": 7
+      "id": 223,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7708,8 +7772,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 222,
-      "在榜天数": 7
+      "id": 224,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7753,8 +7817,8 @@
       "快照": true,
       "公司名未显示": false,
       "质量分": 42,
-      "id": 223,
-      "在榜天数": 7
+      "id": 225,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7793,8 +7857,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 224,
-      "在榜天数": 7
+      "id": 226,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7833,8 +7897,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 225,
-      "在榜天数": 7
+      "id": 227,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7872,8 +7936,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 226,
-      "在榜天数": 7
+      "id": 228,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7912,8 +7976,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 227,
-      "在榜天数": 7
+      "id": 229,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -7952,11 +8016,11 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 228,
-      "在榜天数": 7
+      "id": 230,
+      "在榜天数": 8
     },
     {
-      "id": 229,
+      "id": 231,
       "city": "xa",
       "role": "高级机械设计工程师（磨床整机方向）",
       "co": "西安汉沣精机",
@@ -7987,9 +8051,9 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
-      "在榜天数": 7
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -8032,8 +8096,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 230,
-      "在榜天数": 7
+      "id": 232,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -8072,8 +8136,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 231,
-      "在榜天数": 7
+      "id": 233,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -8115,8 +8179,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 232,
-      "在榜天数": 7
+      "id": 234,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -8155,8 +8219,8 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 233,
-      "在榜天数": 7
+      "id": 235,
+      "在榜天数": 8
     },
     {
       "city": "xa",
@@ -8194,7 +8258,7 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 234,
+      "id": 236,
       "在榜天数": 8
     },
     {
@@ -8234,11 +8298,43 @@
       "boss": true,
       "isNew": false,
       "stale": false,
-      "id": 235,
+      "id": 237,
       "在榜天数": 8
     },
     {
-      "id": 236,
+      "id": 238,
+      "city": "xa",
+      "co": "武汉瑞杰行智能科技",
+      "coTag": "",
+      "role": "工装夹具工程师",
+      "area": "西安·西咸新区",
+      "exp": "2年及以上",
+      "edu": "本科",
+      "eduOk": true,
+      "pay": "8千-1.2万",
+      "payNote": "",
+      "score": 80,
+      "g": "core",
+      "cls": "g",
+      "chips": [
+        "手机/手表/耳机 3C "
+      ],
+      "why": "岗位要求里的手机/手表/耳机 3C 类非标测试治具与工装夹具设计，你都实打实做过；在西安，正是你简历写的期望城市。",
+      "msg": "您好，看到贵司在招「工装夹具工程师」。我 16 年机械设计、10 年 3C 非标治具与自动化。3C 测试治具这摊我最熟：ICT/FCT 方案、FPC 连接器治具、Pogo Pin 下探针模组都做过，快换和防呆是一起设计的。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
+      "src": "前程无忧",
+      "srcUrl": "https://msearch.51job.com/jobs/xian-jjjs/174276512.html?rc=czzpzqlb_",
+      "link": "https://msearch.51job.com/jobs/xian-jjjs/174276512.html?rc=czzpzqlb_",
+      "boss": false,
+      "postAt": "",
+      "addAt": "2026-11-19 23:32",
+      "lastSeen": "2026-11-19 23:32",
+      "firstSeen": "2026-11-19 23:32",
+      "isNew": true,
+      "stale": false,
+      "在榜天数": 0
+    },
+    {
+      "id": 239,
       "city": "xa",
       "co": "比亚迪汽车工业",
       "coTag": "",
@@ -8267,10 +8363,10 @@
       "firstSeen": "2026-11-15 21:45",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 237,
+      "id": 240,
       "city": "xa",
       "co": "赤壁市君熙飞机工业",
       "coTag": "",
@@ -8299,10 +8395,10 @@
       "firstSeen": "2026-11-15 21:45",
       "isNew": false,
       "stale": true,
-      "在榜天数": 3
+      "在榜天数": 4
     },
     {
-      "id": 238,
+      "id": 241,
       "city": "xa",
       "co": "上海轩田智能科技",
       "coTag": "",
@@ -8334,7 +8430,7 @@
       "在榜天数": 4
     },
     {
-      "id": 239,
+      "id": 242,
       "city": "xa",
       "co": "西安嘉合汇智科技",
       "coTag": "",
@@ -8366,7 +8462,7 @@
       "在榜天数": 4
     },
     {
-      "id": 240,
+      "id": 243,
       "city": "xa",
       "co": "西安秦森科技",
       "coTag": "",
@@ -8398,7 +8494,7 @@
       "在榜天数": 4
     },
     {
-      "id": 241,
+      "id": 244,
       "city": "xa",
       "co": "陕西航天泵阀科技集团",
       "coTag": "",
@@ -8428,102 +8524,6 @@
       "isNew": false,
       "stale": true,
       "在榜天数": 4
-    },
-    {
-      "id": 242,
-      "city": "xa",
-      "co": "BYD",
-      "coTag": "",
-      "role": "机械工程师（结构设计方向）",
-      "area": "西安-郭杜",
-      "exp": "5年以上",
-      "edu": "本科",
-      "eduOk": true,
-      "pay": "13-23k",
-      "payNote": "",
-      "score": 80,
-      "g": "core",
-      "cls": "g",
-      "chips": [
-        "多台非标整机方案设计与落"
-      ],
-      "why": "岗位要求里的多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装），你都实打实做过；在西安，正是你简历写的期望城市。",
-      "msg": "您好，看到贵司在招「机械工程师(结构设计方向)」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
-      "src": "猎聘",
-      "srcUrl": "https://www.liepin.com/job/1983006111.shtml",
-      "link": "https://www.liepin.com/job/1983006111.shtml",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
-      "firstSeen": "2026-11-12 22:56",
-      "isNew": false,
-      "stale": false,
-      "在榜天数": 6
-    },
-    {
-      "id": 243,
-      "city": "xa",
-      "co": "远图",
-      "coTag": "",
-      "role": "结构设计工程师",
-      "area": "高新区",
-      "exp": "4年以上",
-      "edu": "本科",
-      "eduOk": true,
-      "pay": "15-27k·15薪",
-      "payNote": "",
-      "score": 80,
-      "g": "core",
-      "cls": "g",
-      "chips": [
-        "多台非标整机方案设计与落"
-      ],
-      "why": "岗位要求里的多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装），你都实打实做过；薪资上限 15-27k·15薪，是这块的天花板档，值得优先投；在西安，正是你简历写的期望城市。",
-      "msg": "您好，看到贵司在招「结构设计工程师」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
-      "src": "猎聘",
-      "srcUrl": "https://www.liepin.com/job/1980263967.shtml",
-      "link": "https://www.liepin.com/job/1980263967.shtml",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-19 13:44",
-      "lastSeen": "2026-11-19 13:44",
-      "firstSeen": "2026-11-12 22:56",
-      "isNew": false,
-      "stale": false,
-      "在榜天数": 6
-    },
-    {
-      "id": 244,
-      "city": "xa",
-      "co": "西安双塔真空设备",
-      "coTag": "",
-      "role": "结构设计师",
-      "area": "西安·鄠邑区",
-      "exp": "2年及以上",
-      "edu": "本科",
-      "eduOk": true,
-      "pay": "9千-1.2万",
-      "payNote": "",
-      "score": 80,
-      "g": "core",
-      "cls": "g",
-      "chips": [
-        "多台非标整机方案设计与落"
-      ],
-      "why": "岗位要求里的多台非标整机方案设计与落地（CNC上下料、保压拆解、转盘组装），你都实打实做过；在西安，正是你简历写的期望城市。",
-      "msg": "您好，看到贵司在招「结构设计师」。我 16 年机械设计、10 年 3C 非标治具与自动化。整机结构我独立扛：双车床上下料单元、手机屏幕保压拆解回流线、四工位转盘组装测试机，都是从方案、出图、BOM 跟到现场验收。我人在西安，正是简历写的期望城市，简历和作品集发您看看？",
-      "src": "前程无忧",
-      "srcUrl": "https://msearch.51job.com/jobs/xian-gxjs/162937618.html?rc=czzpzqlb_",
-      "link": "https://msearch.51job.com/jobs/xian-gxjs/162937618.html?rc=czzpzqlb_",
-      "boss": false,
-      "postAt": "",
-      "addAt": "2026-11-12 13:07",
-      "lastSeen": "2026-11-12 13:07",
-      "firstSeen": "2026-11-12 13:07",
-      "isNew": false,
-      "stale": true,
-      "在榜天数": 7
     }
   ]
 }
