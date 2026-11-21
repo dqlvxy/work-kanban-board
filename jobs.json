@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21 13:35",
+  "updated": "2026-11-21 14:34",
   "round": 0,
   "bossCount": 89,
   "newCount": 7,
@@ -7,7 +7,7 @@
   "snapshotDate": "2026-11-11",
   "newDays": 1,
   "perCity": 120,
-  "evicted": 219,
+  "evicted": 233,
   "jobs": [
     {
       "id": 1,
@@ -41,8 +41,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -167,8 +167,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -203,8 +203,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -239,8 +239,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -275,8 +275,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -311,8 +311,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -347,8 +347,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -383,8 +383,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -419,8 +419,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -455,8 +455,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -491,8 +491,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -527,8 +527,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -563,8 +563,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -599,8 +599,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -635,8 +635,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -671,8 +671,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -707,8 +707,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -743,8 +743,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -779,8 +779,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -968,8 +968,8 @@
       "link": "https://www.liepin.com/job/1955777741.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -1000,8 +1000,8 @@
       "link": "https://www.liepin.com/job/1986680727.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -1192,8 +1192,8 @@
       "link": "https://www.liepin.com/job/1986104253.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 12:31",
       "isNew": false,
       "stale": false,
@@ -1224,8 +1224,8 @@
       "link": "https://www.liepin.com/job/1986128589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 11:26",
       "isNew": false,
       "stale": false,
@@ -1295,8 +1295,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1331,8 +1331,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1367,8 +1367,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1403,8 +1403,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1464,8 +1464,8 @@
       "link": "https://www.liepin.com/job/1984614715.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -1599,8 +1599,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1628,8 +1628,8 @@
       "link": "https://www.liepin.com/job/1932359901.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -1660,8 +1660,8 @@
       "link": "https://www.liepin.com/job/1984948579.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 11:26",
       "isNew": false,
       "stale": false,
@@ -1699,8 +1699,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1735,8 +1735,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1771,8 +1771,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1903,8 +1903,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1939,8 +1939,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -1975,8 +1975,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2011,8 +2011,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2047,8 +2047,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2147,8 +2147,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2183,8 +2183,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2219,8 +2219,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2255,8 +2255,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2291,8 +2291,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2327,8 +2327,8 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "在榜天数": 9
     },
     {
@@ -2356,8 +2356,8 @@
       "link": "https://www.liepin.com/job/1986590575.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -2388,8 +2388,8 @@
       "link": "https://www.liepin.com/job/1986590525.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -2420,8 +2420,8 @@
       "link": "https://www.liepin.com/job/1979108397.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -2452,8 +2452,8 @@
       "link": "https://www.liepin.com/job/1973549051.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -3380,8 +3380,8 @@
       "link": "https://www.liepin.com/job/1986373375.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -3412,8 +3412,8 @@
       "link": "https://www.liepin.com/job/1986698053.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:20",
       "isNew": false,
       "stale": false,
@@ -3444,8 +3444,8 @@
       "link": "https://www.liepin.com/job/1986599105.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -3476,8 +3476,8 @@
       "link": "https://www.liepin.com/job/1986686841.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -3508,8 +3508,8 @@
       "link": "https://www.liepin.com/job/1986668685.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 08:12",
       "isNew": false,
       "stale": false,
@@ -4116,8 +4116,8 @@
       "link": "https://www.liepin.com/job/1985580753.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 12:31",
       "isNew": false,
       "stale": false,
@@ -4166,7 +4166,7 @@
       "isNew": false,
       "stale": false,
       "id": 125,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -4872,7 +4872,7 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 143,
@@ -4931,12 +4931,12 @@
       "link": "https://www.liepin.com/job/1982154183.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 145,
@@ -4963,12 +4963,12 @@
       "link": "https://www.liepin.com/job/1967757143.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 146,
@@ -4995,12 +4995,12 @@
       "link": "https://www.liepin.com/job/1985789719.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 147,
@@ -5072,7 +5072,7 @@
       "isNew": false,
       "stale": false,
       "id": 148,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -5153,7 +5153,7 @@
       "isNew": false,
       "stale": false,
       "id": 150,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -5289,7 +5289,7 @@
       "公司名未显示": false,
       "质量分": 36,
       "id": 153,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 154,
@@ -5353,7 +5353,7 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 5
+      "在榜天数": 6
     },
     {
       "id": 156,
@@ -5417,7 +5417,7 @@
       "firstSeen": "2026-11-14 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 6
+      "在榜天数": 7
     },
     {
       "id": 158,
@@ -5540,11 +5540,11 @@
       "link": "https://msearch.51job.com/jobs/xian-hyq/173021075.html?rc=czzpzqlb_",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 07:52",
-      "lastSeen": "2026-11-21 07:52",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-21 07:52",
       "isNew": true,
-      "stale": true,
+      "stale": false,
       "在榜天数": 0
     },
     {
@@ -5865,7 +5865,7 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 172,
@@ -5897,7 +5897,7 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 173,
@@ -5988,12 +5988,12 @@
       "link": "https://www.liepin.com/job/1986159467.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 176,
@@ -6102,7 +6102,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 178,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -6147,7 +6147,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 179,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -6192,7 +6192,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 180,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -6238,7 +6238,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 181,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7085,7 +7085,7 @@
       "firstSeen": "2026-11-16 13:49",
       "isNew": false,
       "stale": true,
-      "在榜天数": 4
+      "在榜天数": 5
     },
     {
       "id": 206,
@@ -7117,7 +7117,7 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 5
+      "在榜天数": 6
     },
     {
       "id": 207,
@@ -7149,7 +7149,7 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 5
+      "在榜天数": 6
     },
     {
       "id": 208,
@@ -7181,7 +7181,7 @@
       "firstSeen": "2026-11-15 13:50",
       "isNew": false,
       "stale": true,
-      "在榜天数": 5
+      "在榜天数": 6
     },
     {
       "id": 209,
@@ -7336,8 +7336,8 @@
       "link": "https://www.liepin.com/job/1979243989.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -7368,8 +7368,8 @@
       "link": "https://www.liepin.com/job/1986538589.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -7400,8 +7400,8 @@
       "link": "https://www.liepin.com/job/1981388845.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -7432,8 +7432,8 @@
       "link": "https://www.liepin.com/job/1984461151.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-12 22:56",
       "isNew": false,
       "stale": false,
@@ -7496,12 +7496,12 @@
       "link": "https://www.liepin.com/job/1986209763.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 219,
@@ -7528,12 +7528,12 @@
       "link": "https://www.liepin.com/job/1983539801.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 220,
@@ -7565,7 +7565,7 @@
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": true,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 221,
@@ -7592,12 +7592,12 @@
       "link": "https://www.liepin.com/job/1986167281.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 222,
@@ -7629,7 +7629,7 @@
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": true,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 223,
@@ -7656,12 +7656,12 @@
       "link": "https://www.liepin.com/job/1980812935.shtml",
       "boss": false,
       "postAt": "",
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
       "firstSeen": "2026-11-11 14:19",
       "isNew": false,
       "stale": false,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 224,
@@ -7732,7 +7732,7 @@
       "isNew": false,
       "stale": false,
       "id": 225,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7776,7 +7776,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 226,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7821,7 +7821,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 227,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7861,7 +7861,7 @@
       "isNew": false,
       "stale": false,
       "id": 228,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7900,7 +7900,7 @@
       "isNew": false,
       "stale": false,
       "id": 229,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7940,7 +7940,7 @@
       "isNew": false,
       "stale": false,
       "id": 230,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -7984,7 +7984,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 231,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8029,7 +8029,7 @@
       "isNew": false,
       "stale": false,
       "id": 232,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8074,7 +8074,7 @@
       "公司名未显示": false,
       "质量分": 42,
       "id": 233,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8114,7 +8114,7 @@
       "isNew": false,
       "stale": false,
       "id": 234,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8154,7 +8154,7 @@
       "isNew": false,
       "stale": false,
       "id": 235,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8193,7 +8193,7 @@
       "isNew": false,
       "stale": false,
       "id": 236,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8233,7 +8233,7 @@
       "isNew": false,
       "stale": false,
       "id": 237,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8273,7 +8273,7 @@
       "isNew": false,
       "stale": false,
       "id": 238,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "id": 239,
@@ -8307,9 +8307,9 @@
       "cls": "g",
       "isNew": false,
       "stale": false,
-      "addAt": "2026-11-21 13:35",
-      "lastSeen": "2026-11-21 13:35",
-      "在榜天数": 9
+      "addAt": "2026-11-21 14:34",
+      "lastSeen": "2026-11-21 14:34",
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8353,7 +8353,7 @@
       "isNew": false,
       "stale": false,
       "id": 240,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8393,7 +8393,7 @@
       "isNew": false,
       "stale": false,
       "id": 241,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8436,7 +8436,7 @@
       "isNew": false,
       "stale": false,
       "id": 242,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
@@ -8476,7 +8476,7 @@
       "isNew": false,
       "stale": false,
       "id": 243,
-      "在榜天数": 9
+      "在榜天数": 10
     },
     {
       "city": "xa",
